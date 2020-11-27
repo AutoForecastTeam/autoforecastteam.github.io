@@ -12,8 +12,8 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://example.org/docs/shortcodes/buttons/</guid>
-      <description>Buttons Buttons are styled links that can lead to local page or external link.
-Example {{-&amp;lt;/* button relref=&amp;#34;/&amp;#34; [class=&amp;#34;...&amp;#34;] */&amp;gt;-}}Get Home{{-&amp;lt;/* /button */&amp;gt;-}} {{-&amp;lt;/* button href=&amp;#34;https://github.com/alex-shpak/hugo-book&amp;#34; */&amp;gt;-}}Contribute{{-&amp;lt;/* /button */&amp;gt;-}} {{-&amp;lt; button relref=&amp;quot;/&amp;quot; &amp;gt;-}}Get Home{{-&amp;lt; /button &amp;gt;-}} {{-&amp;lt; button href=&amp;ldquo;https://github.com/alex-shpak/hugo-book&amp;quot; &amp;gt;-}}Contribute{{-&amp;lt; /button &amp;gt;-}}</description>
+      <description>Buttons#Buttons are styled links that can lead to local page or external link.
+Example#{{-&amp;lt;/* button relref=&amp;#34;/&amp;#34; [class=&amp;#34;...&amp;#34;] */&amp;gt;-}}Get Home{{-&amp;lt;/* /button */&amp;gt;-}} {{-&amp;lt;/* button href=&amp;#34;https://github.com/alex-shpak/hugo-book&amp;#34; */&amp;gt;-}}Contribute{{-&amp;lt;/* /button */&amp;gt;-}} {{-&amp;lt; button relref=&amp;quot;/&amp;quot; &amp;gt;-}}Get Home{{-&amp;lt; /button &amp;gt;-}} {{-&amp;lt; button href=&amp;ldquo;https://github.com/alex-shpak/hugo-book&amp;quot; &amp;gt;-}}Contribute{{-&amp;lt; /button &amp;gt;-}}</description>
     </item>
     
     <item>
@@ -22,9 +22,9 @@ Example {{-&amp;lt;/* button relref=&amp;#34;/&amp;#34; [class=&amp;#34;...&amp;
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://example.org/docs/shortcodes/columns/</guid>
-      <description>Columns Columns help organize shorter pieces of content horizontally for readability.
-{{-&amp;lt;/* columns */&amp;gt;-}} &amp;lt;!-- begin columns block --&amp;gt; # Left Content Lorem markdownum insigne... &amp;lt;---&amp;gt; &amp;lt;!-- magic separator, between columns --&amp;gt; # Mid Content Lorem markdownum insigne... &amp;lt;---&amp;gt; &amp;lt;!-- magic separator, between columns --&amp;gt; # Right Content Lorem markdownum insigne... {{-&amp;lt;/* /columns */&amp;gt;-}} Example {{-&amp;lt; columns &amp;gt;-}}
-Left Content Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat stringit, frustra Saturnius uteroque inter!</description>
+      <description>Columns#Columns help organize shorter pieces of content horizontally for readability.
+{{-&amp;lt;/* columns */&amp;gt;-}} &amp;lt;!-- begin columns block --&amp;gt; # Left Content Lorem markdownum insigne... &amp;lt;---&amp;gt; &amp;lt;!-- magic separator, between columns --&amp;gt; # Mid Content Lorem markdownum insigne... &amp;lt;---&amp;gt; &amp;lt;!-- magic separator, between columns --&amp;gt; # Right Content Lorem markdownum insigne... {{-&amp;lt;/* /columns */&amp;gt;-}} Example#{{-&amp;lt; columns &amp;gt;-}}
+Left Content#Lorem markdownum insigne. Olympo signis Delphis!</description>
     </item>
     
     <item>
@@ -33,9 +33,9 @@ Left Content Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nov
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://example.org/docs/shortcodes/details/</guid>
-      <description>Details Details shortcode is a helper for details html5 element. It is going to replace expand shortcode.
-Example {{-&amp;lt;/* details &amp;#34;Title&amp;#34; [open] */&amp;gt;-}} ## Markdown content Lorem markdownum insigne... {{-&amp;lt;/* /details */&amp;gt;-}} {{-&amp;lt;/* details title=&amp;#34;Title&amp;#34; open=true */&amp;gt;-}} ## Markdown content Lorem markdownum insigne... {{-&amp;lt;/* /details */&amp;gt;-}} {{-&amp;lt; details &amp;ldquo;Title&amp;rdquo; open &amp;gt;-}}
-Markdown content Lorem markdownum insigne&amp;hellip; {{-&amp;lt; /details &amp;gt;-}}</description>
+      <description>Details#Details shortcode is a helper for details html5 element. It is going to replace expand shortcode.
+Example#{{-&amp;lt;/* details &amp;#34;Title&amp;#34; [open] */&amp;gt;-}} ## Markdown content Lorem markdownum insigne... {{-&amp;lt;/* /details */&amp;gt;-}} {{-&amp;lt;/* details title=&amp;#34;Title&amp;#34; open=true */&amp;gt;-}} ## Markdown content Lorem markdownum insigne... {{-&amp;lt;/* /details */&amp;gt;-}} {{-&amp;lt; details &amp;ldquo;Title&amp;rdquo; open &amp;gt;-}}
+Markdown content#Lorem markdownum insigne&amp;hellip; {{-&amp;lt; /details &amp;gt;-}}</description>
     </item>
     
     <item>
@@ -44,10 +44,10 @@ Markdown content Lorem markdownum insigne&amp;hellip; {{-&amp;lt; /details &amp;
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://example.org/docs/shortcodes/expand/</guid>
-      <description>Expand Expand shortcode can help to decrease clutter on screen by hiding part of text. Expand content by clicking on it.
-Example Default {{-&amp;lt;/* expand */&amp;gt;-}} ## Markdown content Lorem markdownum insigne... {{-&amp;lt;/* /expand */&amp;gt;-}} {{-&amp;lt; expand &amp;gt;-}}
-Markdown content Lorem markdownum insigne&amp;hellip; {{-&amp;lt; /expand &amp;gt;-}}
-With Custom Label {{-&amp;lt;/* expand &amp;#34;Custom Label&amp;#34; &amp;#34;...&amp;#34; */&amp;gt;-}} ## Markdown content Lorem markdownum insigne... {{-&amp;lt;/* /expand */&amp;gt;-}} {{-&amp;lt; expand &amp;ldquo;Custom Label&amp;rdquo; &amp;ldquo;&amp;hellip;&amp;rdquo; &amp;gt;-}}</description>
+      <description>Expand#Expand shortcode can help to decrease clutter on screen by hiding part of text. Expand content by clicking on it.
+Example#Default#{{-&amp;lt;/* expand */&amp;gt;-}} ## Markdown content Lorem markdownum insigne... {{-&amp;lt;/* /expand */&amp;gt;-}} {{-&amp;lt; expand &amp;gt;-}}
+Markdown content#Lorem markdownum insigne&amp;hellip; {{-&amp;lt; /expand &amp;gt;-}}
+With Custom Label#{{-&amp;lt;/* expand &amp;#34;Custom Label&amp;#34; &amp;#34;...&amp;#34; */&amp;gt;-}} ## Markdown content Lorem markdownum insigne.</description>
     </item>
     
     <item>
@@ -56,10 +56,10 @@ With Custom Label {{-&amp;lt;/* expand &amp;#34;Custom Label&amp;#34; &amp;#34;.
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://example.org/docs/shortcodes/hints/</guid>
-      <description>Hints Hint shortcode can be used as hint/alerts/notification block.
+      <description>Hints#Hint shortcode can be used as hint/alerts/notification block.
 There are 3 colors to choose: info, warning and danger.
-{{-&amp;lt;/* hint [info|warning|danger] */&amp;gt;-}} **Markdown content** Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat stringit, frustra Saturnius uteroque inter! Oculis non ritibus Telethusa {{-&amp;lt;/* /hint */&amp;gt;-}} Example {{-&amp;lt; hint info &amp;gt;-}} Markdown content
-Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat stringit, frustra Saturnius uteroque inter! Oculis non ritibus Telethusa {{-&amp;lt; /hint &amp;gt;-}}</description>
+{{-&amp;lt;/* hint [info|warning|danger] */&amp;gt;-}} **Markdown content** Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat stringit, frustra Saturnius uteroque inter! Oculis non ritibus Telethusa {{-&amp;lt;/* /hint */&amp;gt;-}} Example#{{-&amp;lt; hint info &amp;gt;-}} Markdown content
+Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat stringit, frustra Saturnius uteroque inter!</description>
     </item>
     
     <item>
@@ -68,11 +68,11 @@ Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat str
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://example.org/docs/shortcodes/katex/</guid>
-      <description>KaTeX KaTeX shortcode let you render math typesetting in markdown document. See KaTeX
-Example {{-&amp;lt; columns &amp;gt;-}}
+      <description>KaTeX#KaTeX shortcode let you render math typesetting in markdown document. See KaTeX
+Example#{{-&amp;lt; columns &amp;gt;-}}
 {{-&amp;lt;/* katex [display] [class=&amp;#34;text-center&amp;#34;] */&amp;gt;-}} f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi {{-&amp;lt;/* /katex */&amp;gt;-}} {{-&amp;lt; katex display &amp;gt;-}} f(x) = \int_{-\infty}^\infty\hat f(\xi),e^{2 \pi i \xi x},d\xi {{-&amp;lt; /katex &amp;gt;-}}
 {{-&amp;lt; /columns &amp;gt;-}}
-Display Mode Example Here is some inline example: {{-&amp;lt; katex &amp;gt;-}}\pi(x){{-&amp;lt; /katex &amp;gt;-}}, rendered in the same line. And below is display example, having display: block {{-&amp;lt; katex display &amp;gt;-}} f(x) = \int_{-\infty}^\infty\hat f(\xi),e^{2 \pi i \xi x},d\xi {{-&amp;lt; /katex &amp;gt;-}} Text continues here.</description>
+Display Mode Example#Here is some inline example: {{-&amp;lt; katex &amp;gt;-}}\pi(x){{-&amp;lt; /katex &amp;gt;-}}, rendered in the same line.</description>
     </item>
     
     <item>
@@ -81,8 +81,8 @@ Display Mode Example Here is some inline example: {{-&amp;lt; katex &amp;gt;-}}\
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://example.org/docs/shortcodes/mermaid/</guid>
-      <description>Mermaid Chart Mermaid is library for generating svg charts and diagrams from text.
-Example {{-&amp;lt; columns &amp;gt;-}}
+      <description>Mermaid Chart#Mermaid is library for generating svg charts and diagrams from text.
+Example#{{-&amp;lt; columns &amp;gt;-}}
 {{-&amp;lt;/* mermaid [class=&amp;#34;text-center&amp;#34;]*/&amp;gt;-}} sequenceDiagram Alice-&amp;gt;&amp;gt;Bob: Hello Bob, how are you? alt is sick Bob-&amp;gt;&amp;gt;Alice: Not so good :( else is well Bob-&amp;gt;&amp;gt;Alice: Feeling fresh like a daisy end opt Extra response Bob-&amp;gt;&amp;gt;Alice: Thanks for asking end {{-&amp;lt;/* /mermaid */&amp;gt;-}} {{-&amp;lt; mermaid &amp;gt;-}} sequenceDiagram Alice-&amp;raquo;Bob: Hello Bob, how are you? alt is sick Bob-&amp;raquo;Alice: Not so good :( else is well Bob-&amp;raquo;Alice: Feeling fresh like a daisy end opt Extra response Bob-&amp;raquo;Alice: Thanks for asking end {{-&amp;lt; /mermaid &amp;gt;-}}</description>
     </item>
     
@@ -92,10 +92,9 @@ Example {{-&amp;lt; columns &amp;gt;-}}
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://example.org/docs/shortcodes/tabs/</guid>
-      <description>Tabs Tabs let you organize content by context, for example installation instructions for each supported platform.
-{{-&amp;lt;/* tabs &amp;#34;uniqueid&amp;#34; */&amp;gt;-}} {{-&amp;lt;/* tab &amp;#34;MacOS&amp;#34; */&amp;gt;-}} # MacOS Content {{-&amp;lt;/* /tab */&amp;gt;-}} {{-&amp;lt;/* tab &amp;#34;Linux&amp;#34; */&amp;gt;-}} # Linux Content {{-&amp;lt;/* /tab */&amp;gt;-}} {{-&amp;lt;/* tab &amp;#34;Windows&amp;#34; */&amp;gt;-}} # Windows Content {{-&amp;lt;/* /tab */&amp;gt;-}} {{-&amp;lt;/* /tabs */&amp;gt;-}} Example {{-&amp;lt; tabs &amp;ldquo;uniqueid&amp;rdquo; &amp;gt;-}} {{-&amp;lt; tab &amp;ldquo;MacOS&amp;rdquo; &amp;gt;-}}
-MacOS This is tab MacOS content.
-Lorem markdownum insigne.</description>
+      <description>Tabs#Tabs let you organize content by context, for example installation instructions for each supported platform.
+{{-&amp;lt;/* tabs &amp;#34;uniqueid&amp;#34; */&amp;gt;-}} {{-&amp;lt;/* tab &amp;#34;MacOS&amp;#34; */&amp;gt;-}} # MacOS Content {{-&amp;lt;/* /tab */&amp;gt;-}} {{-&amp;lt;/* tab &amp;#34;Linux&amp;#34; */&amp;gt;-}} # Linux Content {{-&amp;lt;/* /tab */&amp;gt;-}} {{-&amp;lt;/* tab &amp;#34;Windows&amp;#34; */&amp;gt;-}} # Windows Content {{-&amp;lt;/* /tab */&amp;gt;-}} {{-&amp;lt;/* /tabs */&amp;gt;-}} Example#{{-&amp;lt; tabs &amp;ldquo;uniqueid&amp;rdquo; &amp;gt;-}} {{-&amp;lt; tab &amp;ldquo;MacOS&amp;rdquo; &amp;gt;-}}
+MacOS#This is tab MacOS content.</description>
     </item>
     
   </channel>
