@@ -1,6 +1,6 @@
 {
-  "name": "My New Hugo Site",
-  "short_name": "My New Hugo Site",
+  "name": "AutoForecast blog",
+  "short_name": "AutoForecast blog",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

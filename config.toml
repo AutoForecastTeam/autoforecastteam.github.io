@@ -1,5 +1,5 @@
-baseURL = "http://example.org/"
+baseURL = "https://autoforecastteam.github.io/"
 languageCode = "en-us"
-title = "My New Hugo Site"
+title = "AutoForecast blog"
 publishDir = "docs"
 theme = "book"

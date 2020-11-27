@@ -13,7 +13,6 @@ Update submodule:
 Start server:
 `hugo server -D`
 
-
 ## TODO:
 - [ ] Add proper content
 - [ ] Prettify this site
