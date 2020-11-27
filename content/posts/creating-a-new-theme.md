@@ -678,9 +678,9 @@ $ vi themes/zafta/layouts/index.html
 <!DOCTYPE html>
 <html>
 <body>
-  {{- range first 10 .Data.Pages -}}
-    <h1>{{- .Title -}}</h1>
-  {{- end -}}
+  {{ range first 10 .Data.Pages }}
+    <h1>{{ .Title }}</h1>
+  {{ end }}
 </body>
 </html>
 :wq
@@ -688,7 +688,7 @@ $ vi themes/zafta/layouts/index.html
 $
 ```
 
-Hugo uses the Go template engine. That engine scans the template files for commands which are enclosed between "{{-" and "-}}". In our template, the commands are:
+Hugo uses the Go template engine. That engine scans the template files for commands which are enclosed between "{{" and "}}". In our template, the commands are:
 
 1. range
 2. .Title
@@ -767,11 +767,11 @@ $ vi themes/zafta/layouts/_default/single.html
 <!DOCTYPE html>
 <html>
 <head>
-  <title>{{- .Title -}}</title>
+  <title>{{ .Title }}</title>
 </head>
 <body>
-  <h1>{{- .Title -}}</h1>
-  {{- .Content -}}
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
 </body>
 </html>
 :wq
@@ -841,9 +841,9 @@ $ vi themes/zafta/layouts/index.html
 <!DOCTYPE html>
 <html>
 <body>
-  {{- range first 10 .Data.Pages -}}
-    <h1><a href="{{- .Permalink -}}">{{- .Title -}}</a></h1>
-  {{- end -}}
+  {{ range first 10 .Data.Pages }}
+    <h1><a href="{{ .Permalink }}">{{ .Title }}</a></h1>
+  {{ end }}
 </body>
 </html>
 ```
@@ -959,18 +959,18 @@ $ vi themes/zafta/layouts/index.html
 <html>
 <body>
   <h1>posts</h1>
-  {{- range first 10 .Data.Pages -}}
-    {{- if eq .Type "post"-}}
-      <h2><a href="{{- .Permalink -}}">{{- .Title -}}</a></h2>
-    {{- end -}}
-  {{- end -}}
+  {{ range first 10 .Data.Pages }}
+    {{ if eq .Type "post"}}
+      <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+    {{ end }}
+  {{ end }}
 
   <h1>pages</h1>
-  {{- range .Data.Pages -}}
-    {{- if eq .Type "page" -}}
-      <h2><a href="{{- .Permalink -}}">{{- .Title -}}</a></h2>
-    {{- end -}}
-  {{- end -}}
+  {{ range .Data.Pages }}
+    {{ if eq .Type "page" }}
+      <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+    {{ end }}
+  {{ end }}
 </body>
 </html>
 :wq
@@ -1015,7 +1015,7 @@ $ vi themes/zafta/layouts/partials/header.html
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{{- .Title -}}</title>
+	<title>{{ .Title }}</title>
 </head>
 <body>
 :wq
@@ -1031,11 +1031,11 @@ $ vi themes/zafta/layouts/partials/footer.html
 The most noticeable difference between a template call and a partials call is the lack of path:
 
 ```
-{{- template "theme/partials/header.html" . -}}
+{{ template "theme/partials/header.html" . }}
 ```
 versus
 ```
-{{- partial "header.html" . -}}
+{{ partial "header.html" . }}
 ```
 Both pass in the context.
 
@@ -1043,23 +1043,23 @@ Let's change the home page template to use these new partials.
 
 ```
 $ vi themes/zafta/layouts/index.html
-{{- partial "header.html" . -}}
+{{ partial "header.html" . }}
 
   <h1>posts</h1>
-  {{- range first 10 .Data.Pages -}}
-    {{- if eq .Type "post"-}}
-      <h2><a href="{{- .Permalink -}}">{{- .Title -}}</a></h2>
-    {{- end -}}
-  {{- end -}}
+  {{ range first 10 .Data.Pages }}
+    {{ if eq .Type "post"}}
+      <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+    {{ end }}
+  {{ end }}
 
   <h1>pages</h1>
-  {{- range .Data.Pages -}}
-    {{- if or (eq .Type "page") (eq .Type "about") -}}
-      <h2><a href="{{- .Permalink -}}">{{- .Type -}} - {{- .Title -}} - {{- .RelPermalink -}}</a></h2>
-    {{- end -}}
-  {{- end -}}
+  {{ range .Data.Pages }}
+    {{ if or (eq .Type "page") (eq .Type "about") }}
+      <h2><a href="{{ .Permalink }}">{{ .Type }} - {{ .Title }} - {{ .RelPermalink }}</a></h2>
+    {{ end }}
+  {{ end }}
 
-{{- partial "footer.html" . -}}
+{{ partial "footer.html" . }}
 :wq
 ```
 
@@ -1069,12 +1069,12 @@ Generate the web site and verify the results. The title on the home page is now 
 
 ```
 $ vi themes/zafta/layouts/_default/single.html
-{{- partial "header.html" . -}}
+{{ partial "header.html" . }}
 
-  <h1>{{- .Title -}}</h1>
-  {{- .Content -}}
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
 
-{{- partial "footer.html" . -}}
+{{ partial "footer.html" . }}
 :wq
 ```
 
@@ -1089,20 +1089,20 @@ It's common to have posts display the date that they were written or published, 
 We'll start by updating the template used to render the posts. The template code will look like:
 
 ```
-{{- .Date.Format "Mon, Jan 2, 2006" -}}
+{{ .Date.Format "Mon, Jan 2, 2006" }}
 ```
 
 Posts use the default single template, so we'll change that file.
 
 ```
 $ vi themes/zafta/layouts/_default/single.html
-{{- partial "header.html" . -}}
+{{ partial "header.html" . }}
 
-  <h1>{{- .Title -}}</h1>
-  <h2>{{- .Date.Format "Mon, Jan 2, 2006" -}}</h2>
-  {{- .Content -}}
+  <h1>{{ .Title }}</h1>
+  <h2>{{ .Date.Format "Mon, Jan 2, 2006" }}</h2>
+  {{ .Content }}
 
-{{- partial "footer.html" . -}}
+{{ partial "footer.html" . }}
 :wq
 ```
 
@@ -1119,12 +1119,12 @@ Let's restore the default single template before we forget.
 ```
 $ mkdir themes/zafta/layouts/post
 $ vi themes/zafta/layouts/_default/single.html
-{{- partial "header.html" . -}}
+{{ partial "header.html" . }}
 
-  <h1>{{- .Title -}}</h1>
-  {{- .Content -}}
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
 
-{{- partial "footer.html" . -}}
+{{ partial "footer.html" . }}
 :wq
 ```
 
@@ -1132,13 +1132,13 @@ Now we'll update the post's version of the single template. If you remember Hugo
 
 ```
 $ vi themes/zafta/layouts/post/single.html
-{{- partial "header.html" . -}}
+{{ partial "header.html" . }}
 
-  <h1>{{- .Title -}}</h1>
-  <h2>{{- .Date.Format "Mon, Jan 2, 2006" -}}</h2>
-  {{- .Content -}}
+  <h1>{{ .Title }}</h1>
+  <h2>{{ .Date.Format "Mon, Jan 2, 2006" }}</h2>
+  {{ .Content }}
 
-{{- partial "footer.html" . -}}
+{{ partial "footer.html" . }}
 :wq
 
 ```
