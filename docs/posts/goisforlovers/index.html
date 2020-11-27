@@ -5,20 +5,44 @@
   <meta name="generator" content="Hugo 0.79.0" />
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Hugo uses the excellent Go html/template library for its template engine. It is an extremely lightweight engine that provides a very small amount of logic. In our experience that it is just the right amount of logic to be able to create a good static website. If you have used other template systems from different languages or frameworks you will find a lot of similarities in Go templates.
+<meta name="description" content="Hugo uses the excellent Gohtml/templatelibrary for its template engine. It is an extremely lightweight engine that provides a very small amount of logic. In our experience that it is just the right amount of logic to be able to create a good static website. If you have used other template systems from different languages or frameworks you will find a lot of similarities in Go templates.
 This document is a brief primer on using Go templates.">
-<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="(Hu)go Template Primer" />
-<meta property="og:description" content="Hugo uses the excellent Go html/template library for its template engine. It is an extremely lightweight engine that provides a very small amount of logic. In our experience that it is just the right amount of logic to be able to create a good static website. If you have used other template systems from different languages or frameworks you will find a lot of similarities in Go templates.
+<meta name="theme-color" content="#FFFFFF">
+
+<meta property="og:title" content="(Hu)go Template Primer" />
+<meta property="og:description" content="Hugo uses the excellent Gohtml/templatelibrary for its template engine. It is an extremely lightweight engine that provides a very small amount of logic. In our experience that it is just the right amount of logic to be able to create a good static website. If you have used other template systems from different languages or frameworks you will find a lot of similarities in Go templates.
 This document is a brief primer on using Go templates." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://autoforecastteam.github.io/posts/goisforlovers/" />
 <meta property="article:published_time" content="2014-04-02T00:00:00+00:00" />
 <meta property="article:modified_time" content="2014-04-02T00:00:00+00:00" />
+
+
 <title>(Hu)go Template Primer | AutoForecast blog</title>
+
+
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
+
+
+
+
+
 <link rel="stylesheet" href="/book.min.134b70e5316650a530cb42e4e8630b2a01d532bebfc0337028211175336e4806.css" integrity="sha256-E0tw5TFmUKUwy0Lk6GMLKgHVMr6/wDNwKCERdTNuSAY=">
-<script defer src="/en.search.min.db5cf4b4bf5ac73b6d9a3558f541c3753cd64cba13a0b388d94d46e031c74a53.js" integrity="sha256-21z0tL9axzttmjVY9UHDdTzWTLoToLOI2U1G4DHHSlM="></script>
+
+
+
+
+<script defer src="/en.search.min.06b30519b4f2b93ce53b4bc3b4c80cfacd6453524329c1bac6155f5520a2e52c.js" integrity="sha256-BrMFGbTyuTzlO0vDtMgM&#43;s1kU1JDKcG6xhVfVSCi5Sw="></script>
+
+
+
+
+
+
+
+
+
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -35,7 +59,9 @@ https://github.com/alex-shpak/hugo-book
       
   <nav>
 <h2 class="book-brand">
-  <a href="/"><span>AutoForecast blog</span>
+  <a href="/">
+    
+    <span>AutoForecast blog</span>
   </a>
 </h2>
 
@@ -64,13 +90,30 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     
       
-        <li class="book-section-flat" >
+        <li  class="book-section-flat" >
           
   
   
 
   
-    <a href="https://autoforecastteam.github.io/docs/example/" class="">Example Site</a>
+    <a href="https://autoforecastteam.github.io/docs/example/" class="">
+      Example Site
+    </a>
+  
+
+          
+  <ul>
+    
+      
+        <li >
+          
+  
+  
+
+  
+    <a href="https://autoforecastteam.github.io/docs/example/table-of-contents/" class="">
+      Table of Contents
+    </a>
   
 
           
@@ -83,20 +126,9 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="https://autoforecastteam.github.io/docs/example/table-of-contents/" class="">Table of Contents</a>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://autoforecastteam.github.io/docs/example/table-of-contents/with-toc/" class="">With ToC</a>
+    <a href="https://autoforecastteam.github.io/docs/example/table-of-contents/with-toc/" class="">
+      With ToC
+    </a>
   
 
         </li>
@@ -109,7 +141,9 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="https://autoforecastteam.github.io/docs/example/table-of-contents/without-toc/" class="">Without ToC</a>
+    <a href="https://autoforecastteam.github.io/docs/example/table-of-contents/without-toc/" class="">
+      Without ToC
+    </a>
   
 
         </li>
@@ -121,7 +155,7 @@ https://github.com/alex-shpak/hugo-book
       
     
       
-        <li>
+        <li >
           
   
   
@@ -129,7 +163,9 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-4e46b01272d410b3a99461d79326ddf4" class="toggle"  />
     <label for="section-4e46b01272d410b3a99461d79326ddf4" class="flex justify-between">
-      <a  class="">Collapsed</a>
+      <a  class="">
+        Collapsed
+      </a>
       <span>▾</span>
     </label>
   
@@ -138,13 +174,15 @@ https://github.com/alex-shpak/hugo-book
   <ul>
     
       
-        <li>
+        <li >
           
   
   
 
   
-    <a href="https://autoforecastteam.github.io/docs/example/collapsed/3rd-level/" class="">3rd Level</a>
+    <a href="https://autoforecastteam.github.io/docs/example/collapsed/3rd-level/" class="">
+      3rd Level
+    </a>
   
 
           
@@ -157,7 +195,9 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="https://autoforecastteam.github.io/docs/example/collapsed/3rd-level/4th-level/" class="">4th Level</a>
+    <a href="https://autoforecastteam.github.io/docs/example/collapsed/3rd-level/4th-level/" class="">
+      4th Level
+    </a>
   
 
         </li>
@@ -179,7 +219,7 @@ https://github.com/alex-shpak/hugo-book
       
     
       
-        <li class="book-section-flat" >
+        <li  class="book-section-flat" >
           
   
   
@@ -198,7 +238,9 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="https://autoforecastteam.github.io/docs/shortcodes/buttons/" class="">Buttons</a>
+    <a href="https://autoforecastteam.github.io/docs/shortcodes/buttons/" class="">
+      Buttons
+    </a>
   
 
         </li>
@@ -211,7 +253,9 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="https://autoforecastteam.github.io/docs/shortcodes/columns/" class="">Columns</a>
+    <a href="https://autoforecastteam.github.io/docs/shortcodes/columns/" class="">
+      Columns
+    </a>
   
 
         </li>
@@ -224,7 +268,9 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="https://autoforecastteam.github.io/docs/shortcodes/details/" class="">Details</a>
+    <a href="https://autoforecastteam.github.io/docs/shortcodes/details/" class="">
+      Details
+    </a>
   
 
         </li>
@@ -237,7 +283,9 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="https://autoforecastteam.github.io/docs/shortcodes/expand/" class="">Expand</a>
+    <a href="https://autoforecastteam.github.io/docs/shortcodes/expand/" class="">
+      Expand
+    </a>
   
 
         </li>
@@ -250,7 +298,9 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="https://autoforecastteam.github.io/docs/shortcodes/hints/" class="">Hints</a>
+    <a href="https://autoforecastteam.github.io/docs/shortcodes/hints/" class="">
+      Hints
+    </a>
   
 
         </li>
@@ -263,7 +313,9 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="https://autoforecastteam.github.io/docs/shortcodes/katex/" class="">Katex</a>
+    <a href="https://autoforecastteam.github.io/docs/shortcodes/katex/" class="">
+      Katex
+    </a>
   
 
         </li>
@@ -276,14 +328,16 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="https://autoforecastteam.github.io/docs/shortcodes/mermaid/" class="">Mermaid</a>
+    <a href="https://autoforecastteam.github.io/docs/shortcodes/mermaid/" class="">
+      Mermaid
+    </a>
   
 
         </li>
       
     
       
-        <li>
+        <li >
           
   
   
@@ -291,7 +345,9 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-d3fc1bf6d66cd84b896a0af9f40cb1d5" class="toggle"  />
     <label for="section-d3fc1bf6d66cd84b896a0af9f40cb1d5" class="flex justify-between">
-      <a href="https://autoforecastteam.github.io/docs/shortcodes/section/" class="">Section</a>
+      <a href="https://autoforecastteam.github.io/docs/shortcodes/section/" class="">
+        Section
+      </a>
       <span>▾</span>
     </label>
   
@@ -306,7 +362,9 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="https://autoforecastteam.github.io/docs/shortcodes/section/page1/" class="">Page1</a>
+    <a href="https://autoforecastteam.github.io/docs/shortcodes/section/page1/" class="">
+      Page1
+    </a>
   
 
         </li>
@@ -319,7 +377,9 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="https://autoforecastteam.github.io/docs/shortcodes/section/page2/" class="">Page2</a>
+    <a href="https://autoforecastteam.github.io/docs/shortcodes/section/page2/" class="">
+      Page2
+    </a>
   
 
         </li>
@@ -337,7 +397,9 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="https://autoforecastteam.github.io/docs/shortcodes/tabs/" class="">Tabs</a>
+    <a href="https://autoforecastteam.github.io/docs/shortcodes/tabs/" class="">
+      Tabs
+    </a>
   
 
         </li>
@@ -365,8 +427,13 @@ https://github.com/alex-shpak/hugo-book
   
   <li>
     <a href="/posts/" >
+      
+      
         Blog
-      </a>
+      
+      
+    </a>
+    
   </li>
   
 </ul>
@@ -451,30 +518,53 @@ https://github.com/alex-shpak/hugo-book
   
   <div>
     
-      <a href="/categories/development/">Development</a>, 
+      <a href="/categories/development/">Development</a>
+    , 
       <a href="/categories/golang/">golang</a>
+    
   </div>
   
 
   
   <div>
     
-      <a href="/tags/go/">go</a>, 
-      <a href="/tags/golang/">golang</a>, 
-      <a href="/tags/templates/">templates</a>, 
-      <a href="/tags/themes/">themes</a>, 
+      <a href="/tags/go/">go</a>
+    , 
+      <a href="/tags/golang/">golang</a>
+    , 
+      <a href="/tags/templates/">templates</a>
+    , 
+      <a href="/tags/themes/">themes</a>
+    , 
       <a href="/tags/development/">development</a>
+    
   </div>
   
 
 
-  <p><p>Hugo uses the excellent <a href="https://golang.org/">Go</a> <a href="https://golang.org/pkg/html/template/">html/template</a> library for
+  <p>
+    <p>Hugo uses the excellent 
+  <a href="https://golang.org/">Go</a>
+
+
+
+ 
+  <a href="https://golang.org/pkg/html/template/">html/template</a>
+
+
+
+ library for
 its template engine. It is an extremely lightweight engine that provides a very
 small amount of logic. In our experience that it is just the right amount of
 logic to be able to create a good static website. If you have used other
 template systems from different languages or frameworks you will find a lot of
 similarities in Go templates.</p>
-<p>This document is a brief primer on using Go templates. The <a href="https://golang.org/pkg/html/template/">Go docs</a>
+<p>This document is a brief primer on using Go templates. The 
+  <a href="https://golang.org/pkg/html/template/">Go docs</a>
+
+
+
+
 provide more details.</p>
 <h2 id="introduction-to-go-templates">
   Introduction to Go Templates
@@ -485,27 +575,32 @@ belief that only the most basic of logic belongs in the template or view layer.
 One consequence of this simplicity is that Go templates parse very quickly.</p>
 <p>A unique characteristic of Go templates is they are content aware. Variables and
 content will be sanitized depending on the context of where they are used. More
-details can be found in the <a href="https://golang.org/pkg/html/template/">Go docs</a>.</p>
+details can be found in the 
+  <a href="https://golang.org/pkg/html/template/">Go docs</a>
+
+
+
+.</p>
 <h2 id="basic-syntax">
   Basic Syntax
   <a class="anchor" href="#basic-syntax">#</a>
 </h2>
 <p>Golang templates are HTML files with the addition of variables and
 functions.</p>
-<p><strong>Go variables and functions are accessible within {{- -}}</strong></p>
+<p><strong>Go variables and functions are accessible within {{ }}</strong></p>
 <p>Accessing a predefined variable &ldquo;foo&rdquo;:</p>
-<pre><code>{{- foo -}}
+<pre><code>{{ foo }}
 </code></pre>
 <p><strong>Parameters are separated using spaces</strong></p>
 <p>Calling the add function with input of 1, 2:</p>
-<pre><code>{{- add 1 2 -}}
+<pre><code>{{ add 1 2 }}
 </code></pre>
 <p><strong>Methods and fields are accessed via dot notation</strong></p>
 <p>Accessing the Page Parameter &ldquo;bar&rdquo;</p>
-<pre><code>{{- .Params.bar -}}
+<pre><code>{{ .Params.bar }}
 </code></pre>
 <p><strong>Parentheses can be used to group items together</strong></p>
-<pre><code>{{- if or (isset .Params &quot;alt&quot;) (isset .Params &quot;caption&quot;) -}} Caption {{- end -}}
+<pre><code>{{ if or (isset .Params &quot;alt&quot;) (isset .Params &quot;caption&quot;) }} Caption {{ end }}
 </code></pre>
 <h2 id="variables">
   Variables
@@ -514,13 +609,18 @@ functions.</p>
 <p>Each Go template has a struct (object) made available to it. In hugo each
 template is passed either a page or a node struct depending on which type of
 page you are rendering. More details are available on the
-<a href="/layout/variables">variables</a> page.</p>
+
+  <a href="/layout/variables">variables</a>
+
+
+
+ page.</p>
 <p>A variable is accessed by referencing the variable name.</p>
-<pre><code>&lt;title&gt;{{- .Title -}}&lt;/title&gt;
+<pre><code>&lt;title&gt;{{ .Title }}&lt;/title&gt;
 </code></pre>
 <p>Variables can also be defined and referenced.</p>
-<pre><code>{{- $address := &quot;123 Main St.&quot;-}}
-{{- $address -}}
+<pre><code>{{ $address := &quot;123 Main St.&quot;}}
+{{ $address }}
 </code></pre>
 <h2 id="functions">
   Functions
@@ -528,13 +628,18 @@ page you are rendering. More details are available on the
 </h2>
 <p>Go template ship with a few functions which provide basic functionality. The Go
 template system also provides a mechanism for applications to extend the
-available functions with their own. <a href="/layout/functions">Hugo template
-functions</a> provide some additional functionality we believe
+available functions with their own. 
+  <a href="/layout/functions">Hugo template
+functions</a>
+
+
+
+ provide some additional functionality we believe
 are useful for building websites. Functions are called by using their name
 followed by the required parameters separated by spaces. Template
 functions cannot be added without recompiling hugo.</p>
 <p><strong>Example:</strong></p>
-<pre><code>{{- add 1 2 -}}
+<pre><code>{{ add 1 2 }}
 </code></pre>
 <h2 id="includes">
   Includes
@@ -545,7 +650,7 @@ able to access. To pass along the current context please remember to
 include a trailing dot. The templates location will always be starting at
 the /layout/ directory within Hugo.</p>
 <p><strong>Example:</strong></p>
-<pre><code>{{- template &quot;chrome/header.html&quot; . -}}
+<pre><code>{{ template &quot;chrome/header.html&quot; . }}
 </code></pre>
 <h2 id="logic">
   Logic
@@ -560,20 +665,20 @@ the /layout/ directory within Hugo.</p>
 a map, array or slice. The following are different examples of how to use
 range.</p>
 <p><strong>Example 1: Using Context</strong></p>
-<pre><code>{{- range array -}}
-    {{- . -}}
-{{- end -}}
+<pre><code>{{ range array }}
+    {{ . }}
+{{ end }}
 </code></pre>
 <p><strong>Example 2: Declaring value variable name</strong></p>
-<pre><code>{{-range $element := array-}}
-    {{- $element -}}
-{{- end -}}
+<pre><code>{{range $element := array}}
+    {{ $element }}
+{{ end }}
 </code></pre>
 <p><strong>Example 2: Declaring key and value variable name</strong></p>
-<pre><code>{{-range $index, $element := array-}}
-    {{- $index -}}
-    {{- $element -}}
-{{- end -}}
+<pre><code>{{range $index, $element := array}}
+    {{ $index }}
+    {{ $element }}
+{{ end }}
 </code></pre>
 <h3 id="conditionals">
   Conditionals
@@ -588,31 +693,31 @@ logic in Go Templates. Like range, each statement is closed with <code>end</code
 <li>any array, slice, map, or string of length zero</li>
 </ul>
 <p><strong>Example 1: If</strong></p>
-<pre><code>{{- if isset .Params &quot;title&quot; -}}&lt;h4&gt;{{- index .Params &quot;title&quot; -}}&lt;/h4&gt;{{- end -}}
+<pre><code>{{ if isset .Params &quot;title&quot; }}&lt;h4&gt;{{ index .Params &quot;title&quot; }}&lt;/h4&gt;{{ end }}
 </code></pre>
 <p><strong>Example 2: If -&gt; Else</strong></p>
-<pre><code>{{- if isset .Params &quot;alt&quot; -}}
-    {{- index .Params &quot;alt&quot; -}}
-{{-else-}}
-    {{- index .Params &quot;caption&quot; -}}
-{{- end -}}
+<pre><code>{{ if isset .Params &quot;alt&quot; }}
+    {{ index .Params &quot;alt&quot; }}
+{{else}}
+    {{ index .Params &quot;caption&quot; }}
+{{ end }}
 </code></pre>
 <p><strong>Example 3: And &amp; Or</strong></p>
-<pre><code>{{- if and (or (isset .Params &quot;title&quot;) (isset .Params &quot;caption&quot;)) (isset .Params &quot;attr&quot;)-}}
+<pre><code>{{ if and (or (isset .Params &quot;title&quot;) (isset .Params &quot;caption&quot;)) (isset .Params &quot;attr&quot;)}}
 </code></pre>
 <p><strong>Example 4: With</strong></p>
 <p>An alternative way of writing &ldquo;if&rdquo; and then referencing the same value
 is to use &ldquo;with&rdquo; instead. With rebinds the context <code>.</code> within its scope,
 and skips the block if the variable is absent.</p>
 <p>The first example above could be simplified as:</p>
-<pre><code>{{- with .Params.title -}}&lt;h4&gt;{{- . -}}&lt;/h4&gt;{{- end -}}
+<pre><code>{{ with .Params.title }}&lt;h4&gt;{{ . }}&lt;/h4&gt;{{ end }}
 </code></pre>
 <p><strong>Example 5: If -&gt; Else If</strong></p>
-<pre><code>{{- if isset .Params &quot;alt&quot; -}}
-    {{- index .Params &quot;alt&quot; -}}
-{{- else if isset .Params &quot;caption&quot; -}}
-    {{- index .Params &quot;caption&quot; -}}
-{{- end -}}
+<pre><code>{{ if isset .Params &quot;alt&quot; }}
+    {{ index .Params &quot;alt&quot; }}
+{{ else if isset .Params &quot;caption&quot; }}
+    {{ index .Params &quot;caption&quot; }}
+{{ end }}
 </code></pre>
 <h2 id="pipes">
   Pipes
@@ -628,32 +733,32 @@ pipes is that they only can work with a single value and that value
 becomes the last parameter of the next pipeline.</p>
 <p>A few simple examples should help convey how to use the pipe.</p>
 <p><strong>Example 1 :</strong></p>
-<pre><code>{{- if eq 1 1 -}} Same {{- end -}}
+<pre><code>{{ if eq 1 1 }} Same {{ end }}
 </code></pre>
 <p>is the same as</p>
-<pre><code>{{- eq 1 1 | if -}} Same {{- end -}}
+<pre><code>{{ eq 1 1 | if }} Same {{ end }}
 </code></pre>
 <p>It does look odd to place the if at the end, but it does provide a good
 illustration of how to use the pipes.</p>
 <p><strong>Example 2 :</strong></p>
-<pre><code>{{- index .Params &quot;disqus_url&quot; | html -}}
+<pre><code>{{ index .Params &quot;disqus_url&quot; | html }}
 </code></pre>
 <p>Access the page parameter called &ldquo;disqus_url&rdquo; and escape the HTML.</p>
 <p><strong>Example 3 :</strong></p>
-<pre><code>{{- if or (or (isset .Params &quot;title&quot;) (isset .Params &quot;caption&quot;)) (isset .Params &quot;attr&quot;)-}}
+<pre><code>{{ if or (or (isset .Params &quot;title&quot;) (isset .Params &quot;caption&quot;)) (isset .Params &quot;attr&quot;)}}
 Stuff Here
-{{- end -}}
+{{ end }}
 </code></pre>
 <p>Could be rewritten as</p>
-<pre><code>{{-  isset .Params &quot;caption&quot; | or isset .Params &quot;title&quot; | or isset .Params &quot;attr&quot; | if -}}
+<pre><code>{{  isset .Params &quot;caption&quot; | or isset .Params &quot;title&quot; | or isset .Params &quot;attr&quot; | if }}
 Stuff Here
-{{- end -}}
+{{ end }}
 </code></pre>
 <h2 id="context-aka-the-dot">
   Context (aka. the dot)
   <a class="anchor" href="#context-aka-the-dot">#</a>
 </h2>
-<p>The most easily overlooked concept to understand about Go templates is that {{- . -}}
+<p>The most easily overlooked concept to understand about Go templates is that {{ . }}
 always refers to the current context. In the top level of your template this
 will be the data set made available to it. Inside of a iteration it will have
 the value of the current item. When inside of a loop the context has changed. .
@@ -661,12 +766,12 @@ will no longer refer to the data available to the entire page. If you need to
 access this from within the loop you will likely want to set it to a variable
 instead of depending on the context.</p>
 <p><strong>Example:</strong></p>
-<pre><code>  {{- $title := .Site.Title -}}
-  {{- range .Params.tags -}}
-    &lt;li&gt; &lt;a href=&quot;{{- $baseurl -}}/tags/{{- . | urlize -}}&quot;&gt;{{- . -}}&lt;/a&gt; - {{- $title -}} &lt;/li&gt;
-  {{- end -}}
+<pre><code>  {{ $title := .Site.Title }}
+  {{ range .Params.tags }}
+    &lt;li&gt; &lt;a href=&quot;{{ $baseurl }}/tags/{{ . | urlize }}&quot;&gt;{{ . }}&lt;/a&gt; - {{ $title }} &lt;/li&gt;
+  {{ end }}
 </code></pre>
-<p>Notice how once we have entered the loop the value of {{- . -}} has changed. We
+<p>Notice how once we have entered the loop the value of {{ . }} has changed. We
 have defined a variable outside of the loop so we have access to it from within
 the loop.</p>
 <h1 id="hugo-parameters">
@@ -683,7 +788,12 @@ you want to inside of your templates.</p>
   <a class="anchor" href="#using-content-page-parameters">#</a>
 </h2>
 <p>In each piece of content you can provide variables to be used by the
-templates. This happens in the <a href="/content/front-matter">front matter</a>.</p>
+templates. This happens in the 
+  <a href="/content/front-matter">front matter</a>
+
+
+
+.</p>
 <p>An example of this is used in this documentation site. Most of the pages
 benefit from having the table of contents provided. Sometimes the TOC just
 doesn&rsquo;t make a lot of sense. We&rsquo;ve defined a variable in our front matter
@@ -699,11 +809,11 @@ groups_weight: 30
 notoc: true
 ---
 </code></pre><p>Here is the corresponding code inside of the template:</p>
-<pre><code>  {{- if not .Params.notoc -}}
+<pre><code>  {{ if not .Params.notoc }}
     &lt;div id=&quot;toc&quot; class=&quot;well col-md-4 col-sm-6&quot;&gt;
-    {{- .TableOfContents -}}
+    {{ .TableOfContents }}
     &lt;/div&gt;
-  {{- end -}}
+  {{ end }}
 </code></pre>
 <h2 id="using-site-config-parameters">
   Using Site (config) Parameters
@@ -721,26 +831,27 @@ provided if the <code>CopyrightHTML</code> parameter is provided, and if it is g
 you would declare it to be HTML-safe, so that the HTML entity is not escaped
 again.  This would let you easily update just your top-level config file each
 January 1st, instead of hunting through your templates.</p>
-<pre><code>{{-if .Site.Params.CopyrightHTML-}}&lt;footer&gt;
-&lt;div class=&quot;text-center&quot;&gt;{{-.Site.Params.CopyrightHTML | safeHtml-}}&lt;/div&gt;
-&lt;/footer&gt;{{-end-}}
+<pre><code>{{if .Site.Params.CopyrightHTML}}&lt;footer&gt;
+&lt;div class=&quot;text-center&quot;&gt;{{.Site.Params.CopyrightHTML | safeHtml}}&lt;/div&gt;
+&lt;/footer&gt;{{end}}
 </code></pre><p>An alternative way of writing the &ldquo;if&rdquo; and then referencing the same value
 is to use &ldquo;with&rdquo; instead. With rebinds the context <code>.</code> within its scope,
 and skips the block if the variable is absent:</p>
-<pre><code>{{-with .Site.Params.TwitterUser-}}&lt;span class=&quot;twitter&quot;&gt;
-&lt;a href=&quot;https://twitter.com/{{-.-}}&quot; rel=&quot;author&quot;&gt;
-&lt;img src=&quot;/images/twitter.png&quot; width=&quot;48&quot; height=&quot;48&quot; title=&quot;Twitter: {{-.-}}&quot;
+<pre><code>{{with .Site.Params.TwitterUser}}&lt;span class=&quot;twitter&quot;&gt;
+&lt;a href=&quot;https://twitter.com/{{.}}&quot; rel=&quot;author&quot;&gt;
+&lt;img src=&quot;/images/twitter.png&quot; width=&quot;48&quot; height=&quot;48&quot; title=&quot;Twitter: {{.}}&quot;
  alt=&quot;Twitter&quot;&gt;&lt;/a&gt;
-&lt;/span&gt;{{-end-}}
+&lt;/span&gt;{{end}}
 </code></pre><p>Finally, if you want to pull &ldquo;magic constants&rdquo; out of your layouts, you can do
 so, such as in this example:</p>
 <pre><code>&lt;nav class=&quot;recent&quot;&gt;
   &lt;h1&gt;Recent Posts&lt;/h1&gt;
-  &lt;ul&gt;{{-range first .Site.Params.SidebarRecentLimit .Site.Recent-}}
-    &lt;li&gt;&lt;a href=&quot;{{-.RelPermalink-}}&quot;&gt;{{-.Title-}}&lt;/a&gt;&lt;/li&gt;
-  {{-end-}}&lt;/ul&gt;
+  &lt;ul&gt;{{range first .Site.Params.SidebarRecentLimit .Site.Recent}}
+    &lt;li&gt;&lt;a href=&quot;{{.RelPermalink}}&quot;&gt;{{.Title}}&lt;/a&gt;&lt;/li&gt;
+  {{end}}&lt;/ul&gt;
 &lt;/nav&gt;
-</code></pre></p>
+</code></pre>
+  </p>
 </article>
  
       
@@ -762,8 +873,10 @@ so, such as in this example:</p>
       
   
   <div class="book-comments">
+    
 
-</div>
+
+  </div>
   
  
 
