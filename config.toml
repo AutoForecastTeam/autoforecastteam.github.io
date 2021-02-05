@@ -1,0 +1,43 @@
+baseURL = "https://autoforecastteam.github.io/"
+title = "AutoForecast Team's blog"
+
+theme = "uBlogger"
+
+languageCode = "en"
+defaultContentLanguage = "en"
+
+paginate = 100
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+  series = "series"
+  author = "authors"
+
+[params]
+  version = "1.3.X"
+  siteType = "Organization"
+
+[math]
+  handler = "katex"
+
+[menu]
+  [[menu.main]]
+    identifier = "posts"
+    name = "Posts"
+    url = "/posts/"
+    weight = 2
+  [[menu.main]]
+    identifier = "tags"
+    name = "Tags"
+    url = "/tags/"
+    weight = 3
+  [[menu.main]]
+    identifier = "categories"
+    name = "Categories"
+    url = "/categories/"
+    weight = 4
+
+[markup]
+  [markup.highlight]
+    noClasses = false
