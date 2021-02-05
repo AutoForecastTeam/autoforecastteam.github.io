@@ -1,5 +1,0 @@
-baseURL = "https://autoforecastteam.github.io/"
-languageCode = "en-us"
-title = "AutoForecast blog"
-publishDir = "docs"
-theme = "book"
