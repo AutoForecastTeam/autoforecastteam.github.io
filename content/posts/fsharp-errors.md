@@ -38,7 +38,7 @@ let x =
 
 In above case the exception is handled correctly. Variable x evaluates to `"Caught exception System.Exception: Error"` string.
 
-## Problem with HOFs and partial application
+## Problem with [HOF](https://en.wikipedia.org/wiki/Higher-order_function)s and partial application
 
 There is one problem that has caught me unexpectedly.
 
