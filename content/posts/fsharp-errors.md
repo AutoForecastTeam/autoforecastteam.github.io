@@ -2,7 +2,7 @@
 title: "Exception handling in F#"
 description: "Functional-first approach to .NET exceptions"
 draft: false
-# author: "Rafał Gwoździński"
+author: "Rafal Gwozdzinski"
 date: 2021-02-09T11:03:32+01:00
 tags: []
 categories: ["FSharp"]
