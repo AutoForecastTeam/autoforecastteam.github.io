@@ -2,7 +2,7 @@
 title: "Adding content"
 description: "How to use Hugo to write new blog posts"
 draft: false
-# author: "Unknown Author"
+author: "Robert Marciniak"
 date: 2021-02-05T14:24:45+01:00
 tags: ["blog","content"]
 categories: ["getting-started"]
