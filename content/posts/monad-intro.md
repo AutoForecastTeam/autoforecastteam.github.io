@@ -23,7 +23,7 @@ in some cases this intuition may be a bit of a stretch.
 ## Why should I bother?
 Actually, you don't have to. You can easily write F# code without these kinds of mathematical concepts.
 However, using monads can make you see high-level patterns that span across different data types and domains.
-It will also make your code shorter and more declarative.ould
+It will also make your code shorter and more declarative.
 I think it's a worthy pursuit for anyone interested in functional programming.
 
 
