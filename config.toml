@@ -15,7 +15,7 @@ paginate = 100
   author = "authors"
 
 [params]
-  version = "1.3.X"
+  version = "2.0.X"
   siteType = "Organization"
 
 [math]
