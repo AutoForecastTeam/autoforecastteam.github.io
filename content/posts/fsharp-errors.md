@@ -15,7 +15,7 @@ categories: ["FSharp"]
 ## Try-catch
 
 Simplest way to handle Exception is to use a try-with pattern. It is similar concept to a [try-catch pattern in C#](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/try-catch).
-According to an [F# documentation](https://docs.microsoft.com/pl-pl/dotnet/fsharp/language-reference/exception-handling/the-try-with-expression) a structure of try-catch block is
+According to an [F# documentation](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/exception-handling/the-try-with-expression) a structure of try-catch block is
 
 ```fsharp
 try
