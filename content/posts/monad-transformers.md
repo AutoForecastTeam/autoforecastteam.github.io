@@ -1,12 +1,15 @@
----
-title: "Monad transformers"
-description: "A way to work with different monads combined"
-draft: false
-author: "Rafal Gwozdzinski"
-date: 2021-03-15T00:08:00+00:00
-tags: []
-categories: ["FSharp"]
----
++++
+title =  "Monad transformers"
+description =  "A way to work with different monads combined"
+date =  2021-03-15T00:08:00+00:00
+template = "blog/page.html"
+draft =  false
+
+[taxonomies]
+authors = ["Rafał Gwoździński"]
+#tags =  []
+#categories =  ["FSharp"]
++++
 <!--more-->
 
 # Monad transformers
@@ -31,7 +34,7 @@ Now we have to:
 ## Concrete example - Asynchronous Option
 Now, let's create an implementation of the pattern shown above.
 
-```fsharp
+```fs
 let v1 : Async<Option<int>> = async { return Some 1 }
 let v2 : Async<Option<int>> = async { return Some 2 }
 
@@ -46,7 +49,7 @@ let vResult =
 
 In a simple case like above we can just use F#+ `lift`/`map` functions:
 
-```fsharp
+```fs
 let vResult' = lift2 (+) (OptionT v1) (OptionT v2)
                |> OptionT.run
                |> Async.RunSynchronously
@@ -62,7 +65,7 @@ When dealing with transformers, we need all values to have the same type,
 so that we can wrap them in `OptionT` transformer.
 
 Let's say we have these values:
-```fsharp
+```fs
 let ao1 = async { return Some 1 } // Async<Option<int>>
 let ao2 = async { return Some 2 } // Async<Option<int>>
 let ao3 = Some 3                  // Option<int>, but not Async
@@ -73,7 +76,7 @@ To make them all the same type, we will have to:
 - wrap value `ao3` in `Async` using `async.Return`
 - lift `ao4` to OptionT context using `OptionT.lift` function
 Then we will be able to make calculation using monad expression, as in a previous example.
-```fsharp
+```fs
 let aoResult = 
     monad {
         let! x1 = OptionT ao1
@@ -88,7 +91,7 @@ let aoResult =
 ## Another example - ResultT
 Similar to Async Option:
 
-```fsharp
+```fs
 type AsyncResult = Async<Result<int, string>>
 let ar1: AsyncResult = async { return Ok 1 }
 let ar2: AsyncResult = async { return Ok 2 }
@@ -113,7 +116,7 @@ let ar'' = ResultT.map2 (+) (ResultT ar1) (ResultT ar2)
 ## Async Result with effects and value passing
 Now let's see a more interesting case of Result.
 Let's define couple of functions:
-```fsharp
+```fs
 let r1 () = async { 
     printfn "r1 = %d" 1
     return Ok 1 }
@@ -135,7 +138,7 @@ let r4 () = async {
 
 We wrap them in `ResultT`, so that we can bind returned values to variables,
 or just execute effectful actions:
-```fsharp
+```fs
 let aer = 
     monad {
         let! v1 = ResultT <| (r1 ())
@@ -148,7 +151,7 @@ let aer =
 
 ## Multiple monadic layers
 Let's say we have three layers of monads:
-```fsharp
+```fs
 type T1 = Async<Option<Result<int, string>>> 
 
 let v1' = async { return Some (Ok 1) } : T1
@@ -156,14 +159,14 @@ let v2' = async { return Some (Ok 2) } : T1
 ```
 
 We can simplify dealing with nested transformers using function composition:
-```fsharp
+```fs
 let combinedT = OptionT >> ResultT
 let runCombined : ResultT<OptionT<T1>> -> T1 = 
     ResultT.run >> OptionT.run 
 ```
 
 Now we can execute in a straightforward way:
-```fsharp
+```fs
 let result = 
     monad {
         let! x1 = combinedT v1'
@@ -174,7 +177,7 @@ let result =
 ```
 
 ## Code
-```fsharp
+```fs
 #r "nuget: FSharpPlus"
 open FSharpPlus
 open FSharpPlus.Data

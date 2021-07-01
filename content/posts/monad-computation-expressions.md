@@ -1,12 +1,15 @@
----
-title: "Computation Expressions in F#"
-description: "Monadic operations made simpler with Computation Expressions."
-draft: false
-author: "Rafal Gwozdzinski"
-date: 2021-03-12T00:05:00+00:00
-tags: []
-categories: ["FSharp"]
----
++++
+title =  "Computation Expressions in F#"
+description =  "Monadic operations made simpler with Computation Expressions."
+date =  2021-03-12T00:05:00+00:00
+template = "blog/page.html"
+draft =  false
+
+[taxonomies]
+authors = ["Rafał Gwoździński"]
+#tags =  []
+#categories =  ["FSharp"]
++++
 <!--more-->
 
 # Computation Expressions in F#
@@ -20,19 +23,19 @@ and compare them to "plain" F# approach, to see how it differs.
 ## Additive monad expression
 Let's start with a simple example of concatenation.
 We have two lists and a function that takes a list and returns a new list.
-```fsharp
+```fs
 let l1 = [1;2;3]
 let l2 = [4;5;6]
 let listFun  = bind (fun x -> [x;x;x])
 ```
 A simple way to concatenate them is to use `@` operatior
-```fsharp
+```fs
 let lConcat = l1 @ listFun l2
 ```
 
 When dealing with more complicated examples, like concatentation of both lists and plain values,
 we can use list computation expression from F# core library.
-```fsharp
+```fs
 let lConcat' = 
     [ yield! l1
       yield! listFun l2
@@ -41,7 +44,7 @@ let lConcat' =
 
 Instead of dedicated expression, we can just use generic additive monad expression. 
 It works for seq and array types too.
-```fsharp
+```fs
 let lConcat'' = 
     monad.plus {
         return! l1
@@ -55,7 +58,7 @@ Second type of generic monad expression is used to handle monads that have embed
 ### Async 
 First, let's look at `Async` monad handling.
 Plain approach uses dedicated `async` expression:
-```fsharp
+```fs
 let async1 = async { return 1 }
 let async2 = async { return 2 }
 
@@ -68,7 +71,7 @@ let aResult =
 ```
 
 We can substitute it with generic F#+ `monad` expression:
-```fsharp
+```fs
 let aResult' = 
     monad {
         let! x1 = async1
@@ -80,31 +83,31 @@ let aResult' =
 Performing this operations without computation expressions is cumbersome.
 We substitute `let!` with `async.Bind` and `return` with `async.Return`, which
 gives us:
-```fsharp
+```fs
 let aResult'' = async.Bind(async1, 
                     fun x1 -> async.Bind(async2, 
                                  fun x2 -> async.Return (x1 + x2)
 ```
 
 We can make it a bit cleaner with F#+ operators:
-```fsharp
+```fs
 let aResult''' = async1 >>= fun x1 -> 
                     async2 >>= fun x2 -> 
                         x1 + x2 |> async.Return
 ```
 
 But for simple operations we can just use F#+ `map2`
-```fsharp
+```fs
 let aResult'''' = Async.map2 (+) async1 async2
 ```
 or `lift2`
-```fsharp
+```fs
 let aResult''''' = lift2 (+) async1 async2
 ```
 
 ### Option
 There is no `Option` computation expression in F# core, so we have to use F#+:
-```fsharp
+```fs
 let opt1 = Some 1
 let opt2 = Some 2
 
@@ -115,7 +118,7 @@ let oResult = monad {
 ```
 
 We can use `bind`/`map`/`lift` as with async:
-```fsharp
+```fs
 let oResult' = 
     opt1 |> Option.bind (fun x1 -> 
         opt2 |> Option.bind (fun x2 -> x1 + x2 |> Some)) 
@@ -125,7 +128,7 @@ let oResult''' = Option.map2 (+) opt1 opt2
 ```
 
 We can also pattern match:
-```fsharp
+```fs
 let oResult'''' =
     match (opt1, opt2) with
     | (Some opt1, Some opt2) -> Some (opt1 + opt2)
@@ -133,7 +136,7 @@ let oResult'''' =
 ```
 
 Computation expressions are especially useful for complicated operations:
-```fsharp
+```fs
 let opt3 = Some 3
 let add1 = (+) 1
 let isEven x = if x % 2 = 0                                 
@@ -149,7 +152,7 @@ let harderOptResult =
 ```
 
 In this case `bind`/`map` approach doesn't look that bad:
-```fsharp
+```fs
 let harderOptResult' = 
     opt3 
     |> Option.bind (add1 >> isEven) 
@@ -157,7 +160,7 @@ let harderOptResult' =
 ```
 
 Pattern matching on Options doesn't scale well. It gets unreadable even with one level of nesting.
-```fsharp
+```fs
 let harderOptResult'' = 
     match opt3 with
     | None -> None
@@ -169,7 +172,7 @@ let harderOptResult'' =
 
 ### Result
 Works similarly to Option:
-```fsharp
+```fs
 let res1 : Result<int,string> = Ok 1
 let res2 : Result<int,string> = Error "Niepowodzenie"
 
@@ -183,7 +186,7 @@ let rResult'' = lift2       (+) res1 res2
 ```
 
 Pattern matching on Results is laborous, because we have to handle both errors manually:
-```fsharp
+```fs
 let rResult''' =
     match (res1, res2) with
     | (Ok res1, Ok res2) -> Ok <| res1 + res2
@@ -194,7 +197,7 @@ let rResult''' =
 ### Effectful Result
 Let's see what happens when we have effectful function that returns Result of unit. 
 Instead of `let!`, we use `do!` keyword.
-```fsharp
+```fs
 let eRes1 () = 
     printfn "computing res1"
     Ok ()
@@ -208,21 +211,21 @@ let effResult =
 ```
 
 Without computation expression, we get code thats pretty awkward
-```fsharp
+```fs
 let effResult' = eRes1 () 
                  |> Result.bind (fun () -> eRes2 () 
                                            |> Result.bind (fun () -> Ok ()))
 ```
 
 F#+ `bind` operator doesn't help
-```fsharp
+```fs
 let effResult'' = eRes1 () 
                   >>= fun () -> eRes2 () 
                                 >>= (fun () -> Ok ())
 ```
 
 ## Code
-```fsharp
+```fs
 #r "nuget: FSharpPlus"
 
 open FSharpPlus

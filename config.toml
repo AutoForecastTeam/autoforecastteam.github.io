@@ -1,43 +1,35 @@
-baseURL = "https://autoforecastteam.github.io/"
-title = "AutoForecast Team's blog"
+theme = "adidoks"
+base_url = "https://autoforecastteam.github.io"
+title = "autoforecast team's blog"
+description = ""
+compile_sass = true
+build_search_index = true
+timeformat = "%e %B %Y"
+timezone = "Europe/Warsaw"
 
-theme = "uBlogger"
+taxonomies = [
+  {name = "authors"},
+  #{name = "tags"},
+  #{name = "categories"}
+]
 
-languageCode = "en"
-defaultContentLanguage = "en"
+docs_repo = "https://github.com/AutoForecastTeam/autoforecastteam.github.io"
+repo_branch = "main"
+edit_page = false
 
-paginate = 100
+[markdown]
+highlight_code = true
 
-[taxonomies]
-  category = "categories"
-  tag = "tags"
-  series = "series"
-  author = "authors"
+[extra]
 
-[params]
-  version = "2.0.X"
-  siteType = "Organization"
+[[extra.menu.main]]
+name = "Posts"
+section = "blog"
+url = "/posts/"
+weight = 20
 
-[math]
-  handler = "katex"
-
-[menu]
-  [[menu.main]]
-    identifier = "posts"
-    name = "Posts"
-    url = "/posts/"
-    weight = 2
-  [[menu.main]]
-    identifier = "tags"
-    name = "Tags"
-    url = "/tags/"
-    weight = 3
-  [[menu.main]]
-    identifier = "categories"
-    name = "Categories"
-    url = "/categories/"
-    weight = 4
-
-[markup]
-  [markup.highlight]
-    noClasses = false
+[[extra.menu.main]]
+name = "Authors"
+section = "authors"
+url = "/authors/"
+weight = 30

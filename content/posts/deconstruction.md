@@ -1,12 +1,15 @@
----
-title: "Construction and deconstruction of F# values"
-description: "Different ways to create F# values and retrieve their contents"
-draft: false
-author: "Rafal Gwozdzinski"
-date: 2021-03-01T11:00:00+00:00
-tags: []
-categories: ["FSharp"]
----
++++
+title =  "Construction and deconstruction of F# values"
+description =  "Different ways to create F# values and retrieve their contents"
+date =  2021-03-01T11:00:00+00:00
+template = "blog/page.html"
+draft =  false
+
+[taxonomies]
+authors = ["Rafał Gwoździński"]
+#tags = []
+#categories = ["fsharp"]
++++
 
 <!--more-->
 
@@ -15,7 +18,7 @@ categories: ["FSharp"]
 ## Simple type deconstruction
 
 Let's say we have a simple type (aka [Single case discriminated union type](https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/)) that wraps an int.
-```fsharp 
+```fs 
 type SimpleInt = SimpleInt of int
 let simpleInt = SimpleInt 42
 ```
@@ -25,13 +28,13 @@ How can we retrieve it's content?
 
 #### Anonymous function deconstruction
 We can deconstruct `SimpleInt` in lambda expression
-```fsharp
+```fs
 let intValue = simpleInt |> fun (SimpleInt s) -> s
 ```
 
 #### Let binding deconstruction
 We can deconstruct it in `let` assignment
-```fsharp
+```fs
 let (SimpleInt intValue') = simpleInt
 ```
 
@@ -47,7 +50,7 @@ let intValue'' = simpleInt |> SimpleInt.value
 
 #### Direct deconstruction of function parameter
 We can also unwrap value directly in a function that uses it.
-```fsharp
+```fs
 module SimpleIntAdder =
     let addSimpleInts (SimpleInt i1) (SimpleInt i2) = 
         SimpleInt (i1 + i2)
@@ -56,7 +59,7 @@ module SimpleIntAdder =
 ### Parallel between construction and deconstruction
 There is a parallel between notation of construction and deconstruction of simple types.
 In both cases they are written as `({Type Name} {Value})`
-```fsharp
+```fs
 let wrapped = (SimpleInt 42)
 let (SimpleInt unwrapped) = wrapped
 ```
@@ -64,7 +67,7 @@ let (SimpleInt unwrapped) = wrapped
 ## Record types
 Now, let's see what happens with records.
 Let's define and construct a value for a simple record type.
-```fsharp
+```fs
 type SimpleRecord = 
     { First: SimpleInt
       Second: int }
@@ -76,7 +79,7 @@ let simpleRecord =
 ### Deconstruction similar to simple types
 We can deconstruct record in: 
 - lambda expression:
-```fsharp
+```fs
 // Remark: Added type annotations to r1, r2 for clarity
 let (r1: SimpleInt), (r2: int) = 
     simpleRecord 
@@ -84,26 +87,26 @@ let (r1: SimpleInt), (r2: int) =
 ```
 
 - let assignment:
-```fsharp
+```fs
 let {First = r1'; Second = r2'} = simpleRecord
 ```
 
 - function parameter:
-```fsharp
+```fs
 // Remark: We deconstruct both record and it's internal field (which is of type SimpleInt)
 module SimpleRecordAdder =
     let addRecordFields {First = (SimpleInt f); Second = s} = f + s
 ```
 
 There is a parallel between construction and deconstruction of records similar to simple types:
-```fsharp
+```fs
 let wrappedRecord = {First = SimpleInt 42; Second = 1}
 let {First = (SimpleInt f); Second = s} = wrappedRecord 
 ```
 
 #### Partial deconstruction
 If we don't need all of record fields, we can use partial deconstruction in all previously defined cases.
-```fsharp
+```fs
 let {Second = s'} = wrappedRecord
 let s'' = wrappedRecord |> fun {Second = x} -> x
 
@@ -122,7 +125,7 @@ module FirstFieldAdder =
 Pattern matching is one of the most popular usage of deconstruction.
 
 ### Simple type
-```fsharp
+```fs
 type MyInt = MyInt of int
 let myVal = MyInt 42
 
@@ -146,7 +149,7 @@ let addIfNotZeros =
 ```
 
 Or we can use partial deconstruction
-```fsharp
+```fs
 let getSecondIfNotZero =
     match myRec with
     | {Second = 0} -> None
@@ -156,12 +159,12 @@ let getSecondIfNotZero =
 ### List
 Lists offer a refined ways of deconstruction. 
 Let's define a simple list and see how we can match on it.
-```fsharp
+```fs
 let myList = [1;2;3;4;5]
 ```
 
 #### Exact match
-```fsharp
+```fs
 let is12345 =
     match myList with
     | [1;2;3;4;5] -> true
@@ -169,7 +172,7 @@ let is12345 =
 ```
 
 #### Match exact number of items
-```fsharp
+```fs
 let sum5OrZero =
     match myList with
     | [a;b;c;d;e] -> a+b+c+d+e
@@ -182,7 +185,7 @@ Head is the first element of the list, Tail is a list of all further elements.
 
 Example use cases:
 - Exact head 
-```fsharp
+```fs
 let is1First =
     match myList with
     | 1::t -> true
@@ -190,7 +193,7 @@ let is1First =
 ```
 
 - Exact tail
-```fsharp
+```fs
 let is2345Tail =
     match myList with
     | h::[2;3;4;5] -> true
@@ -198,7 +201,7 @@ let is2345Tail =
 ```
 
 - Deconstruct head
-```fsharp
+```fs
 let head =
     match myList with
     | h::t -> Some h
@@ -206,7 +209,7 @@ let head =
 ```
 
 - Deconstruct tail
-```fsharp
+```fs
 let skipHead =
     match myList with
     | h::t -> t
@@ -214,7 +217,7 @@ let skipHead =
 ```
 
 - Empty or not?
-```fsharp
+```fs
 let isEmpty =
     match myList with
     | [] -> true 
@@ -222,7 +225,7 @@ let isEmpty =
 ```
 
 - One element
-```fsharp
+```fs
 let isSingle =
     match myList with
     | [x] -> true
@@ -233,13 +236,13 @@ let isSingle =
 An Array structure offers fewer ways of matching than list.
 
 We construct an array as:
-```fsharp
+```fs
 let myArray = [|1;2;3;4;5|]
 ```
 
 #### Cases similar to List type 
 - Exact match
-```fsharp
+```fs
 let is12345' =
     match myArray with
     | [|1;2;3;4;5|] -> true
@@ -247,7 +250,7 @@ let is12345' =
 ```
 
 - Deconstruct exact number of items
-```fsharp
+```fs
 let sum5OrZero' =
     match myArray with
     | [|a;b;c;d;e|] -> a+b+c+d+e
@@ -255,7 +258,7 @@ let sum5OrZero' =
 ```
 
 - Empty?
-```fsharp
+```fs
 let isEmpty' =
     match myArray with
     | [||] -> true
@@ -263,7 +266,7 @@ let isEmpty' =
 ```
 
 - One element
-```fsharp
+```fs
 let isSingle' =
     match myArray with
     | [|x|] -> true
@@ -275,7 +278,7 @@ Unfortunately, there is no built-in way to match `h::t` on arrays in F#.
 ## Example Code
 To get a better feel for concepts described in this post, I encourage readers to try this code on their own machines.
 The easiest way is to put it into `fsx` script and run using REPL.
-```fsharp
+```fs
 ////////////////////////////////////
 //// Simple type deconstruction ////  
 ////////////////////////////////////

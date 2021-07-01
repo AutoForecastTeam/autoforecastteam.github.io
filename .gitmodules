@@ -1,3 +1,4 @@
-[submodule "themes/uBlogger"]
-	path = themes/uBlogger
-	url = https://github.com/upagge/uBlogger.git
+
+[submodule "themes/adidoks"]
+	path = themes/adidoks
+	url = git@github.com:AutoForecastTeam/adidoks.git

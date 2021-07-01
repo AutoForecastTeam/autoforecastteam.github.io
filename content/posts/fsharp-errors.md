@@ -1,12 +1,14 @@
----
-title: "Exception handling in F#"
-description: "Functional-first approach to .NET exceptions"
-draft: false
-author: "Rafal Gwozdzinski"
-date: 2021-02-09T11:03:32+01:00
-tags: []
-categories: ["FSharp"]
----
++++
+title =  "Exception handling in F#"
+description =  "Functional-first approach to .NET exceptions"
+date =  2021-02-09T11:03:32+01:00
+template = "blog/page.html"
+draft =  false
+
+authors =  ["Rafał Gwoździński"]
+#tags =  []
+#categories =  ["FSharp"]
++++
 
 <!--more-->
 
@@ -17,7 +19,7 @@ categories: ["FSharp"]
 Simplest way to handle Exception is to use a try-with pattern. It is similar concept to a [try-catch pattern in C#](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/try-catch).
 According to an [F# documentation](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/exception-handling/the-try-with-expression) a structure of try-catch block is
 
-```fsharp
+```fs
 try
     expression1
 with
@@ -28,7 +30,7 @@ with
 
 The shortest way we can write it is to give one catch-all pattern for all exception.
 Then we can even drop the pipe and match directly after `with` clause:
-```fsharp
+```fs
 let operationThatFails () = failwith "Error"
 let x =
   try
@@ -44,7 +46,7 @@ There is one problem that has caught me unexpectedly.
 
 I was working on a function that did a lookup on CsvRow from [FSharp.Data](http://fsprojects.github.io/FSharp.Data/) package.
 The first version was:
-```fsharp
+```fs
 let tryGetValue (row: CsvRow) (columnName: string) =
    try
        row.[columnName]
@@ -58,7 +60,7 @@ with better message. Default exception message was too cryptic for my use case.
 After couple of minutes I thought that it would be a good idea to refactor this into a
 higher-order function that will be partially applied.
 
-```fsharp
+```fs
 let tryGetValue (columnName: string) =
    try
        fun (x: CsvRow) -> x.[columnName]
@@ -73,7 +75,7 @@ Application of my newly created function happens in another context, which may o
 its own exception handling.
 
 Similar thing happens with partial application:
-```fsharp
+```fs
 let operationThatFails (_: string) (_: string) : string = failwith "Error"
 
 let x =
@@ -100,7 +102,7 @@ An interesting (and more functional) way to handle exceptions is to use an
 [FSharpPlus](https://github.com/fsprojects/FSharpPlus) library.
 There is a simple (but very helpful) function `protect` for `Result` type:
 
-```fsharp
+```fs
 let protect (f: 'T->'U) (x: 'T) : Result<'U,exn> =
         try
             Ok (f x)
@@ -109,7 +111,7 @@ let protect (f: 'T->'U) (x: 'T) : Result<'U,exn> =
 
 Each time we deal with a function/method that throws exceptions we can wrap it
 and apply in safe `Result` context:
-```fsharp
+```fs
 let iWillThrow () : string = failwith "Error"
 
 Result.protect iWillThrow  // Wrap
@@ -128,7 +130,7 @@ However, this constraint may actually be benefitial, because it saves us from ma
 that I did.
 
 Partially applied `tryGetValue` function would then be:
-```fsharp
+```fs
 let tryGetValue (columnName: string) =
    fun (x: CsvRow) -> x.[columnName]
    |> Option.protect
