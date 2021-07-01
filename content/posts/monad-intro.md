@@ -1,12 +1,15 @@
----
-title: "Intro to monads in F#"
-description: "Use FSharpPlus library to expand F# functional capabilities."
-draft: false
-author: "Rafal Gwozdzinski"
-date: 2021-03-03T00:08:00+00:00
-tags: []
-categories: ["FSharp"]
----
++++
+title =  "Intro to monads in F#"
+description =  "Use FSharpPlus library to expand F# functional capabilities."
+date =  2021-03-03T00:08:00+00:00
+template = "blog/page.html"
+draft =  false
+
+[taxonomies]
+authors = ["Rafał Gwoździński"]
+#tags =  []
+#categories =  ["FSharp"]
++++
 <!--more-->
 
 # Intro to monads in F# 
@@ -41,7 +44,7 @@ We can create a monad in F#+ using `result` function.
 
 Examples of popular monads creation in F# using both FSharp.Core API and F#+ `result`.
 
-```fsharp
+```fs
 let l   = [1]
 let l'  = List.singleton 1
 let l'' = result 1 : int list 
@@ -75,7 +78,7 @@ In this case, we have to add types manually.
 **Type signature:** `M M a -> M a` where `M` is a monad type.
 
 Join lets us flatten nested monads.
-```fsharp
+```fs
 let nestedList = [[1]]
 let jl  = nestedList |> List.concat
 let jl' = nestedList |> join
@@ -117,11 +120,11 @@ Dealing with them using plain F# core functions is pretty awkward.
 Monads are also functors, so we can map over them.
 
 Let's define a simple function
-```fsharp
+```fs
 let myFunction x = x + 1 
 ```
 and see how we can apply it to our example types.
-```fsharp
+```fs
 let ml   = [1] |> List.map myFunction
 let ml'  = [1] |> map myFunction
 let ml'' = [1] |>> myFunction
@@ -155,7 +158,7 @@ We map in F#+ using either generic `map` function, or simply with an operator `|
 Bind lets us apply monadic value to a function returning monad.
 We create a monadic version of `myFunction` for each context by composing it with previously described `result` function.
 
-```fsharp
+```fs
 let blf  = myFunction >> result
 let bl   = [1] |> List.collect blf 
 let bl'  = [1] |> bind blf 
@@ -192,18 +195,18 @@ Similiarly to `map`, we use bind in F#+ using either generic `bind` function, or
 #### Bind composition
 Function `bind` can be defined in terms of `map` and `join`.
 We can define our own function
-```fsharp
+```fs
 let myBind f = map f >> join 
 ```
 and then use it similarly to previously shown `bind`
-```fsharp
+```fs
 let myFun x = [x + 1] 
 let bc   = [1] >>= myFun 
 let bc' = [1] |> myBind myFun
 ```
 
 ## Example code
-```fsharp
+```fs
 #r "nuget: FSharpPlus"
 open FSharpPlus
 

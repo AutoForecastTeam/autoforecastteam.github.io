@@ -1,12 +1,15 @@
----
-title: "Dotnet API changes"
-description: "Dotnet API changes"
-draft: false
-author: "Paweł Sierzputowski"
-date: 2021-02-10T17:34:17+01:00
-tags: ["dotnet","dotnet standard"]
-categories: ["dotnet"]
----
++++
+title =  "Dotnet API changes"
+description =  "Dotnet API changes"
+date =  2021-02-10T17:34:17+01:00
+template = "blog/page.html"
+draft =  false
+
+[taxonomies]
+authors =  ["Paweł Sierzputowski"]
+#tags =  ["dotnet","dotnet standard"]
+#categories =  ["dotnet"]
++++
 
 <!--more-->
 
@@ -25,7 +28,7 @@ In our solution there are a few .NET Core 3.1 applications and a bunch of librar
 
 It turned out that a new [CollectionExtensions](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.collectionextensions) appeared in the API since dotnet Standard 2.1. It seems that our custom extension method can be removed
 
-```csharp
+```cs
 public static class BasicExtensions
 {
     public static V GetValueOrDefault<K, V>(this IDictionary<K, V> dictionary, K key)
@@ -42,7 +45,7 @@ But in some cases we call `GetValueOrDefault` on `IDictionary`. [IDictionary](ht
 
 To eliminate this issue we can cast Dictionary objects to one of interfaces `IDictionary` or `IReadOnlyDictionary`, but it is not convenient solution since there are multiple usages of `Dictionary` where we call `GetValueOrDefault`. To address this problem in a more systematic way we can use the fact, that in C# methods on more derived class is applicable and add another implementation for `Dictionary`:
 
-```csharp
+```cs
 public static V GetValueOrDefault<K, V>(this Dictionary<K, V> dictionary, K key)
 {
     return ((IReadOnlyDictionary<K, V>) dictionary).GetValueOrDefault(key);

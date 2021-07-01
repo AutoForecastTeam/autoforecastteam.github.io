@@ -1,17 +1,35 @@
 theme = "adidoks"
-# The URL the site will be built for
 base_url = "https://autoforecastteam.github.io"
-
-# Whether to automatically compile all Sass files in the sass directory
+title = "autoforecast team's blog"
+description = ""
 compile_sass = true
-
-# Whether to build a search index to be used later on by a JavaScript library
 build_search_index = true
+timeformat = "%e %B %Y"
+timezone = "Europe/Warsaw"
+
+taxonomies = [
+  {name = "authors"},
+  #{name = "tags"},
+  #{name = "categories"}
+]
+
+docs_repo = "https://github.com/AutoForecastTeam/autoforecastteam.github.io"
+repo_branch = "main"
+edit_page = false
 
 [markdown]
-# Whether to do syntax highlighting
-# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
 highlight_code = true
 
 [extra]
-# Put all your custom variables here
+
+[[extra.menu.main]]
+name = "Posts"
+section = "blog"
+url = "/posts/"
+weight = 20
+
+[[extra.menu.main]]
+name = "Authors"
+section = "authors"
+url = "/authors/"
+weight = 30
