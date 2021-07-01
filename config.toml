@@ -19,6 +19,7 @@ edit_page = false
 
 [markdown]
 highlight_code = true
+highlight_theme = "nyx-bold"
 
 [extra]
 
