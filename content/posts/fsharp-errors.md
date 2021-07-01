@@ -4,7 +4,7 @@ description =  "Functional-first approach to .NET exceptions"
 date =  2021-02-09T11:03:32+01:00
 template = "blog/page.html"
 draft =  false
-
+[taxonomies]
 authors =  ["Rafał Gwoździński"]
 #tags =  []
 #categories =  ["FSharp"]
