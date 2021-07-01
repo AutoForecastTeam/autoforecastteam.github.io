@@ -1,1 +1,4 @@
 
+[submodule "themes/adidoks"]
+	path = themes/adidoks
+	url = git@github.com:AutoForecastTeam/adidoks.git
