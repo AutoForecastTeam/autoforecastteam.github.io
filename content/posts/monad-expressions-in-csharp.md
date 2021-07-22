@@ -62,45 +62,50 @@ public static class TaskExtensions
 ### Case 1
 
 ```cs
-from index in Enumerable.Range(1, 5)
-from date in Enumerable.Repeat(DateTime.Today, 5)
-select (index, date) into pair
-select pair.date.AddDays(pair.index);
+var result =
+    from index in Enumerable.Range(1, 5)
+    from date in Enumerable.Repeat(DateTime.Today, 5)
+    select (index, date) into pair
+    select pair.date.AddDays(pair.index);
 ```
 
 ```fs
-seq {
-    let! index = Enumerable.Range(1, 5)
-    let! date = Enumerable.Repeat(DateTime.Today, 5)
-    let pair = (index, date)
-    yield pair |> (fun (i, d) -> d.AddDays(i |> float))
-}
+let result =
+    seq {
+        let! index = Enumerable.Range(1, 5)
+        let! date = Enumerable.Repeat(DateTime.Today, 5)
+        let pair = (index, date)
+        yield pair |> (fun (i, d) -> d.AddDays(i |> float))
+    }
 ```
 
 ### Case 2
 
 ```cs
-from index in GetIndexAsync()
-from date in Task.FromResult(DateTime.Today)
-select (index, date) into pair
-select pair.date.AddDays(pair.index);
+var result =
+    from index in GetIndexAsync()
+    from date in Task.FromResult(DateTime.Today)
+    select (index, date) into pair
+    select pair.date.AddDays(pair.index);
 ```
 
 ```fs
-monad {
-    let! index = GetIndexAsync()
-    let! date = Task.FromResult(DateTime.Today)
-    let pair = (index, date)
-    yield pair |> (fun (i, d) -> d.AddDays(i |> float))
-}
+let result =
+    monad {
+        let! index = GetIndexAsync()
+        let! date = Task.FromResult(DateTime.Today)
+        let pair = (index, date)
+        yield pair |> (fun (i, d) -> d.AddDays(i |> float))
+    }
 ```
 
 ### Case 3
 ```cs
-from index in Option.Some(5)
-from date in Option.None<DateTime>()
-select (index, date) into pair
-select pair.date.AddDays(pair.index);
+var result =
+    from index in Option.Some(5)
+    from date in Option.None<DateTime>()
+    select (index, date) into pair
+    select pair.date.AddDays(pair.index);
 ```
 
 ```cs
@@ -113,12 +118,13 @@ async Option<DateTime> Fun() {
 ```
 
 ```fs
-monad {
-    let! index = Some 5
-    let! date = None
-    let pair = (index, date)
-    yield pair |> (fun (i, (d:DateTime)) -> d.AddDays(i |> float))
-}
+let result =
+    monad {
+        let! index = Some 5
+        let! date = None
+        let pair = (index, date)
+        yield pair |> (fun (i, (d:DateTime)) -> d.AddDays(i |> float))
+    }
 ```
 `monad` is from [F#+](http://fsprojects.github.io/FSharpPlus/), though implementing `option` Computation Expression manually is pretty straight-forward
 
