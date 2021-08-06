@@ -11,9 +11,9 @@ authors = ["Robert Marciniak"]
 #categories =  []
 +++
 
-# Why we can't have nice things, c# query expression edition
+# Why we can't have nice things, C# query expression edition
 
-The closest thing to f#'s computational expression is either combination of `async` `await` keywords in contexts that
+The closest thing to F#'s computational expression is either combination of `async` `await` keywords in contexts that
 do not always translate to asynchronous context or query expression which does not always translate to querying something.
 
 That's because C# is a corporate enterprise language which tries to smuggle Nice Things through, but in a different,
@@ -130,8 +130,8 @@ let result =
 
 ## ...converging into the same topic, never reaching it
 
-These c# constructs do exactly the same thing, without any major or unsafe hacks. The main barrier from using these in a monad-like manner is their naming. Despite being perfectly viable in multiple scenarios their naming suggests using them in LINQ-to-* and asynchronous code respectively.
+These C# constructs do exactly the same thing, without any major or unsafe hacks. The main barrier from using these in a monad-like manner is their naming. Despite being perfectly viable in multiple scenarios their naming suggests using them in LINQ-to-* and asynchronous code respectively.
 
-- in c# there's no way to create a generic `Monad<T<E>>` because there's no higher-kinded polymorphism
+- in C# there's no way to create a generic `Monad<T<E>>` because there's no higher-kinded polymorphism
 - poor type inference, no partial inference, partly due to complicated inheritance laws
 - query expression has no ability to switch from one monad type to another using concise language syntax, while functional languages have transformers and one can nest computational expressions.
