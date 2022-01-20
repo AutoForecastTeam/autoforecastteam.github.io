@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://autoforecastteam.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://autoforecastteam.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://autoforecastteam.github.io/main.css">
+
+
+
+  
+  
+  
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Construction and deconstruction of F# values | autoforecast team's blog</title>
+<meta name="description" content="Different ways to create F# values and retrieve their contents">
+<link rel="canonical" href="https://autoforecastteam.github.io/posts/deconstruction/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://autoforecastteam.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Posts",
+            "item": "https://autoforecastteam.github.io/posts/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Deconstruction",
+            "item": "https://autoforecastteam.github.io/posts/deconstruction/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+  <meta name="theme-color" content="#fff">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://autoforecastteam.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://autoforecastteam.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://autoforecastteam.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://autoforecastteam.github.io/site.webmanifest">
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="blog single">
+  
+  
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://autoforecastteam.github.io">autoforecast team&#x27;s blog</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+						<li class="nav-item blog active">
+							<a class="nav-link" href="https://autoforecastteam.github.io/posts/">Posts</a>
+						</li>
+					
+						<li class="nav-item">
+							<a class="nav-link" href="https://autoforecastteam.github.io/authors/">Authors</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+				<form class="navbar-form flex-grow-1 order-7 order-md-3">
+					<input id="userinput" class="form-control is-search" type="search" placeholder="Search"
+						aria-label="Search" autocomplete="on">
+					<div id="suggestions" class="shadow bg-white rounded"></div>
+				</form>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xl-8">
+        <article>
+          <div class="blog-header">
+            <h1>Construction and deconstruction of F# values</h1>
+            
+<p><small>Posted March  1, 2021 by <a class="stretched-link position-relative" href="https://autoforecastteam.github.io/authors/rafal-gwozdzinski/">Rafał Gwoździński</a>&nbsp;&hyphen;&nbsp;<strong>8&nbsp;min read</strong></small><p>
+
+          </div>
+          
+          <!--more-->
+<h1 id="construction-and-deconstruction-of-f-values">Construction and deconstruction of F# values</h1>
+<h2 id="simple-type-deconstruction">Simple type deconstruction</h2>
+<p>Let's say we have a simple type (aka <a href="https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/">Single case discriminated union type</a>) that wraps an int.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">type </span><span style="color:#e5c07b;">SimpleInt </span><span style="color:#c678dd;">=</span><span> SimpleInt </span><span style="color:#c678dd;">of </span><span style="color:#e5c07b;">int
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">simpleInt </span><span style="color:#c678dd;">=</span><span> SimpleInt </span><span style="color:#d19a66;">42
+</span></code></pre>
+<p>We have created a value and bound it to <code>simpleInt</code> variable.
+How can we retrieve it's content?</p>
+<h4 id="anonymous-function-deconstruction">Anonymous function deconstruction</h4>
+<p>We can deconstruct <code>SimpleInt</code> in lambda expression</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">intValue </span><span style="color:#c678dd;">=</span><span> simpleInt </span><span style="color:#c678dd;">|&gt; fun (</span><span style="font-style:italic;color:#e06c75;">SimpleInt </span><span style="color:#e5c07b;">s</span><span style="color:#c678dd;">) -&gt;</span><span> s
+</span></code></pre>
+<h4 id="let-binding-deconstruction">Let binding deconstruction</h4>
+<p>We can deconstruct it in <code>let</code> assignment</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let (</span><span style="font-style:italic;color:#e06c75;">SimpleInt intValue&#39;</span><span style="color:#c678dd;">) =</span><span> simpleInt
+</span></code></pre>
+<h4 id="dedicated-value-retrieving-function">Dedicated value retrieving function</h4>
+<p>We can add a module with the type name that contains deconstructing function.
+This is a bit more verbose, but can be handy, especially when we use it in many places and are tired of redundant lambdas.</p>
+<pre data-lang="fsharp" style="background-color:#282c34;color:#abb2bf;" class="language-fsharp "><code class="language-fsharp" data-lang="fsharp"><span>module SimpleInt =
+</span><span>    let value (SimpleInt s) = s
+</span><span>
+</span><span>let intValue&#39;&#39; = simpleInt |&gt; SimpleInt.value
+</span></code></pre>
+<h4 id="direct-deconstruction-of-function-parameter">Direct deconstruction of function parameter</h4>
+<p>We can also unwrap value directly in a function that uses it.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="font-weight:bold;color:#c678dd;">module </span><span style="font-weight:bold;color:#61afef;">SimpleIntAdder </span><span style="font-weight:bold;color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">addSimpleInts </span><span style="color:#c678dd;">(</span><span style="font-style:italic;color:#e06c75;">SimpleInt i1</span><span style="color:#c678dd;">) (</span><span style="font-style:italic;color:#e06c75;">SimpleInt i2</span><span style="color:#c678dd;">) = 
+</span><span>        SimpleInt </span><span style="color:#c678dd;">(</span><span>i1 </span><span style="color:#c678dd;">+</span><span> i2</span><span style="color:#c678dd;">)
+</span></code></pre>
+<h3 id="parallel-between-construction-and-deconstruction">Parallel between construction and deconstruction</h3>
+<p>There is a parallel between notation of construction and deconstruction of simple types.
+In both cases they are written as <code>({Type Name} {Value})</code></p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">wrapped </span><span style="color:#c678dd;">= (</span><span>SimpleInt </span><span style="color:#d19a66;">42</span><span style="color:#c678dd;">)
+</span><span style="color:#c678dd;">let (</span><span style="font-style:italic;color:#e06c75;">SimpleInt unwrapped</span><span style="color:#c678dd;">) =</span><span> wrapped
+</span></code></pre>
+<h2 id="record-types">Record types</h2>
+<p>Now, let's see what happens with records.
+Let's define and construct a value for a simple record type.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">type </span><span style="color:#e5c07b;">SimpleRecord </span><span style="color:#c678dd;">= 
+</span><span>    </span><span style="color:#c678dd;">{</span><span> First</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">SimpleInt
+</span><span>      Second</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">int </span><span style="color:#c678dd;">}
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">simpleRecord </span><span style="color:#c678dd;">= 
+</span><span>    </span><span style="color:#c678dd;">{</span><span> First </span><span style="color:#c678dd;">=</span><span> SimpleInt </span><span style="color:#d19a66;">42
+</span><span>      Second </span><span style="color:#c678dd;">= </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">}
+</span></code></pre>
+<h3 id="deconstruction-similar-to-simple-types">Deconstruction similar to simple types</h3>
+<p>We can deconstruct record in: </p>
+<ul>
+<li>lambda expression:</li>
+</ul>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="font-style:italic;color:#7f848e;">// Remark: Added type annotations to r1, r2 for clarity
+</span><span style="color:#c678dd;">let (</span><span style="font-style:italic;color:#e06c75;">r1</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">SimpleInt</span><span style="color:#c678dd;">), (</span><span style="font-style:italic;color:#e06c75;">r2</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">) = 
+</span><span>    simpleRecord 
+</span><span>    </span><span style="color:#c678dd;">|&gt; fun </span><span>{</span><span style="font-style:italic;color:#e06c75;">First </span><span>=</span><span style="font-style:italic;color:#e06c75;"> x</span><span>;</span><span style="font-style:italic;color:#e06c75;"> Second </span><span>=</span><span style="font-style:italic;color:#e06c75;"> y</span><span>} </span><span style="color:#c678dd;">-&gt; (</span><span>x</span><span style="color:#c678dd;">,</span><span> y</span><span style="color:#c678dd;">)
+</span></code></pre>
+<ul>
+<li>let assignment:</li>
+</ul>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let {</span><span>First </span><span style="color:#c678dd;">=</span><span style="font-style:italic;color:#e06c75;"> r1&#39;</span><span style="color:#c678dd;">;</span><span> Second </span><span style="color:#c678dd;">=</span><span style="font-style:italic;color:#e06c75;"> r2&#39;</span><span style="color:#c678dd;">} =</span><span> simpleRecord
+</span></code></pre>
+<ul>
+<li>function parameter:</li>
+</ul>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="font-style:italic;color:#7f848e;">// Remark: We deconstruct both record and it&#39;s internal field (which is of type SimpleInt)
+</span><span style="font-weight:bold;color:#c678dd;">module </span><span style="font-weight:bold;color:#61afef;">SimpleRecordAdder </span><span style="font-weight:bold;color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">addRecordFields </span><span style="color:#c678dd;">{</span><span>First </span><span style="color:#c678dd;">= (</span><span>SimpleInt f</span><span style="color:#c678dd;">);</span><span> Second </span><span style="color:#c678dd;">=</span><span style="font-style:italic;color:#e06c75;"> s</span><span style="color:#c678dd;">} =</span><span> f </span><span style="color:#c678dd;">+</span><span> s
+</span></code></pre>
+<p>There is a parallel between construction and deconstruction of records similar to simple types:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">wrappedRecord </span><span style="color:#c678dd;">= {</span><span>First </span><span style="color:#c678dd;">=</span><span> SimpleInt </span><span style="color:#d19a66;">42</span><span style="color:#c678dd;">;</span><span> Second </span><span style="color:#c678dd;">= </span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">}
+</span><span style="color:#c678dd;">let {</span><span>First </span><span style="color:#c678dd;">= (</span><span>SimpleInt f</span><span style="color:#c678dd;">);</span><span> Second </span><span style="color:#c678dd;">=</span><span style="font-style:italic;color:#e06c75;"> s</span><span style="color:#c678dd;">} =</span><span> wrappedRecord 
+</span></code></pre>
+<h4 id="partial-deconstruction">Partial deconstruction</h4>
+<p>If we don't need all of record fields, we can use partial deconstruction in all previously defined cases.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let {</span><span>Second </span><span style="color:#c678dd;">=</span><span style="font-style:italic;color:#e06c75;"> s&#39;</span><span style="color:#c678dd;">} =</span><span> wrappedRecord
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">s</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> wrappedRecord </span><span style="color:#c678dd;">|&gt; fun </span><span>{</span><span style="font-style:italic;color:#e06c75;">Second </span><span>=</span><span style="font-style:italic;color:#e06c75;"> x</span><span>} </span><span style="color:#c678dd;">-&gt;</span><span> x
+</span><span>
+</span><span style="font-weight:bold;color:#c678dd;">module </span><span style="font-weight:bold;color:#61afef;">SecondFieldAdder </span><span style="font-weight:bold;color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">addOneToSecondField </span><span style="color:#c678dd;">{</span><span>Second </span><span style="color:#c678dd;">=</span><span style="font-style:italic;color:#e06c75;"> s</span><span style="color:#c678dd;">} =</span><span> s </span><span style="color:#c678dd;">+ </span><span style="color:#d19a66;">1
+</span><span>
+</span><span style="color:#c678dd;">let {</span><span>First </span><span style="color:#c678dd;">= (</span><span>SimpleInt f&#39;</span><span style="color:#c678dd;">)} =</span><span> wrappedRecord
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">f</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> wrappedRecord </span><span style="color:#c678dd;">|&gt; fun </span><span>{</span><span style="font-style:italic;color:#e06c75;">First </span><span>= </span><span style="color:#c678dd;">(</span><span style="font-style:italic;color:#e06c75;">SimpleInt </span><span style="color:#e5c07b;">x</span><span style="color:#c678dd;">)} -&gt;</span><span> x
+</span><span>
+</span><span style="font-weight:bold;color:#c678dd;">module </span><span style="font-weight:bold;color:#61afef;">FirstFieldAdder </span><span style="font-weight:bold;color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">addOneToFirstField </span><span style="color:#c678dd;">{</span><span>First </span><span style="color:#c678dd;">= (</span><span>SimpleInt f</span><span style="color:#c678dd;">)} =</span><span> f </span><span style="color:#c678dd;">+ </span><span style="color:#d19a66;">1
+</span></code></pre>
+<h2 id="pattern-matching">Pattern matching</h2>
+<p>Pattern matching is one of the most popular usage of deconstruction.</p>
+<h3 id="simple-type">Simple type</h3>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">type </span><span style="color:#e5c07b;">MyInt </span><span style="color:#c678dd;">=</span><span> MyInt </span><span style="color:#c678dd;">of </span><span style="color:#e5c07b;">int
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">myVal </span><span style="color:#c678dd;">=</span><span> MyInt </span><span style="color:#d19a66;">42
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">valueIfNotZero </span><span style="color:#c678dd;">= 
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myVal </span><span style="color:#c678dd;">with 
+</span><span>    </span><span style="color:#c678dd;">|</span><span> MyInt </span><span style="color:#d19a66;">0 </span><span style="color:#c678dd;">-&gt;</span><span> None
+</span><span>    </span><span style="color:#c678dd;">|</span><span> MyInt x </span><span style="color:#c678dd;">-&gt;</span><span> Some x
+</span></code></pre>
+<h3 id="record-type">Record type</h3>
+<p>We can match on all record fields:</p>
+<pre data-lang="fsharp" style="background-color:#282c34;color:#abb2bf;" class="language-fsharp "><code class="language-fsharp" data-lang="fsharp"><span>type MyRecord = { First: int; Second: int }
+</span><span>let myRec = {First = 1; Second = 2}
+</span><span>
+</span><span>// Full
+</span><span>let addIfNotZeros =
+</span><span>    match myRec with
+</span><span>    | {First = 0; Second = 0} -&gt; None
+</span><span>    | {First = x; Second = y} -&gt; Some (x + y)
+</span></code></pre>
+<p>Or we can use partial deconstruction</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">getSecondIfNotZero </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myRec </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| {</span><span>Second </span><span style="color:#c678dd;">= </span><span style="color:#d19a66;">0</span><span style="color:#c678dd;">} -&gt;</span><span> None
+</span><span>    </span><span style="color:#c678dd;">| {</span><span>Second </span><span style="color:#c678dd;">=</span><span> x</span><span style="color:#c678dd;">} -&gt;</span><span> Some x
+</span></code></pre>
+<h3 id="list">List</h3>
+<p>Lists offer a refined ways of deconstruction. 
+Let's define a simple list and see how we can match on it.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">myList </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">2</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">3</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">4</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">5</span><span style="color:#c678dd;">]
+</span></code></pre>
+<h4 id="exact-match">Exact match</h4>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">is12345 </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">2</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">3</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">4</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">5</span><span style="color:#c678dd;">] -&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span></code></pre>
+<h4 id="match-exact-number-of-items">Match exact number of items</h4>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">sum5OrZero </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [</span><span>a</span><span style="color:#c678dd;">;</span><span>b</span><span style="color:#c678dd;">;</span><span>c</span><span style="color:#c678dd;">;</span><span>d</span><span style="color:#c678dd;">;</span><span>e</span><span style="color:#c678dd;">] -&gt;</span><span> a</span><span style="color:#c678dd;">+</span><span>b</span><span style="color:#c678dd;">+</span><span>c</span><span style="color:#c678dd;">+</span><span>d</span><span style="color:#c678dd;">+</span><span>e
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">0
+</span></code></pre>
+<h4 id="match-head-tail">Match head/tail</h4>
+<p>We can match head/tail with <code>h::t</code> construct.
+Head is the first element of the list, Tail is a list of all further elements.</p>
+<p>Example use cases:</p>
+<ul>
+<li>Exact head </li>
+</ul>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">is1First </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| </span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">::</span><span>t </span><span style="color:#c678dd;">-&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span></code></pre>
+<ul>
+<li>Exact tail</li>
+</ul>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">is2345Tail </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">|</span><span> h</span><span style="color:#c678dd;">::[</span><span style="color:#d19a66;">2</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">3</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">4</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">5</span><span style="color:#c678dd;">] -&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span></code></pre>
+<ul>
+<li>Deconstruct head</li>
+</ul>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">head </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">|</span><span> h</span><span style="color:#c678dd;">::</span><span>t </span><span style="color:#c678dd;">-&gt;</span><span> Some h
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt;</span><span> None
+</span></code></pre>
+<ul>
+<li>Deconstruct tail</li>
+</ul>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">skipHead </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">|</span><span> h</span><span style="color:#c678dd;">::</span><span>t </span><span style="color:#c678dd;">-&gt;</span><span> t
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; []
+</span></code></pre>
+<ul>
+<li>Empty or not?</li>
+</ul>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">isEmpty </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [] -&gt; </span><span style="color:#d19a66;">true 
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span></code></pre>
+<ul>
+<li>One element</li>
+</ul>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">isSingle </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [</span><span>x</span><span style="color:#c678dd;">] -&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span></code></pre>
+<h3 id="arrays">Arrays</h3>
+<p>An Array structure offers fewer ways of matching than list.</p>
+<p>We construct an array as:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">myArray </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">2</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">3</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">4</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">5</span><span style="color:#c678dd;">|]
+</span></code></pre>
+<h4 id="cases-similar-to-list-type">Cases similar to List type</h4>
+<ul>
+<li>Exact match</li>
+</ul>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">is12345</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myArray </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">2</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">3</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">4</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">5</span><span style="color:#c678dd;">|] -&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span></code></pre>
+<ul>
+<li>Deconstruct exact number of items</li>
+</ul>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">sum5OrZero</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myArray </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [|</span><span>a</span><span style="color:#c678dd;">;</span><span>b</span><span style="color:#c678dd;">;</span><span>c</span><span style="color:#c678dd;">;</span><span>d</span><span style="color:#c678dd;">;</span><span>e</span><span style="color:#c678dd;">|] -&gt;</span><span> a</span><span style="color:#c678dd;">+</span><span>b</span><span style="color:#c678dd;">+</span><span>c</span><span style="color:#c678dd;">+</span><span>d</span><span style="color:#c678dd;">+</span><span>e
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">0
+</span></code></pre>
+<ul>
+<li>Empty?</li>
+</ul>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">isEmpty</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myArray </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [||] -&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span></code></pre>
+<ul>
+<li>One element</li>
+</ul>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">isSingle</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myArray </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [|</span><span>x</span><span style="color:#c678dd;">|] -&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span></code></pre>
+<h4 id="head-tail">Head/tail</h4>
+<p>Unfortunately, there is no built-in way to match <code>h::t</code> on arrays in F#.</p>
+<h2 id="example-code">Example Code</h2>
+<p>To get a better feel for concepts described in this post, I encourage readers to try this code on their own machines.
+The easiest way is to put it into <code>fsx</code> script and run using REPL.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="font-style:italic;color:#7f848e;">////////////////////////////////////
+</span><span style="font-style:italic;color:#7f848e;">//// Simple type deconstruction ////  
+</span><span style="font-style:italic;color:#7f848e;">////////////////////////////////////
+</span><span>
+</span><span style="color:#c678dd;">type </span><span style="color:#e5c07b;">SimpleInt </span><span style="color:#c678dd;">=</span><span> SimpleInt </span><span style="color:#c678dd;">of </span><span style="color:#e5c07b;">int
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">simpleInt </span><span style="color:#c678dd;">=</span><span> SimpleInt </span><span style="color:#d19a66;">42
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// We created a value in a usual way and bound it to `simpleInt` variable.
+</span><span style="font-style:italic;color:#7f848e;">// How can we retrieve a value from it?
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// *Anonymous function deconstruction
+</span><span style="font-style:italic;color:#7f848e;">//  We can deconstruct `SimpleInt` in lambda expression
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">intValue </span><span style="color:#c678dd;">=</span><span> simpleInt </span><span style="color:#c678dd;">|&gt; fun (</span><span style="font-style:italic;color:#e06c75;">SimpleInt </span><span style="color:#e5c07b;">s</span><span style="color:#c678dd;">) -&gt;</span><span> s
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// *Let binding deconstruction
+</span><span style="font-style:italic;color:#7f848e;">//  We can deconstruct it in `let` assignment
+</span><span style="color:#c678dd;">let (</span><span style="font-style:italic;color:#e06c75;">SimpleInt intValue&#39;</span><span style="color:#c678dd;">) =</span><span> simpleInt
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// *Dedicated value retrieving function 
+</span><span style="font-style:italic;color:#7f848e;">//  We can add a module with the type name that contains deconstructing function.
+</span><span style="font-style:italic;color:#7f848e;">//  This is a bit more verbose, but can be handy, especially when we use it in many places and are tired of redundant lambdas.
+</span><span style="font-weight:bold;color:#c678dd;">module </span><span style="font-weight:bold;color:#61afef;">SimpleInt </span><span style="font-weight:bold;color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">value </span><span style="color:#c678dd;">(</span><span style="font-style:italic;color:#e06c75;">SimpleInt s</span><span style="color:#c678dd;">) =</span><span> s
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">intValue</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> simpleInt </span><span style="color:#c678dd;">|&gt;</span><span> SimpleInt.value
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// *Direct deconstruction of function parameter
+</span><span style="font-style:italic;color:#7f848e;">//  We can also unwrap value directly in a function that uses it.
+</span><span style="font-weight:bold;color:#c678dd;">module </span><span style="font-weight:bold;color:#61afef;">SimpleIntAdder </span><span style="font-weight:bold;color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">addSimpleInts </span><span style="color:#c678dd;">(</span><span style="font-style:italic;color:#e06c75;">SimpleInt i1</span><span style="color:#c678dd;">) (</span><span style="font-style:italic;color:#e06c75;">SimpleInt i2</span><span style="color:#c678dd;">) = 
+</span><span>        SimpleInt </span><span style="color:#c678dd;">(</span><span>i1 </span><span style="color:#c678dd;">+</span><span> i2</span><span style="color:#c678dd;">)
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">//// Parallel between construction and deconstruction
+</span><span style="font-style:italic;color:#7f848e;">// There is a parallel between notation of construction and deconstruction of simple types.
+</span><span style="font-style:italic;color:#7f848e;">// In both cases they are written as `({Type Name} {Value})`
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">wrapped </span><span style="color:#c678dd;">= (</span><span>SimpleInt </span><span style="color:#d19a66;">42</span><span style="color:#c678dd;">)
+</span><span style="color:#c678dd;">let (</span><span style="font-style:italic;color:#e06c75;">SimpleInt unwrapped</span><span style="color:#c678dd;">) =</span><span> wrapped
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">//////////////////////
+</span><span style="font-style:italic;color:#7f848e;">//// Record types ////
+</span><span style="font-style:italic;color:#7f848e;">//////////////////////
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Now, let&#39;s see what happens with records.
+</span><span style="font-style:italic;color:#7f848e;">// Let&#39;s define and construct a value for a simple record type.
+</span><span style="color:#c678dd;">type </span><span style="color:#e5c07b;">SimpleRecord </span><span style="color:#c678dd;">= 
+</span><span>    </span><span style="color:#c678dd;">{</span><span> First</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">SimpleInt
+</span><span>      Second</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">int </span><span style="color:#c678dd;">}
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">simpleRecord </span><span style="color:#c678dd;">= 
+</span><span>    </span><span style="color:#c678dd;">{</span><span> First </span><span style="color:#c678dd;">=</span><span> SimpleInt </span><span style="color:#d19a66;">42
+</span><span>      Second </span><span style="color:#c678dd;">= </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">}
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">//// Deconstruction similar to simple types
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// We can deconstruct record in: 
+</span><span style="font-style:italic;color:#7f848e;">// *lambda expression:
+</span><span style="font-style:italic;color:#7f848e;">//  Remark: Added type annotations to r1, r2 for clarity
+</span><span style="color:#c678dd;">let (</span><span style="font-style:italic;color:#e06c75;">r1</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">SimpleInt</span><span style="color:#c678dd;">), (</span><span style="font-style:italic;color:#e06c75;">r2</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">) = 
+</span><span>    simpleRecord 
+</span><span>    </span><span style="color:#c678dd;">|&gt; fun </span><span>{</span><span style="font-style:italic;color:#e06c75;">First </span><span>=</span><span style="font-style:italic;color:#e06c75;"> x</span><span>;</span><span style="font-style:italic;color:#e06c75;"> Second </span><span>=</span><span style="font-style:italic;color:#e06c75;"> y</span><span>} </span><span style="color:#c678dd;">-&gt; (</span><span>x</span><span style="color:#c678dd;">,</span><span> y</span><span style="color:#c678dd;">)
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// *let assignment:
+</span><span style="color:#c678dd;">let {</span><span>First </span><span style="color:#c678dd;">=</span><span style="font-style:italic;color:#e06c75;"> r1&#39;</span><span style="color:#c678dd;">;</span><span> Second </span><span style="color:#c678dd;">=</span><span style="font-style:italic;color:#e06c75;"> r2&#39;</span><span style="color:#c678dd;">} =</span><span> simpleRecord
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// *function parameter:
+</span><span style="font-style:italic;color:#7f848e;">// Remark: We deconstruct both record and it&#39;s internal field (which is of type SimpleInt)
+</span><span style="font-weight:bold;color:#c678dd;">module </span><span style="font-weight:bold;color:#61afef;">SimpleRecordAdder </span><span style="font-weight:bold;color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">addRecordFields </span><span style="color:#c678dd;">{</span><span>First </span><span style="color:#c678dd;">= (</span><span>SimpleInt f</span><span style="color:#c678dd;">);</span><span> Second </span><span style="color:#c678dd;">=</span><span style="font-style:italic;color:#e06c75;"> s</span><span style="color:#c678dd;">} =</span><span> f </span><span style="color:#c678dd;">+</span><span> s
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// There is a similar parallel between construction and deconstruction of records:
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">wrappedRecord </span><span style="color:#c678dd;">= {</span><span>First </span><span style="color:#c678dd;">=</span><span> SimpleInt </span><span style="color:#d19a66;">42</span><span style="color:#c678dd;">;</span><span> Second </span><span style="color:#c678dd;">= </span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">}
+</span><span style="color:#c678dd;">let {</span><span>First </span><span style="color:#c678dd;">= (</span><span>SimpleInt f</span><span style="color:#c678dd;">);</span><span> Second </span><span style="color:#c678dd;">=</span><span style="font-style:italic;color:#e06c75;"> s</span><span style="color:#c678dd;">} =</span><span> wrappedRecord 
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">//// Partial deconstruction
+</span><span style="font-style:italic;color:#7f848e;">// If we don&#39;t need all of record fields, we can use partial deconstruction in all previously defined cases.
+</span><span style="color:#c678dd;">let {</span><span>Second </span><span style="color:#c678dd;">=</span><span style="font-style:italic;color:#e06c75;"> s&#39;</span><span style="color:#c678dd;">} =</span><span> wrappedRecord
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">s</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> wrappedRecord </span><span style="color:#c678dd;">|&gt; fun </span><span>{</span><span style="font-style:italic;color:#e06c75;">Second </span><span>=</span><span style="font-style:italic;color:#e06c75;"> x</span><span>} </span><span style="color:#c678dd;">-&gt;</span><span> x
+</span><span>
+</span><span style="font-weight:bold;color:#c678dd;">module </span><span style="font-weight:bold;color:#61afef;">SecondFieldAdder </span><span style="font-weight:bold;color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">addOneToSecondField </span><span style="color:#c678dd;">{</span><span>Second </span><span style="color:#c678dd;">=</span><span style="font-style:italic;color:#e06c75;"> s</span><span style="color:#c678dd;">} =</span><span> s </span><span style="color:#c678dd;">+ </span><span style="color:#d19a66;">1
+</span><span>
+</span><span style="color:#c678dd;">let {</span><span>First </span><span style="color:#c678dd;">= (</span><span>SimpleInt f&#39;</span><span style="color:#c678dd;">)} =</span><span> wrappedRecord
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">f</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> wrappedRecord </span><span style="color:#c678dd;">|&gt; fun </span><span>{</span><span style="font-style:italic;color:#e06c75;">First </span><span>= </span><span style="color:#c678dd;">(</span><span style="font-style:italic;color:#e06c75;">SimpleInt </span><span style="color:#e5c07b;">x</span><span style="color:#c678dd;">)} -&gt;</span><span> x
+</span><span>
+</span><span style="font-weight:bold;color:#c678dd;">module </span><span style="font-weight:bold;color:#61afef;">FirstFieldAdder </span><span style="font-weight:bold;color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">addOneToFirstField </span><span style="color:#c678dd;">{</span><span>First </span><span style="color:#c678dd;">= (</span><span>SimpleInt f</span><span style="color:#c678dd;">)} =</span><span> f </span><span style="color:#c678dd;">+ </span><span style="color:#d19a66;">1
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">//////////////////////////
+</span><span style="font-style:italic;color:#7f848e;">//// Pattern matching ////
+</span><span style="font-style:italic;color:#7f848e;">//////////////////////////
+</span><span>   
+</span><span style="font-style:italic;color:#7f848e;">// Pattern matching is one of the most popular usage of deconstruction.
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">///// Simple type
+</span><span>
+</span><span style="color:#c678dd;">type </span><span style="color:#e5c07b;">MyInt </span><span style="color:#c678dd;">=</span><span> MyInt </span><span style="color:#c678dd;">of </span><span style="color:#e5c07b;">int
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">myVal </span><span style="color:#c678dd;">=</span><span> MyInt </span><span style="color:#d19a66;">42
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">valueIfNotZero </span><span style="color:#c678dd;">= 
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myVal </span><span style="color:#c678dd;">with 
+</span><span>    </span><span style="color:#c678dd;">|</span><span> MyInt </span><span style="color:#d19a66;">0 </span><span style="color:#c678dd;">-&gt;</span><span> None
+</span><span>    </span><span style="color:#c678dd;">|</span><span> MyInt x </span><span style="color:#c678dd;">-&gt;</span><span> Some x
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">//// Record type
+</span><span style="font-style:italic;color:#7f848e;">//   We can match on all record fields:
+</span><span style="color:#c678dd;">type </span><span style="color:#e5c07b;">MyRecord </span><span style="color:#c678dd;">= {</span><span> First</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">;</span><span> Second</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">int </span><span style="color:#c678dd;">}
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">myRec </span><span style="color:#c678dd;">= {</span><span>First </span><span style="color:#c678dd;">= </span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">;</span><span> Second </span><span style="color:#c678dd;">= </span><span style="color:#d19a66;">2</span><span style="color:#c678dd;">}
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Full
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">addIfNotZeros </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myRec </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| {</span><span>First </span><span style="color:#c678dd;">= </span><span style="color:#d19a66;">0</span><span style="color:#c678dd;">;</span><span> Second </span><span style="color:#c678dd;">= </span><span style="color:#d19a66;">0</span><span style="color:#c678dd;">} -&gt;</span><span> None
+</span><span>    </span><span style="color:#c678dd;">| {</span><span>First </span><span style="color:#c678dd;">=</span><span> x</span><span style="color:#c678dd;">;</span><span> Second </span><span style="color:#c678dd;">=</span><span> y</span><span style="color:#c678dd;">} -&gt;</span><span> Some </span><span style="color:#c678dd;">(</span><span>x </span><span style="color:#c678dd;">+</span><span> y</span><span style="color:#c678dd;">)
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Or we can use partial deconstruction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">getSecondIfNotZero </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myRec </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| {</span><span>Second </span><span style="color:#c678dd;">= </span><span style="color:#d19a66;">0</span><span style="color:#c678dd;">} -&gt;</span><span> None
+</span><span>    </span><span style="color:#c678dd;">| {</span><span>Second </span><span style="color:#c678dd;">=</span><span> x</span><span style="color:#c678dd;">} -&gt;</span><span> Some x
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">//// List
+</span><span style="font-style:italic;color:#7f848e;">//   Lists offer a refined ways of deconstruction. 
+</span><span style="font-style:italic;color:#7f848e;">//   Let&#39;s define a simple list and see how we can match on it.
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">myList </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">2</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">3</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">4</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">5</span><span style="color:#c678dd;">]
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// *Exact match
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">is12345 </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">2</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">3</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">4</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">5</span><span style="color:#c678dd;">] -&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// *Match exact number of items
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">sum5OrZero </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [</span><span>a</span><span style="color:#c678dd;">;</span><span>b</span><span style="color:#c678dd;">;</span><span>c</span><span style="color:#c678dd;">;</span><span>d</span><span style="color:#c678dd;">;</span><span>e</span><span style="color:#c678dd;">] -&gt;</span><span> a</span><span style="color:#c678dd;">+</span><span>b</span><span style="color:#c678dd;">+</span><span>c</span><span style="color:#c678dd;">+</span><span>d</span><span style="color:#c678dd;">+</span><span>e
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">0
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// *Match head/tail
+</span><span style="font-style:italic;color:#7f848e;">//  We can match head/tail with `h::t` construct.
+</span><span style="font-style:italic;color:#7f848e;">//  Head is the first element of the list, Tail is a list of all further elements.
+</span><span style="font-style:italic;color:#7f848e;">//  Example use cases:
+</span><span style="font-style:italic;color:#7f848e;">// Exact head 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">is1First </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| </span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">::</span><span>t </span><span style="color:#c678dd;">-&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Exact tail
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">is2345Tail </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">|</span><span> h</span><span style="color:#c678dd;">::[</span><span style="color:#d19a66;">2</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">3</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">4</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">5</span><span style="color:#c678dd;">] -&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Deconstruct head
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">head </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">|</span><span> h</span><span style="color:#c678dd;">::</span><span>t </span><span style="color:#c678dd;">-&gt;</span><span> Some h
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt;</span><span> None
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Deconstruct tail
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">skipHead </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">|</span><span> h</span><span style="color:#c678dd;">::</span><span>t </span><span style="color:#c678dd;">-&gt;</span><span> t
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; []
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Empty or not?
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">isEmpty </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [] -&gt; </span><span style="color:#d19a66;">true 
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// One element
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">isSingle </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myList </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [</span><span>x</span><span style="color:#c678dd;">] -&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">//// Arrays
+</span><span style="font-style:italic;color:#7f848e;">//   An Array structure offers fewer ways of matching than list.
+</span><span style="font-style:italic;color:#7f848e;">//   We construct an array as:
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">myArray </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">2</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">3</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">4</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">5</span><span style="color:#c678dd;">|]
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Cases similar to List type 
+</span><span style="font-style:italic;color:#7f848e;">// *Exact match
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">is12345</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myArray </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">2</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">3</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">4</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">5</span><span style="color:#c678dd;">|] -&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// *Deconstruct exact number of items
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">sum5OrZero</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myArray </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [|</span><span>a</span><span style="color:#c678dd;">;</span><span>b</span><span style="color:#c678dd;">;</span><span>c</span><span style="color:#c678dd;">;</span><span>d</span><span style="color:#c678dd;">;</span><span>e</span><span style="color:#c678dd;">|] -&gt;</span><span> a</span><span style="color:#c678dd;">+</span><span>b</span><span style="color:#c678dd;">+</span><span>c</span><span style="color:#c678dd;">+</span><span>d</span><span style="color:#c678dd;">+</span><span>e
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">0
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// *Empty?
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">isEmpty</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myArray </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [||] -&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// *One element
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">isSingle</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> myArray </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">| [|</span><span>x</span><span style="color:#c678dd;">|] -&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">| _ -&gt; </span><span style="color:#d19a66;">false
+</span></code></pre>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script src="https://autoforecastteam.github.io/js/main.js" defer></script>
+
+  <script src="https://autoforecastteam.github.io/plugins/elasticlunr.min.js" defer></script>
+  <script src="https://autoforecastteam.github.io/search_index.en.js" defer></script>
+  <script src="https://autoforecastteam.github.io/js/search.js" defer></script>
+
+  
+</body>
+</html>

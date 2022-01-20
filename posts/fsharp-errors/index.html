@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://autoforecastteam.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://autoforecastteam.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://autoforecastteam.github.io/main.css">
+
+
+
+  
+  
+  
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Exception handling in F# | autoforecast team's blog</title>
+<meta name="description" content="Functional-first approach to .NET exceptions">
+<link rel="canonical" href="https://autoforecastteam.github.io/posts/fsharp-errors/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://autoforecastteam.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Posts",
+            "item": "https://autoforecastteam.github.io/posts/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Fsharp Errors",
+            "item": "https://autoforecastteam.github.io/posts/fsharp-errors/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+  <meta name="theme-color" content="#fff">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://autoforecastteam.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://autoforecastteam.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://autoforecastteam.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://autoforecastteam.github.io/site.webmanifest">
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="blog single">
+  
+  
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://autoforecastteam.github.io">autoforecast team&#x27;s blog</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+						<li class="nav-item blog active">
+							<a class="nav-link" href="https://autoforecastteam.github.io/posts/">Posts</a>
+						</li>
+					
+						<li class="nav-item">
+							<a class="nav-link" href="https://autoforecastteam.github.io/authors/">Authors</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+				<form class="navbar-form flex-grow-1 order-7 order-md-3">
+					<input id="userinput" class="form-control is-search" type="search" placeholder="Search"
+						aria-label="Search" autocomplete="on">
+					<div id="suggestions" class="shadow bg-white rounded"></div>
+				</form>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xl-8">
+        <article>
+          <div class="blog-header">
+            <h1>Exception handling in F#</h1>
+            
+<p><small>Posted February  9, 2021 by <a class="stretched-link position-relative" href="https://autoforecastteam.github.io/authors/rafal-gwozdzinski/">Rafał Gwoździński</a>&nbsp;&hyphen;&nbsp;<strong>4&nbsp;min read</strong></small><p>
+
+          </div>
+          
+          <!--more-->
+<h1 id="exception-handling-in-f">Exception Handling in F#</h1>
+<h2 id="try-catch">Try-catch</h2>
+<p>Simplest way to handle Exception is to use a try-with pattern. It is similar concept to a <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/try-catch">try-catch pattern in C#</a>.
+According to an <a href="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/exception-handling/the-try-with-expression">F# documentation</a> a structure of try-catch block is</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">try
+</span><span>    expression1
+</span><span style="color:#c678dd;">with
+</span><span style="color:#c678dd;">|</span><span> pattern1 </span><span style="color:#c678dd;">-&gt;</span><span> expression2
+</span><span style="color:#c678dd;">|</span><span> pattern2 </span><span style="color:#c678dd;">-&gt;</span><span> expression3
+</span><span style="color:#c678dd;">..</span><span>.
+</span></code></pre>
+<p>The shortest way we can write it is to give one catch-all pattern for all exception.
+Then we can even drop the pipe and match directly after <code>with</code> clause:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">operationThatFails </span><span style="color:#d19a66;">() </span><span style="color:#c678dd;">=</span><span> failwith </span><span style="color:#98c379;">&quot;Error&quot;
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">x </span><span style="color:#c678dd;">=
+</span><span>  </span><span style="color:#c678dd;">try
+</span><span>    operationThatFails </span><span style="color:#d19a66;">()
+</span><span>  </span><span style="color:#c678dd;">with</span><span> e </span><span style="color:#c678dd;">-&gt;</span><span> sprintf </span><span style="color:#98c379;">&quot;Caught exception </span><span style="color:#c678dd;">%A</span><span style="color:#98c379;">&quot;</span><span> e
+</span></code></pre>
+<p>In above case the exception is handled correctly. Variable x evaluates to <code>&quot;Caught exception System.Exception: Error&quot;</code> string.</p>
+<h2 id="problem-with-hofs-and-partial-application">Problem with <a href="https://en.wikipedia.org/wiki/Higher-order_function">HOF</a>s and partial application</h2>
+<p>There is one problem that has caught me unexpectedly.</p>
+<p>I was working on a function that did a lookup on CsvRow from <a href="http://fsprojects.github.io/FSharp.Data/">FSharp.Data</a> package.
+The first version was:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">tryGetValue </span><span style="color:#c678dd;">(</span><span style="font-style:italic;color:#e06c75;">row</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">CsvRow</span><span style="color:#c678dd;">) (</span><span style="font-style:italic;color:#e06c75;">columnName</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">string</span><span style="color:#c678dd;">) =
+</span><span>   </span><span style="color:#c678dd;">try
+</span><span>       row.</span><span style="color:#c678dd;">[</span><span>columnName</span><span style="color:#c678dd;">]
+</span><span>   </span><span style="color:#c678dd;">with
+</span><span>   </span><span style="color:#c678dd;">| :</span><span>? KeyNotFoundException </span><span style="color:#c678dd;">-&gt;</span><span> failwithf </span><span style="color:#98c379;">&quot;Missing column: </span><span style="color:#c678dd;">%s</span><span style="color:#98c379;">&quot;</span><span> columnName
+</span></code></pre>
+<p>I used it to catch exceptions when there is a missing column name in CSV and then rethrow
+with better message. Default exception message was too cryptic for my use case.</p>
+<p>After couple of minutes I thought that it would be a good idea to refactor this into a
+higher-order function that will be partially applied.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">tryGetValue </span><span style="color:#c678dd;">(</span><span style="font-style:italic;color:#e06c75;">columnName</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">string</span><span style="color:#c678dd;">) =
+</span><span>   </span><span style="color:#c678dd;">try
+</span><span>       </span><span style="color:#c678dd;">fun (</span><span style="font-style:italic;color:#e06c75;">x</span><span style="color:#c678dd;">:</span><span style="color:#e5c07b;"> CsvRow</span><span style="color:#c678dd;">) -&gt;</span><span> x.</span><span style="color:#c678dd;">[</span><span>columnName</span><span style="color:#c678dd;">]
+</span><span>   </span><span style="color:#c678dd;">with
+</span><span>   </span><span style="color:#c678dd;">| :</span><span>? KeyNotFoundException </span><span style="color:#c678dd;">-&gt;</span><span> failwithf </span><span style="color:#98c379;">&quot;Missing column: </span><span style="color:#c678dd;">%s</span><span style="color:#98c379;">&quot;</span><span> columnName
+</span></code></pre>
+<p>At first glance it looked OK. The only problem is, that this solution did not work.</p>
+<p>In this case exceptions are caught only for the anonymous function creation part.
+Application of my newly created function happens in another context, which may or may not have
+its own exception handling.</p>
+<p>Similar thing happens with partial application:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">operationThatFails </span><span style="color:#c678dd;">(</span><span style="font-style:italic;color:#e06c75;">_</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">string</span><span style="color:#c678dd;">) (</span><span style="font-style:italic;color:#e06c75;">_</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">string</span><span style="color:#c678dd;">) : </span><span style="color:#e5c07b;">string </span><span style="color:#c678dd;">=</span><span> failwith </span><span style="color:#98c379;">&quot;Error&quot;
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">x </span><span style="color:#c678dd;">=
+</span><span>  </span><span style="color:#c678dd;">try
+</span><span>    operationThatFails </span><span style="color:#98c379;">&quot;str1&quot; &quot;str2&quot;
+</span><span>  </span><span style="color:#c678dd;">with
+</span><span>  </span><span style="color:#c678dd;">|</span><span> e </span><span style="color:#c678dd;">-&gt;</span><span> failwithf </span><span style="color:#98c379;">&quot;Caught exception </span><span style="color:#c678dd;">%A</span><span style="color:#98c379;">&quot;</span><span> e
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">partiallyApplied </span><span style="color:#c678dd;">: (</span><span style="color:#e5c07b;">string </span><span style="color:#c678dd;">-&gt;</span><span style="color:#e5c07b;"> string</span><span style="color:#c678dd;">) =
+</span><span>  </span><span style="color:#c678dd;">try
+</span><span>    operationThatFails </span><span style="color:#98c379;">&quot;str1&quot;
+</span><span>  </span><span style="color:#c678dd;">with
+</span><span>  </span><span style="color:#c678dd;">|</span><span> e </span><span style="color:#c678dd;">-&gt;</span><span> failwithf </span><span style="color:#98c379;">&quot;Caught exception </span><span style="color:#c678dd;">%A</span><span style="color:#98c379;">&quot;</span><span> e
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">y </span><span style="color:#c678dd;">=</span><span> partiallyApplied </span><span style="color:#98c379;">&quot;str2&quot;
+</span></code></pre>
+<p>Variable x evaluates to string <code>&quot;Caught exception [...]&quot;</code>.</p>
+<p>Evaluation of y fails with <code>System.Exception: Error</code></p>
+<h2 id="alternative-approach">Alternative approach</h2>
+<p>An interesting (and more functional) way to handle exceptions is to use an
+<a href="https://github.com/fsprojects/FSharpPlus">FSharpPlus</a> library.
+There is a simple (but very helpful) function <code>protect</code> for <code>Result</code> type:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">protect </span><span style="color:#c678dd;">(</span><span style="font-style:italic;color:#e06c75;">f</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">&#39;T</span><span style="color:#c678dd;">-&gt;</span><span style="color:#e5c07b;">&#39;U</span><span style="color:#c678dd;">) (</span><span style="font-style:italic;color:#e06c75;">x</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">&#39;T</span><span style="color:#c678dd;">) : </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">&#39;U</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">exn</span><span style="color:#c678dd;">&gt; =
+</span><span>        </span><span style="color:#c678dd;">try
+</span><span>            Ok </span><span style="color:#c678dd;">(</span><span>f x</span><span style="color:#c678dd;">)
+</span><span>        </span><span style="color:#c678dd;">with</span><span> e </span><span style="color:#c678dd;">-&gt;</span><span> Error e
+</span></code></pre>
+<p>Each time we deal with a function/method that throws exceptions we can wrap it
+and apply in safe <code>Result</code> context:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">iWillThrow </span><span style="color:#d19a66;">() </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">string </span><span style="color:#c678dd;">=</span><span> failwith </span><span style="color:#98c379;">&quot;Error&quot;
+</span><span>
+</span><span>Result.protect iWillThrow  </span><span style="font-style:italic;color:#7f848e;">// Wrap
+</span><span style="color:#c678dd;">|&gt; fun</span><span style="font-style:italic;color:#e06c75;"> x </span><span style="color:#c678dd;">-&gt;</span><span> x </span><span style="color:#d19a66;">()           </span><span style="font-style:italic;color:#7f848e;">// Apply
+</span><span style="color:#c678dd;">|&gt; function                </span><span style="font-style:italic;color:#7f848e;">// Handle Result
+</span><span>   </span><span style="color:#c678dd;">|</span><span> Ok v    </span><span style="color:#c678dd;">-&gt;</span><span> sprintf </span><span style="color:#98c379;">&quot;Value was: </span><span style="color:#c678dd;">%s</span><span style="color:#98c379;">&quot;</span><span> v
+</span><span>   </span><span style="color:#c678dd;">|</span><span> Error e </span><span style="color:#c678dd;">-&gt;</span><span> sprintf </span><span style="color:#98c379;">&quot;There was an error: </span><span style="color:#c678dd;">%A</span><span style="color:#98c379;">&quot;</span><span> e
+</span></code></pre>
+<p>If we don't care about thrown exception we can just use <code>Option.protect</code>, which will
+return <code>None</code> for all failed cases.</p>
+<p>There is a caveat though, that <code>protect</code> accepts only functions that take a single parameter.
+However, this constraint may actually be benefitial, because it saves us from making the same mistake
+that I did.</p>
+<p>Partially applied <code>tryGetValue</code> function would then be:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">tryGetValue </span><span style="color:#c678dd;">(</span><span style="font-style:italic;color:#e06c75;">columnName</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">string</span><span style="color:#c678dd;">) =
+</span><span>   </span><span style="color:#c678dd;">fun (</span><span style="font-style:italic;color:#e06c75;">x</span><span style="color:#c678dd;">:</span><span style="color:#e5c07b;"> CsvRow</span><span style="color:#c678dd;">) -&gt;</span><span> x.</span><span style="color:#c678dd;">[</span><span>columnName</span><span style="color:#c678dd;">]
+</span><span>   </span><span style="color:#c678dd;">|&gt;</span><span> Option.protect
+</span><span>   </span><span style="color:#c678dd;">|&gt;&gt;</span><span> Option.defaultWith </span><span style="color:#c678dd;">(fun () -&gt;</span><span> failwithf </span><span style="color:#98c379;">&quot;Missing column: </span><span style="color:#c678dd;">%s</span><span style="color:#98c379;">&quot;</span><span> columnName</span><span style="color:#c678dd;">)
+</span></code></pre>
+<p>where <code>|&gt;&gt;</code> is just an FSharpPlus operator for <code>Option.map</code> function.</p>
+<h2 id="disclaimer">Disclaimer</h2>
+<p>In all examples above, <code>tryGetValue</code> remains a partial function. It will fail for all <code>columnName</code> values
+that are not contained in CsvRow. It is written that way, because in my example I treat missing column name
+as an unrecoverable error. I apply <a href="https://en.wikipedia.org/wiki/Fail-fast">Fail-fast</a> principle,
+which means that I want to stop further processing immediately.</p>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script src="https://autoforecastteam.github.io/js/main.js" defer></script>
+
+  <script src="https://autoforecastteam.github.io/plugins/elasticlunr.min.js" defer></script>
+  <script src="https://autoforecastteam.github.io/search_index.en.js" defer></script>
+  <script src="https://autoforecastteam.github.io/js/search.js" defer></script>
+
+  
+</body>
+</html>

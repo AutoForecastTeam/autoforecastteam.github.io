@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://autoforecastteam.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://autoforecastteam.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://autoforecastteam.github.io/main.css">
+
+
+
+  
+  
+  
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Parsing 101 | autoforecast team's blog</title>
+<meta name="description" content="Simple parsing example with FParsec.">
+<link rel="canonical" href="https://autoforecastteam.github.io/posts/parsing-101/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://autoforecastteam.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Posts",
+            "item": "https://autoforecastteam.github.io/posts/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Parsing 101",
+            "item": "https://autoforecastteam.github.io/posts/parsing-101/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+  <meta name="theme-color" content="#fff">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://autoforecastteam.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://autoforecastteam.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://autoforecastteam.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://autoforecastteam.github.io/site.webmanifest">
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="blog single">
+  
+  
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://autoforecastteam.github.io">autoforecast team&#x27;s blog</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+						<li class="nav-item blog active">
+							<a class="nav-link" href="https://autoforecastteam.github.io/posts/">Posts</a>
+						</li>
+					
+						<li class="nav-item">
+							<a class="nav-link" href="https://autoforecastteam.github.io/authors/">Authors</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+				<form class="navbar-form flex-grow-1 order-7 order-md-3">
+					<input id="userinput" class="form-control is-search" type="search" placeholder="Search"
+						aria-label="Search" autocomplete="on">
+					<div id="suggestions" class="shadow bg-white rounded"></div>
+				</form>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xl-8">
+        <article>
+          <div class="blog-header">
+            <h1>Parsing 101</h1>
+            
+<p><small>Posted March 11, 2021 by <a class="stretched-link position-relative" href="https://autoforecastteam.github.io/authors/rafal-gwozdzinski/">Rafał Gwoździński</a>&nbsp;&hyphen;&nbsp;<strong>5&nbsp;min read</strong></small><p>
+
+          </div>
+          
+          <!--more-->
+<h1 id="parsing-101">Parsing 101</h1>
+<p>In this post I will try to show a simple example of parsing using <a href="https://www.quanttec.com/fparsec/">FParsec</a> library.
+It uses a Combinatory Parsing approach, which is pervasive across Functional Programming domain.</p>
+<h2 id="task-1-parse-simple-boolean-logic">Task #1 - Parse simple boolean logic</h2>
+<p>Let's define a type that represents a boolean expressions.
+It is a recursive type for which we can distnguish two kinds of expressions:</p>
+<ul>
+<li>Primitive - <code>True</code>, <code>False</code></li>
+<li>Nested - <code>And</code>, <code>Or</code>, <code>Not</code></li>
+</ul>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">type </span><span style="color:#e5c07b;">BoolExpr </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">|</span><span> True
+</span><span>    </span><span style="color:#c678dd;">|</span><span> False
+</span><span>    </span><span style="color:#c678dd;">|</span><span> And </span><span style="color:#c678dd;">of </span><span style="color:#e5c07b;">BoolExpr </span><span style="color:#c678dd;">* </span><span style="color:#e5c07b;">BoolExpr
+</span><span>    </span><span style="color:#c678dd;">|</span><span> Or </span><span style="color:#c678dd;">of </span><span style="color:#e5c07b;">BoolExpr </span><span style="color:#c678dd;">* </span><span style="color:#e5c07b;">BoolExpr
+</span><span>    </span><span style="color:#c678dd;">|</span><span> Not </span><span style="color:#c678dd;">of </span><span style="color:#e5c07b;">BoolExpr
+</span></code></pre>
+<p>First, we define primitive parsers.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">pTrue </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Parser</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">BoolExpr</span><span style="color:#c678dd;">,</span><span style="color:#d19a66;">unit</span><span style="color:#c678dd;">&gt; = 
+</span><span>    pstring </span><span style="color:#98c379;">&quot;TRUE&quot; </span><span style="color:#c678dd;">|&gt;&gt; (fun</span><span style="font-style:italic;color:#e06c75;"> _ </span><span style="color:#c678dd;">-&gt;</span><span> True</span><span style="color:#c678dd;">) </span><span style="font-style:italic;color:#7f848e;">// See how `|&gt;&gt;` is used to map Parser monad to type. 
+</span><span>                                       </span><span style="font-style:italic;color:#7f848e;">// It&#39;s the same convention as in FSharpPlus
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">pFalse </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Parser</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">BoolExpr</span><span style="color:#c678dd;">,</span><span style="color:#d19a66;">unit</span><span style="color:#c678dd;">&gt; = 
+</span><span>    pstring </span><span style="color:#98c379;">&quot;FALSE&quot; </span><span style="color:#c678dd;">&gt;&gt;</span><span>% False </span><span style="font-style:italic;color:#7f848e;">// But for map with value dropping, we can just use dedicated operator `&gt;&gt;%`
+</span></code></pre>
+<p>Functional approach: Use composition to build robust abstractions.
+We combine two primitive parsers to create a single parser for primitives.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">pBoolLiteral </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Parser</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">BoolExpr</span><span style="color:#c678dd;">,</span><span style="color:#d19a66;">unit</span><span style="color:#c678dd;">&gt; =</span><span> pTrue </span><span style="color:#c678dd;">&lt;|&gt;</span><span> pFalse
+</span></code></pre>
+<p>Now, let's create a simple runner:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">parse</span><span style="font-style:italic;color:#e06c75;"> parser str </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match</span><span> run parser str </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">|</span><span> Success</span><span style="color:#c678dd;">(</span><span>result</span><span style="color:#c678dd;">, _, _)   -&gt;</span><span> result
+</span><span>    </span><span style="color:#c678dd;">|</span><span> Failure</span><span style="color:#c678dd;">(</span><span>errorMsg</span><span style="color:#c678dd;">, _, _) -&gt;</span><span> failwith errorMsg
+</span></code></pre>
+<p>We can see if our parsers work correct:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="font-style:italic;color:#7f848e;">// Parse concrete primitives
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">trueVal </span><span style="color:#c678dd;">=</span><span> parse pTrue </span><span style="color:#98c379;">&quot;TRUE&quot;
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">falseVal </span><span style="color:#c678dd;">=</span><span> parse pFalse </span><span style="color:#98c379;">&quot;FALSE&quot;
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">trueFail </span><span style="color:#c678dd;">=</span><span> parse pTrue </span><span style="color:#98c379;">&quot;NOT_A_TRUE&quot;
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">falseFail </span><span style="color:#c678dd;">=</span><span> parse pFalse </span><span style="color:#98c379;">&quot;NOT_A_FALSE&quot; 
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Parse primitive expressions
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">trueVal</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> parse pBoolLiteral </span><span style="color:#98c379;">&quot;TRUE&quot;
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">falseVal</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> parse pBoolLiteral </span><span style="color:#98c379;">&quot;FALSE&quot;
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">trueFail</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> parse pBoolLiteral </span><span style="color:#98c379;">&quot;NOT_A_TRUE&quot;
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">falseFail</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> parse pBoolLiteral </span><span style="color:#98c379;">&quot;NOT_A_FALSE&quot; 
+</span></code></pre>
+<p>For our implementation to work correctly, we need to be able to parse nested expressions.
+Common way to structurize expressions is to use parentheses, which our parser needs to support.</p>
+<p><strong>Example:</strong> <code>(NOT TRUE) AND (TRUE OR FALSE)</code> is <code>And</code> expression, which is combined of two expressions: <code>NOT TRUE</code> and <code>TRUE OR FALSE</code> </p>
+<p>We declare dummy parser, that will be filled with proper implementation in future.
+<strong>Warning:</strong> Using this parser without binding proper implementation to it, will result in runtime Exception.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">exprParser,</span><span style="font-style:italic;color:#e06c75;"> exprParserRef </span><span style="color:#c678dd;">=</span><span> createParserForwardedToRef</span><span style="color:#c678dd;">&lt;</span><span>BoolExpr</span><span style="color:#c678dd;">,</span><span style="color:#d19a66;">unit</span><span style="color:#c678dd;">&gt;</span><span style="color:#d19a66;">()
+</span></code></pre>
+<p>We use it in our implementation of parenthesized expression parser:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">pParenExpr </span><span style="color:#c678dd;">=</span><span> between </span><span style="color:#c678dd;">(</span><span>pchar </span><span style="color:#98c379;">&#39;(&#39;</span><span style="color:#c678dd;">) (</span><span>pchar </span><span style="color:#98c379;">&#39;)&#39;</span><span style="color:#c678dd;">)</span><span> exprParser
+</span></code></pre>
+<p>Now, we can create a term parser. 
+One thing to consider is potential spaces in our input (e.g. <code>NOT  (  TRUE )</code>).
+We need to parse them, but they are not meaningful, so we drop them using operators <code>&gt;&gt;.</code> and <code>.&gt;&gt;</code>.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">pTerm </span><span style="color:#c678dd;">= 
+</span><span>    spaces </span><span style="color:#c678dd;">&gt;&gt;</span><span>. 
+</span><span>    pBoolLiteral </span><span style="color:#c678dd;">&lt;|&gt;</span><span> pParenExpr
+</span><span>    .</span><span style="color:#c678dd;">&gt;&gt;</span><span> spaces
+</span></code></pre>
+<p>Now we want to parse operators.
+We could write our own implementation, but it's simpler and more efficient to use a dedicated tool:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">opp </span><span style="color:#c678dd;">=</span><span> OperatorPrecedenceParser</span><span style="color:#c678dd;">&lt;_,_,_&gt;</span><span style="color:#d19a66;">()
+</span></code></pre>
+<p>Let's define some helpers.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">isSymbolicOperatorChar </span><span style="color:#c678dd;">=</span><span> notFollowedBy letter </span><span style="color:#c678dd;">&gt;&gt;</span><span>. spaces
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">resultFun</span><span style="font-style:italic;color:#e06c75;"> op </span><span style="color:#c678dd;">= fun</span><span style="font-style:italic;color:#e06c75;"> x y </span><span style="color:#c678dd;">-&gt;</span><span> op </span><span style="color:#c678dd;">(</span><span>x</span><span style="color:#c678dd;">,</span><span> y</span><span style="color:#c678dd;">)
+</span></code></pre>
+<p>Now we can add infix operators OR and AND. 
+AND has a greater precedence, so we give it 20.
+There is a convention of assigning (10, 20, 30) instead of (1, 2, 3) as precedence values.
+The reason is, that it's easier to add some operators inbetween existing ones later.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">infixOperator </span><span style="color:#c678dd;">(</span><span style="font-style:italic;color:#e06c75;">opp</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">OperatorPrecedenceParser</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">_</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">_</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">_</span><span style="color:#c678dd;">&gt;)</span><span style="font-style:italic;color:#e06c75;"> op prec assoc f </span><span style="color:#c678dd;">=
+</span><span>    opp.AddOperator</span><span style="color:#c678dd;">(</span><span>InfixOperator </span><span style="color:#c678dd;">(</span><span>op</span><span style="color:#c678dd;">,</span><span> isSymbolicOperatorChar</span><span style="color:#c678dd;">,</span><span> prec</span><span style="color:#c678dd;">,</span><span> assoc</span><span style="color:#c678dd;">,</span><span> resultFun f</span><span style="color:#c678dd;">))
+</span><span>infixOperator opp </span><span style="color:#98c379;">&quot;OR&quot; </span><span style="color:#d19a66;">10</span><span> Associativity.Left Or
+</span><span>infixOperator opp </span><span style="color:#98c379;">&quot;AND&quot; </span><span style="color:#d19a66;">20</span><span> Associativity.Left And
+</span></code></pre>
+<p>Now we add prefix operator NOT. It has greater precedence than infixes, so it gets 30. </p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span>opp.AddOperator</span><span style="color:#c678dd;">(</span><span>PrefixOperator </span><span style="color:#c678dd;">(</span><span style="color:#98c379;">&quot;NOT&quot;</span><span style="color:#c678dd;">,</span><span> isSymbolicOperatorChar</span><span style="color:#c678dd;">, </span><span style="color:#d19a66;">30</span><span style="color:#c678dd;">, </span><span style="color:#d19a66;">true</span><span style="color:#c678dd;">,</span><span> Not</span><span style="color:#c678dd;">))
+</span></code></pre>
+<p>We assign our term parser.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span>opp.TermParser </span><span style="color:#c678dd;">&lt;-</span><span> pTerm
+</span></code></pre>
+<p>And we assign our infix parser as our proper parser implementation instead of previously defined dummy.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span>exprParserRef </span><span style="color:#c678dd;">:=</span><span> opp.ExpressionParser
+</span></code></pre>
+<p>Let's see if it works.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">pExpr </span><span style="color:#c678dd;">=</span><span> parse exprParser
+</span><span>pExpr </span><span style="color:#98c379;">&quot;FALSE AND TRUE&quot;
+</span><span>pExpr </span><span style="color:#98c379;">&quot;NOT FALSE OR NOT TRUE&quot;
+</span><span>pExpr </span><span style="color:#98c379;">&quot;NOT ( FALSE AND NOT TRUE )&quot;
+</span></code></pre>
+<h2 id="task-2-evaluate-parsed-expressions">Task #2 - Evaluate parsed expressions</h2>
+<p>Now that we made all the parsing, evaluation is straightforward:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let rec </span><span style="color:#e06c75;">eval </span><span style="color:#c678dd;">= 
+</span><span>    </span><span style="color:#c678dd;">function
+</span><span>    </span><span style="color:#c678dd;">|</span><span> True </span><span style="color:#c678dd;">-&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">|</span><span> False </span><span style="color:#c678dd;">-&gt; </span><span style="color:#d19a66;">false 
+</span><span>    </span><span style="color:#c678dd;">|</span><span> And </span><span style="color:#c678dd;">(</span><span>e1</span><span style="color:#c678dd;">,</span><span> e2</span><span style="color:#c678dd;">) -&gt; (</span><span>eval e1</span><span style="color:#c678dd;">) &amp;&amp; (</span><span>eval e2</span><span style="color:#c678dd;">) 
+</span><span>    </span><span style="color:#c678dd;">|</span><span> Or </span><span style="color:#c678dd;">(</span><span>e1</span><span style="color:#c678dd;">,</span><span> e2</span><span style="color:#c678dd;">) -&gt; (</span><span>eval e1</span><span style="color:#c678dd;">) || (</span><span>eval e2</span><span style="color:#c678dd;">)
+</span><span>    </span><span style="color:#c678dd;">|</span><span> Not e </span><span style="color:#c678dd;">-&gt;</span><span> not </span><span style="color:#c678dd;">(</span><span>eval e</span><span style="color:#c678dd;">)
+</span></code></pre>
+<p>Finally, let's parse and evaluate our expressions. </p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">parseAndEval </span><span style="color:#c678dd;">=</span><span> pExpr </span><span style="color:#c678dd;">&gt;&gt;</span><span> eval
+</span><span>parseAndEval </span><span style="color:#98c379;">&quot; FALSE   AND    TRUE   &quot;
+</span><span>parseAndEval </span><span style="color:#98c379;">&quot;NOT FALSE OR NOT TRUE&quot;
+</span><span>parseAndEval </span><span style="color:#98c379;">&quot;NOT ( FALSE AND NOT TRUE )&quot;
+</span><span>parseAndEval </span><span style="color:#98c379;">&quot;NOT TRUE AND NOT FALSE OR TRUE AND NOT FALSE&quot;
+</span></code></pre>
+<h2 id="resources">Resources</h2>
+<ol>
+<li>Super useful tutorial with explained FParsec internals by Scott Wlaschin.
+https://fsharpforfunandprofit.com/posts/understanding-parser-combinators/</li>
+<li>FParsec docs. Tutorial and user's guide are especially valuable for beginners.
+https://www.quanttec.com/fparsec/tutorial.html</li>
+<li>Comparison of different parsing approaches.
+https://www.quanttec.com/fparsec/about/fparsec-vs-alternatives.html</li>
+</ol>
+<h2 id="code">Code</h2>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span>#r </span><span style="color:#98c379;">&quot;nuget: FParsec&quot;
+</span><span>
+</span><span style="color:#c678dd;">open </span><span style="font-weight:bold;color:#61afef;">FParsec
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Task #1 - Parse simple boolean logic
+</span><span>
+</span><span style="color:#c678dd;">type </span><span style="color:#e5c07b;">BoolExpr </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">|</span><span> True   
+</span><span>    </span><span style="color:#c678dd;">|</span><span> False
+</span><span>    </span><span style="color:#c678dd;">|</span><span> And </span><span style="color:#c678dd;">of </span><span style="color:#e5c07b;">BoolExpr </span><span style="color:#c678dd;">* </span><span style="color:#e5c07b;">BoolExpr
+</span><span>    </span><span style="color:#c678dd;">|</span><span> Or </span><span style="color:#c678dd;">of </span><span style="color:#e5c07b;">BoolExpr </span><span style="color:#c678dd;">* </span><span style="color:#e5c07b;">BoolExpr
+</span><span>    </span><span style="color:#c678dd;">|</span><span> Not </span><span style="color:#c678dd;">of </span><span style="color:#e5c07b;">BoolExpr
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">pTrue </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Parser</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">BoolExpr</span><span style="color:#c678dd;">,</span><span style="color:#d19a66;">unit</span><span style="color:#c678dd;">&gt; = 
+</span><span>    pstring </span><span style="color:#98c379;">&quot;TRUE&quot; </span><span style="color:#c678dd;">|&gt;&gt; (fun</span><span style="font-style:italic;color:#e06c75;"> _ </span><span style="color:#c678dd;">-&gt;</span><span> True</span><span style="color:#c678dd;">) 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">pFalse </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Parser</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">BoolExpr</span><span style="color:#c678dd;">,</span><span style="color:#d19a66;">unit</span><span style="color:#c678dd;">&gt; = 
+</span><span>    pstring </span><span style="color:#98c379;">&quot;FALSE&quot; </span><span style="color:#c678dd;">&gt;&gt;</span><span>% False
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">pBoolLiteral </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Parser</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">BoolExpr</span><span style="color:#c678dd;">,</span><span style="color:#d19a66;">unit</span><span style="color:#c678dd;">&gt; =</span><span> pTrue </span><span style="color:#c678dd;">&lt;|&gt;</span><span> pFalse
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">parse</span><span style="font-style:italic;color:#e06c75;"> parser str </span><span style="color:#c678dd;">=  
+</span><span>    </span><span style="color:#c678dd;">match</span><span> run parser str </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">|</span><span> Success</span><span style="color:#c678dd;">(</span><span>result</span><span style="color:#c678dd;">, _, _)   -&gt;</span><span> result
+</span><span>    </span><span style="color:#c678dd;">|</span><span> Failure</span><span style="color:#c678dd;">(</span><span>errorMsg</span><span style="color:#c678dd;">, _, _) -&gt;</span><span> failwith errorMsg
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">trueVal </span><span style="color:#c678dd;">=</span><span> parse pTrue </span><span style="color:#98c379;">&quot;TRUE&quot;
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">falseVal </span><span style="color:#c678dd;">=</span><span> parse pFalse </span><span style="color:#98c379;">&quot;FALSE&quot;
+</span><span style="font-style:italic;color:#7f848e;">// let trueFail = parse pTrue &quot;NOT_A_TRUE&quot;
+</span><span style="font-style:italic;color:#7f848e;">// let falseFail = parse pFalse &quot;NOT_A_FALSE&quot; 
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">trueVal</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> parse pBoolLiteral </span><span style="color:#98c379;">&quot;TRUE&quot;
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">falseVal</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> parse pBoolLiteral </span><span style="color:#98c379;">&quot;FALSE&quot;
+</span><span style="font-style:italic;color:#7f848e;">// let trueFail&#39; = parse pBoolLiteral &quot;NOT_A_TRUE&quot;
+</span><span style="font-style:italic;color:#7f848e;">// let falseFail&#39; = parse pBoolLiteral &quot;NOT_A_FALSE&quot; 
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">exprParser,</span><span style="font-style:italic;color:#e06c75;"> exprParserRef </span><span style="color:#c678dd;">=</span><span> createParserForwardedToRef</span><span style="color:#c678dd;">&lt;</span><span>BoolExpr</span><span style="color:#c678dd;">,</span><span style="color:#d19a66;">unit</span><span style="color:#c678dd;">&gt;</span><span style="color:#d19a66;">()
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">pParenExpr </span><span style="color:#c678dd;">=</span><span> between </span><span style="color:#c678dd;">(</span><span>pchar </span><span style="color:#98c379;">&#39;(&#39;</span><span style="color:#c678dd;">) (</span><span>pchar </span><span style="color:#98c379;">&#39;)&#39;</span><span style="color:#c678dd;">)</span><span> exprParser
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">pTerm </span><span style="color:#c678dd;">= 
+</span><span>    spaces </span><span style="color:#c678dd;">&gt;&gt;</span><span>. 
+</span><span>    pBoolLiteral </span><span style="color:#c678dd;">&lt;|&gt;</span><span> pParenExpr
+</span><span>    .</span><span style="color:#c678dd;">&gt;&gt;</span><span> spaces
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">opp </span><span style="color:#c678dd;">=</span><span> OperatorPrecedenceParser</span><span style="color:#c678dd;">&lt;_,_,_&gt;</span><span style="color:#d19a66;">()
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">isSymbolicOperatorChar </span><span style="color:#c678dd;">=</span><span> notFollowedBy letter </span><span style="color:#c678dd;">&gt;&gt;</span><span>. spaces
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">resultFun</span><span style="font-style:italic;color:#e06c75;"> op </span><span style="color:#c678dd;">= fun</span><span style="font-style:italic;color:#e06c75;"> x y </span><span style="color:#c678dd;">-&gt;</span><span> op </span><span style="color:#c678dd;">(</span><span>x</span><span style="color:#c678dd;">,</span><span> y</span><span style="color:#c678dd;">)
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">infixOperator </span><span style="color:#c678dd;">(</span><span style="font-style:italic;color:#e06c75;">opp</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">OperatorPrecedenceParser</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">_</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">_</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">_</span><span style="color:#c678dd;">&gt;)</span><span style="font-style:italic;color:#e06c75;"> op prec assoc f </span><span style="color:#c678dd;">=
+</span><span>    opp.AddOperator</span><span style="color:#c678dd;">(</span><span>InfixOperator </span><span style="color:#c678dd;">(</span><span>op</span><span style="color:#c678dd;">,</span><span> isSymbolicOperatorChar</span><span style="color:#c678dd;">,</span><span> prec</span><span style="color:#c678dd;">,</span><span> assoc</span><span style="color:#c678dd;">,</span><span> resultFun f</span><span style="color:#c678dd;">))
+</span><span>infixOperator opp </span><span style="color:#98c379;">&quot;OR&quot; </span><span style="color:#d19a66;">10</span><span> Associativity.Left Or
+</span><span>infixOperator opp </span><span style="color:#98c379;">&quot;AND&quot; </span><span style="color:#d19a66;">20</span><span> Associativity.Left And
+</span><span>
+</span><span>opp.AddOperator</span><span style="color:#c678dd;">(</span><span>PrefixOperator </span><span style="color:#c678dd;">(</span><span style="color:#98c379;">&quot;NOT&quot;</span><span style="color:#c678dd;">,</span><span> isSymbolicOperatorChar</span><span style="color:#c678dd;">, </span><span style="color:#d19a66;">30</span><span style="color:#c678dd;">, </span><span style="color:#d19a66;">true</span><span style="color:#c678dd;">,</span><span> Not</span><span style="color:#c678dd;">))
+</span><span>
+</span><span>opp.TermParser </span><span style="color:#c678dd;">&lt;-</span><span> pTerm
+</span><span>
+</span><span>exprParserRef </span><span style="color:#c678dd;">:=</span><span> opp.ExpressionParser
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">pExpr </span><span style="color:#c678dd;">=</span><span> parse exprParser
+</span><span>pExpr </span><span style="color:#98c379;">&quot;FALSE AND TRUE&quot;
+</span><span>pExpr </span><span style="color:#98c379;">&quot;NOT FALSE OR NOT TRUE&quot;
+</span><span>pExpr </span><span style="color:#98c379;">&quot;NOT ( FALSE AND NOT TRUE )&quot;
+</span><span>
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Task #2 - Evaluate parsed expressions
+</span><span>
+</span><span style="color:#c678dd;">let rec </span><span style="color:#e06c75;">eval </span><span style="color:#c678dd;">= 
+</span><span>    </span><span style="color:#c678dd;">function
+</span><span>    </span><span style="color:#c678dd;">|</span><span> True </span><span style="color:#c678dd;">-&gt; </span><span style="color:#d19a66;">true
+</span><span>    </span><span style="color:#c678dd;">|</span><span> False </span><span style="color:#c678dd;">-&gt; </span><span style="color:#d19a66;">false 
+</span><span>    </span><span style="color:#c678dd;">|</span><span> And </span><span style="color:#c678dd;">(</span><span>e1</span><span style="color:#c678dd;">,</span><span> e2</span><span style="color:#c678dd;">) -&gt; (</span><span>eval e1</span><span style="color:#c678dd;">) &amp;&amp; (</span><span>eval e2</span><span style="color:#c678dd;">) 
+</span><span>    </span><span style="color:#c678dd;">|</span><span> Or </span><span style="color:#c678dd;">(</span><span>e1</span><span style="color:#c678dd;">,</span><span> e2</span><span style="color:#c678dd;">) -&gt; (</span><span>eval e1</span><span style="color:#c678dd;">) || (</span><span>eval e2</span><span style="color:#c678dd;">)
+</span><span>    </span><span style="color:#c678dd;">|</span><span> Not e </span><span style="color:#c678dd;">-&gt;</span><span> not </span><span style="color:#c678dd;">(</span><span>eval e</span><span style="color:#c678dd;">)
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">parseAndEval </span><span style="color:#c678dd;">=</span><span> pExpr </span><span style="color:#c678dd;">&gt;&gt;</span><span> eval
+</span><span>parseAndEval </span><span style="color:#98c379;">&quot; FALSE   AND    TRUE   &quot;
+</span><span>parseAndEval </span><span style="color:#98c379;">&quot;NOT FALSE OR NOT TRUE&quot;
+</span><span>parseAndEval </span><span style="color:#98c379;">&quot;NOT ( FALSE AND NOT TRUE )&quot;
+</span><span>parseAndEval </span><span style="color:#98c379;">&quot;NOT TRUE AND NOT FALSE OR TRUE AND NOT FALSE&quot;
+</span></code></pre>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script src="https://autoforecastteam.github.io/js/main.js" defer></script>
+
+  <script src="https://autoforecastteam.github.io/plugins/elasticlunr.min.js" defer></script>
+  <script src="https://autoforecastteam.github.io/search_index.en.js" defer></script>
+  <script src="https://autoforecastteam.github.io/js/search.js" defer></script>
+
+  
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://autoforecastteam.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://autoforecastteam.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://autoforecastteam.github.io/main.css">
+
+
+
+  
+  
+  
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Computation Expressions in F# | autoforecast team's blog</title>
+<meta name="description" content="Monadic operations made simpler with Computation Expressions.">
+<link rel="canonical" href="https://autoforecastteam.github.io/posts/monad-computation-expressions/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://autoforecastteam.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Posts",
+            "item": "https://autoforecastteam.github.io/posts/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Monad Computation Expressions",
+            "item": "https://autoforecastteam.github.io/posts/monad-computation-expressions/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+  <meta name="theme-color" content="#fff">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://autoforecastteam.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://autoforecastteam.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://autoforecastteam.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://autoforecastteam.github.io/site.webmanifest">
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="blog single">
+  
+  
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://autoforecastteam.github.io">autoforecast team&#x27;s blog</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+						<li class="nav-item blog active">
+							<a class="nav-link" href="https://autoforecastteam.github.io/posts/">Posts</a>
+						</li>
+					
+						<li class="nav-item">
+							<a class="nav-link" href="https://autoforecastteam.github.io/authors/">Authors</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+				<form class="navbar-form flex-grow-1 order-7 order-md-3">
+					<input id="userinput" class="form-control is-search" type="search" placeholder="Search"
+						aria-label="Search" autocomplete="on">
+					<div id="suggestions" class="shadow bg-white rounded"></div>
+				</form>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xl-8">
+        <article>
+          <div class="blog-header">
+            <h1>Computation Expressions in F#</h1>
+            
+<p><small>Posted March 11, 2021 by <a class="stretched-link position-relative" href="https://autoforecastteam.github.io/authors/rafal-gwozdzinski/">Rafał Gwoździński</a>&nbsp;&hyphen;&nbsp;<strong>6&nbsp;min read</strong></small><p>
+
+          </div>
+          
+          <!--more-->
+<h1 id="computation-expressions-in-f">Computation Expressions in F#</h1>
+<p><a href="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/computation-expressions">Computation expression</a>
+is a syntax to express computations with monads (as well as with monoids, monad transformers and applicative functors).
+Let's see how we can use it to work with monadic values. We will
+try to figure out both easy and more complicated cases (e.g. nested values).
+We will use FSharpPlus library that provide set of <a href="https://fsprojects.github.io/FSharpPlus/computation-expressions.html">general monad expressions</a>,
+and compare them to &quot;plain&quot; F# approach, to see how it differs.</p>
+<h2 id="additive-monad-expression">Additive monad expression</h2>
+<p>Let's start with a simple example of concatenation.
+We have two lists and a function that takes a list and returns a new list.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">l1 </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">2</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">3</span><span style="color:#c678dd;">]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">l2 </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">4</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">5</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">6</span><span style="color:#c678dd;">]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">listFun  </span><span style="color:#c678dd;">=</span><span> bind </span><span style="color:#c678dd;">(fun</span><span style="font-style:italic;color:#e06c75;"> x </span><span style="color:#c678dd;">-&gt; [</span><span>x</span><span style="color:#c678dd;">;</span><span>x</span><span style="color:#c678dd;">;</span><span>x</span><span style="color:#c678dd;">])
+</span></code></pre>
+<p>A simple way to concatenate them is to use <code>@</code> operatior</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">lConcat </span><span style="color:#c678dd;">=</span><span> l1 </span><span style="color:#c678dd;">@</span><span> listFun l2
+</span></code></pre>
+<p>When dealing with more complicated examples, like concatentation of both lists and plain values,
+we can use list computation expression from F# core library.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">lConcat</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">= 
+</span><span>    </span><span style="color:#c678dd;">[ yield!</span><span> l1
+</span><span>      </span><span style="color:#c678dd;">yield!</span><span> listFun l2
+</span><span>      </span><span style="color:#c678dd;">yield </span><span style="color:#d19a66;">42 </span><span style="color:#c678dd;">] 
+</span></code></pre>
+<p>Instead of dedicated expression, we can just use generic additive monad expression. 
+It works for seq and array types too.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">lConcat</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= 
+</span><span>    monad.plus </span><span style="color:#c678dd;">{
+</span><span>        </span><span style="color:#c678dd;">return!</span><span> l1
+</span><span>        </span><span style="color:#c678dd;">return!</span><span> listFun l2
+</span><span>        </span><span style="color:#c678dd;">return </span><span style="color:#d19a66;">42 </span><span style="color:#c678dd;">}
+</span></code></pre>
+<h2 id="effectful-monad-expression">Effectful monad expression</h2>
+<p>Second type of generic monad expression is used to handle monads that have embedded side-effects.</p>
+<h3 id="async">Async</h3>
+<p>First, let's look at <code>Async</code> monad handling.
+Plain approach uses dedicated <code>async</code> expression:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">async1 </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">}
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">async2 </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">2 </span><span style="color:#c678dd;">}
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">aResult </span><span style="color:#c678dd;">= 
+</span><span>    </span><span style="color:#c678dd;">async {
+</span><span>        </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x1 </span><span style="color:#c678dd;">=</span><span> async1
+</span><span>        </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x2 </span><span style="color:#c678dd;">=</span><span> async2
+</span><span>        </span><span style="color:#c678dd;">return</span><span> x1 </span><span style="color:#c678dd;">+</span><span> x2
+</span><span>    </span><span style="color:#c678dd;">} 
+</span></code></pre>
+<p>We can substitute it with generic F#+ <code>monad</code> expression:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">aResult</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">= 
+</span><span>    monad </span><span style="color:#c678dd;">{
+</span><span>        </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x1 </span><span style="color:#c678dd;">=</span><span> async1
+</span><span>        </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x2 </span><span style="color:#c678dd;">=</span><span> async2
+</span><span>        </span><span style="color:#c678dd;">return</span><span> x1 </span><span style="color:#c678dd;">+</span><span> x2 
+</span><span>    </span><span style="color:#c678dd;">} 
+</span></code></pre>
+<p>Performing this operations without computation expressions is cumbersome.
+We substitute <code>let!</code> with <code>async.Bind</code> and <code>return</code> with <code>async.Return</code>, which
+gives us:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">aResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> async.Bind</span><span style="color:#c678dd;">(</span><span>async1</span><span style="color:#c678dd;">, 
+</span><span>                    </span><span style="color:#c678dd;">fun</span><span style="font-style:italic;color:#e06c75;"> x1 </span><span style="color:#c678dd;">-&gt;</span><span> async.Bind</span><span style="color:#c678dd;">(</span><span>async2</span><span style="color:#c678dd;">, 
+</span><span>                                 </span><span style="color:#c678dd;">fun</span><span style="font-style:italic;color:#e06c75;"> x2 </span><span style="color:#c678dd;">-&gt;</span><span> async.Return </span><span style="color:#c678dd;">(</span><span>x1 </span><span style="color:#c678dd;">+</span><span> x2</span><span style="color:#c678dd;">)
+</span></code></pre>
+<p>We can make it a bit cleaner with F#+ operators:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">aResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;&#39; </span><span style="color:#c678dd;">=</span><span> async1 </span><span style="color:#c678dd;">&gt;&gt;= fun</span><span style="font-style:italic;color:#e06c75;"> x1 </span><span style="color:#c678dd;">-&gt; 
+</span><span>                    async2 </span><span style="color:#c678dd;">&gt;&gt;= fun</span><span style="font-style:italic;color:#e06c75;"> x2 </span><span style="color:#c678dd;">-&gt; 
+</span><span>                        x1 </span><span style="color:#c678dd;">+</span><span> x2 </span><span style="color:#c678dd;">|&gt;</span><span> async.Return
+</span></code></pre>
+<p>But for simple operations we can just use F#+ <code>map2</code></p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">aResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;&#39;&#39; </span><span style="color:#c678dd;">=</span><span> Async.map2 </span><span style="color:#c678dd;">(+)</span><span> async1 async2
+</span></code></pre>
+<p>or <code>lift2</code></p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">aResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;&#39;&#39;&#39; </span><span style="color:#c678dd;">=</span><span> lift2 </span><span style="color:#c678dd;">(+)</span><span> async1 async2
+</span></code></pre>
+<h3 id="option">Option</h3>
+<p>There is no <code>Option</code> computation expression in F# core, so we have to use F#+:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">opt1 </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">opt2 </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">2
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">oResult </span><span style="color:#c678dd;">=</span><span> monad </span><span style="color:#c678dd;">{
+</span><span>    </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x1 </span><span style="color:#c678dd;">=</span><span> opt1
+</span><span>    </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x2 </span><span style="color:#c678dd;">=</span><span> opt2
+</span><span>    </span><span style="color:#c678dd;">return</span><span> x1 </span><span style="color:#c678dd;">+</span><span> x2 </span><span style="color:#c678dd;">}
+</span></code></pre>
+<p>We can use <code>bind</code>/<code>map</code>/<code>lift</code> as with async:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">oResult</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">= 
+</span><span>    opt1 </span><span style="color:#c678dd;">|&gt;</span><span> Option.bind </span><span style="color:#c678dd;">(fun</span><span style="font-style:italic;color:#e06c75;"> x1 </span><span style="color:#c678dd;">-&gt; 
+</span><span>        opt2 </span><span style="color:#c678dd;">|&gt;</span><span> Option.bind </span><span style="color:#c678dd;">(fun</span><span style="font-style:italic;color:#e06c75;"> x2 </span><span style="color:#c678dd;">-&gt;</span><span> x1 </span><span style="color:#c678dd;">+</span><span> x2 </span><span style="color:#c678dd;">|&gt;</span><span> Some</span><span style="color:#c678dd;">)) 
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">oResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;  </span><span style="color:#c678dd;">=</span><span> lift2       </span><span style="color:#c678dd;">(+)</span><span> opt1 opt2
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">oResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;&#39; </span><span style="color:#c678dd;">=</span><span> Option.map2 </span><span style="color:#c678dd;">(+)</span><span> opt1 opt2
+</span></code></pre>
+<p>We can also pattern match:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">oResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;&#39;&#39; </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match (</span><span>opt1</span><span style="color:#c678dd;">,</span><span> opt2</span><span style="color:#c678dd;">) with
+</span><span>    </span><span style="color:#c678dd;">| (</span><span>Some opt1</span><span style="color:#c678dd;">,</span><span> Some opt2</span><span style="color:#c678dd;">) -&gt;</span><span> Some </span><span style="color:#c678dd;">(</span><span>opt1 </span><span style="color:#c678dd;">+</span><span> opt2</span><span style="color:#c678dd;">)
+</span><span>    </span><span style="color:#c678dd;">| (_,_)                  -&gt;</span><span> None
+</span></code></pre>
+<p>Computation expressions are especially useful for complicated operations:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">opt3 </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">3
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">add1 </span><span style="color:#c678dd;">= (+) </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">isEven</span><span style="font-style:italic;color:#e06c75;"> x </span><span style="color:#c678dd;">= if</span><span> x % </span><span style="color:#d19a66;">2 </span><span style="color:#c678dd;">= </span><span style="color:#d19a66;">0                                 
+</span><span>               </span><span style="color:#c678dd;">then</span><span> Some x 
+</span><span>               </span><span style="color:#c678dd;">else</span><span> None
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">multiplyBy4 </span><span style="color:#c678dd;">= (*) </span><span style="color:#d19a66;">4
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">harderOptResult </span><span style="color:#c678dd;">= 
+</span><span>    monad </span><span style="color:#c678dd;">{
+</span><span>        </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x1 </span><span style="color:#c678dd;">=</span><span> opt3
+</span><span>        </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">even </span><span style="color:#c678dd;">=</span><span> x1 </span><span style="color:#c678dd;">|&gt;</span><span> add1 </span><span style="color:#c678dd;">|&gt;</span><span> isEven
+</span><span>        </span><span style="color:#c678dd;">return</span><span> multiplyBy4 even </span><span style="color:#c678dd;">}
+</span></code></pre>
+<p>In this case <code>bind</code>/<code>map</code> approach doesn't look that bad:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">harderOptResult</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">= 
+</span><span>    opt3 
+</span><span>    </span><span style="color:#c678dd;">|&gt;</span><span> Option.bind </span><span style="color:#c678dd;">(</span><span>add1 </span><span style="color:#c678dd;">&gt;&gt;</span><span> isEven</span><span style="color:#c678dd;">) 
+</span><span>    </span><span style="color:#c678dd;">|&gt;</span><span> Option.map multiplyBy4
+</span></code></pre>
+<p>Pattern matching on Options doesn't scale well. It gets unreadable even with one level of nesting.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">harderOptResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= 
+</span><span>    </span><span style="color:#c678dd;">match</span><span> opt3 </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">|</span><span> None </span><span style="color:#c678dd;">-&gt;</span><span> None
+</span><span>    </span><span style="color:#c678dd;">|</span><span> Some v </span><span style="color:#c678dd;">-&gt;</span><span> v </span><span style="color:#c678dd;">|&gt;</span><span> add1 </span><span style="color:#c678dd;">|&gt;</span><span> isEven
+</span><span>                </span><span style="color:#c678dd;">|&gt; function 
+</span><span>                    </span><span style="color:#c678dd;">|</span><span> None </span><span style="color:#c678dd;">-&gt;</span><span>   None
+</span><span>                    </span><span style="color:#c678dd;">|</span><span> Some e </span><span style="color:#c678dd;">-&gt;</span><span> Some </span><span style="color:#c678dd;">&lt;|</span><span> multiplyBy4 e
+</span></code></pre>
+<h3 id="result">Result</h3>
+<p>Works similarly to Option:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">res1 </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">string</span><span style="color:#c678dd;">&gt; =</span><span> Ok </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">res2 </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">string</span><span style="color:#c678dd;">&gt; =</span><span> Error </span><span style="color:#98c379;">&quot;Niepowodzenie&quot;
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">rResult </span><span style="color:#c678dd;">=</span><span> monad </span><span style="color:#c678dd;">{
+</span><span>    </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x1 </span><span style="color:#c678dd;">=</span><span> res1
+</span><span>    </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x2 </span><span style="color:#c678dd;">=</span><span> res2
+</span><span>    </span><span style="color:#c678dd;">return</span><span> x1 </span><span style="color:#c678dd;">+</span><span> x2 </span><span style="color:#c678dd;">}
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">rResult</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> Result.map2 </span><span style="color:#c678dd;">(+)</span><span> res1 res2
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">rResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> lift2       </span><span style="color:#c678dd;">(+)</span><span> res1 res2 
+</span></code></pre>
+<p>Pattern matching on Results is laborous, because we have to handle both errors manually:</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">rResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;&#39; </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match (</span><span>res1</span><span style="color:#c678dd;">,</span><span> res2</span><span style="color:#c678dd;">) with
+</span><span>    </span><span style="color:#c678dd;">| (</span><span>Ok res1</span><span style="color:#c678dd;">,</span><span> Ok res2</span><span style="color:#c678dd;">) -&gt;</span><span> Ok </span><span style="color:#c678dd;">&lt;|</span><span> res1 </span><span style="color:#c678dd;">+</span><span> res2
+</span><span>    </span><span style="color:#c678dd;">| (</span><span>Error e </span><span style="color:#c678dd;">,_)       -&gt;</span><span> Error e
+</span><span>    </span><span style="color:#c678dd;">| (_,</span><span> Error e</span><span style="color:#c678dd;">)       -&gt;</span><span> Error e
+</span></code></pre>
+<h3 id="effectful-result">Effectful Result</h3>
+<p>Let's see what happens when we have effectful function that returns Result of unit. 
+Instead of <code>let!</code>, we use <code>do!</code> keyword.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">eRes1 </span><span style="color:#d19a66;">() </span><span style="color:#c678dd;">= 
+</span><span>    printfn </span><span style="color:#98c379;">&quot;computing res1&quot;
+</span><span>    Ok </span><span style="color:#d19a66;">()
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">eRes2 </span><span style="color:#d19a66;">() </span><span style="color:#c678dd;">=</span><span> Error </span><span style="color:#98c379;">&quot;Could not compute res2&quot;
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">effResult </span><span style="color:#c678dd;">= 
+</span><span>    monad </span><span style="color:#c678dd;">{
+</span><span>        </span><span style="color:#c678dd;">do!</span><span> eRes1 </span><span style="color:#d19a66;">()
+</span><span>        </span><span style="color:#c678dd;">do!</span><span> eRes2 </span><span style="color:#d19a66;">() </span><span style="color:#c678dd;">}
+</span></code></pre>
+<p>Without computation expression, we get code thats pretty awkward</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">effResult</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> eRes1 </span><span style="color:#d19a66;">() 
+</span><span>                 </span><span style="color:#c678dd;">|&gt;</span><span> Result.bind </span><span style="color:#c678dd;">(fun () -&gt;</span><span> eRes2 </span><span style="color:#c678dd;">() 
+</span><span>                                           </span><span style="color:#c678dd;">|&gt;</span><span> Result.bind </span><span style="color:#c678dd;">(fun () -&gt;</span><span> Ok </span><span style="color:#c678dd;">()))
+</span></code></pre>
+<p>F#+ <code>bind</code> operator doesn't help</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">effResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> eRes1 </span><span style="color:#d19a66;">() 
+</span><span>                  </span><span style="color:#c678dd;">&gt;&gt;= fun () -&gt;</span><span> eRes2 </span><span style="color:#d19a66;">() 
+</span><span>                                </span><span style="color:#c678dd;">&gt;&gt;= (fun () -&gt;</span><span> Ok </span><span style="color:#c678dd;">())
+</span></code></pre>
+<h2 id="code">Code</h2>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span>#r </span><span style="color:#98c379;">&quot;nuget: FSharpPlus&quot;
+</span><span>
+</span><span style="color:#c678dd;">open </span><span style="font-weight:bold;color:#61afef;">FSharpPlus
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Additive monad expression
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">l1 </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">2</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">3</span><span style="color:#c678dd;">]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">l2 </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">4</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">5</span><span style="color:#c678dd;">;</span><span style="color:#d19a66;">6</span><span style="color:#c678dd;">]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">listFun  </span><span style="color:#c678dd;">=</span><span> bind </span><span style="color:#c678dd;">(fun</span><span style="font-style:italic;color:#e06c75;"> x </span><span style="color:#c678dd;">-&gt; [</span><span>x</span><span style="color:#c678dd;">;</span><span>x</span><span style="color:#c678dd;">;</span><span>x</span><span style="color:#c678dd;">])
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">lConcat </span><span style="color:#c678dd;">=</span><span> l1 </span><span style="color:#c678dd;">@</span><span> listFun l2
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">lConcat</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">= 
+</span><span>    </span><span style="color:#c678dd;">[ yield!</span><span> l1
+</span><span>      </span><span style="color:#c678dd;">yield!</span><span> listFun l2
+</span><span>      </span><span style="color:#c678dd;">yield </span><span style="color:#d19a66;">42 </span><span style="color:#c678dd;">] 
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">lConcat</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= 
+</span><span>    monad.plus </span><span style="color:#c678dd;">{
+</span><span>        </span><span style="color:#c678dd;">return!</span><span> l1
+</span><span>        </span><span style="color:#c678dd;">return!</span><span> listFun l2
+</span><span>        </span><span style="color:#c678dd;">return </span><span style="color:#d19a66;">42 </span><span style="color:#c678dd;">}
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Effectful monad expression
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">//// Async
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">async1 </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">}
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">async2 </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">2 </span><span style="color:#c678dd;">}
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">aResult </span><span style="color:#c678dd;">= 
+</span><span>    </span><span style="color:#c678dd;">async {
+</span><span>        </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x1 </span><span style="color:#c678dd;">=</span><span> async1
+</span><span>        </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x2 </span><span style="color:#c678dd;">=</span><span> async2
+</span><span>        </span><span style="color:#c678dd;">return</span><span> x1 </span><span style="color:#c678dd;">+</span><span> x2
+</span><span>    </span><span style="color:#c678dd;">} 
+</span><span>aResult </span><span style="color:#c678dd;">|&gt;</span><span> Async.RunSynchronously
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">aResult</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">= 
+</span><span>    monad </span><span style="color:#c678dd;">{
+</span><span>        </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x1 </span><span style="color:#c678dd;">=</span><span> async1
+</span><span>        </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x2 </span><span style="color:#c678dd;">=</span><span> async2
+</span><span>        </span><span style="color:#c678dd;">return</span><span> x1 </span><span style="color:#c678dd;">+</span><span> x2 
+</span><span>    </span><span style="color:#c678dd;">} 
+</span><span>aResult&#39; </span><span style="color:#c678dd;">|&gt;</span><span> Async.RunSynchronously
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">aResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> async.Bind</span><span style="color:#c678dd;">(</span><span>async1</span><span style="color:#c678dd;">, 
+</span><span>                    </span><span style="color:#c678dd;">fun</span><span style="font-style:italic;color:#e06c75;"> x1 </span><span style="color:#c678dd;">-&gt;</span><span> async.Bind</span><span style="color:#c678dd;">(</span><span>async2</span><span style="color:#c678dd;">, 
+</span><span>                                 </span><span style="color:#c678dd;">fun</span><span style="font-style:italic;color:#e06c75;"> x2 </span><span style="color:#c678dd;">-&gt;</span><span> async.Return </span><span style="color:#c678dd;">(</span><span>x1 </span><span style="color:#c678dd;">+</span><span> x2</span><span style="color:#c678dd;">)))
+</span><span>aResult&#39;&#39; </span><span style="color:#c678dd;">|&gt;</span><span> Async.RunSynchronously
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">aResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;&#39; </span><span style="color:#c678dd;">=</span><span> async1 </span><span style="color:#c678dd;">&gt;&gt;= fun</span><span style="font-style:italic;color:#e06c75;"> x1 </span><span style="color:#c678dd;">-&gt; 
+</span><span>                    async2 </span><span style="color:#c678dd;">&gt;&gt;= fun</span><span style="font-style:italic;color:#e06c75;"> x2 </span><span style="color:#c678dd;">-&gt; 
+</span><span>                        x1 </span><span style="color:#c678dd;">+</span><span> x2 </span><span style="color:#c678dd;">|&gt;</span><span> async.Return
+</span><span>aResult</span><span style="color:#98c379;">&#39;&#39;&#39; </span><span style="color:#c678dd;">|&gt;</span><span> Async.RunSynchronously
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">aResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;&#39;&#39; </span><span style="color:#c678dd;">=</span><span> Async.map2 </span><span style="color:#c678dd;">(+)</span><span> async1 async2
+</span><span>                  </span><span style="color:#c678dd;">|&gt;</span><span> Async.RunSynchronously
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">aResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;&#39;&#39;&#39; </span><span style="color:#c678dd;">=</span><span> lift2 </span><span style="color:#c678dd;">(+)</span><span> async1 async2
+</span><span>                   </span><span style="color:#c678dd;">|&gt;</span><span> Async.RunSynchronously
+</span><span>
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">//// Option
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">opt1 </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">opt2 </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">2
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">oResult </span><span style="color:#c678dd;">=</span><span> monad </span><span style="color:#c678dd;">{
+</span><span>    </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x1 </span><span style="color:#c678dd;">=</span><span> opt1
+</span><span>    </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x2 </span><span style="color:#c678dd;">=</span><span> opt2
+</span><span>    </span><span style="color:#c678dd;">return</span><span> x1 </span><span style="color:#c678dd;">+</span><span> x2 </span><span style="color:#c678dd;">}
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">oResult</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">= 
+</span><span>    opt1 </span><span style="color:#c678dd;">|&gt;</span><span> Option.bind </span><span style="color:#c678dd;">(fun</span><span style="font-style:italic;color:#e06c75;"> x1 </span><span style="color:#c678dd;">-&gt; 
+</span><span>        opt2 </span><span style="color:#c678dd;">|&gt;</span><span> Option.bind </span><span style="color:#c678dd;">(fun</span><span style="font-style:italic;color:#e06c75;"> x2 </span><span style="color:#c678dd;">-&gt;</span><span> x1 </span><span style="color:#c678dd;">+</span><span> x2 </span><span style="color:#c678dd;">|&gt;</span><span> Some</span><span style="color:#c678dd;">)) 
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">oResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;  </span><span style="color:#c678dd;">=</span><span> lift2       </span><span style="color:#c678dd;">(+)</span><span> opt1 opt2
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">oResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;&#39; </span><span style="color:#c678dd;">=</span><span> Option.map2 </span><span style="color:#c678dd;">(+)</span><span> opt1 opt2
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">oResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;&#39;&#39; </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match (</span><span>opt1</span><span style="color:#c678dd;">,</span><span> opt2</span><span style="color:#c678dd;">) with
+</span><span>    </span><span style="color:#c678dd;">| (</span><span>Some opt1</span><span style="color:#c678dd;">,</span><span> Some opt2</span><span style="color:#c678dd;">) -&gt;</span><span> Some </span><span style="color:#c678dd;">&lt;|</span><span> opt1 </span><span style="color:#c678dd;">+</span><span> opt2
+</span><span>    </span><span style="color:#c678dd;">| (_,_)                  -&gt;</span><span> None
+</span><span>
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">//// Option - complicated
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">opt3 </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">3
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">add1 </span><span style="color:#c678dd;">= (+) </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">isEven</span><span style="font-style:italic;color:#e06c75;"> x </span><span style="color:#c678dd;">= if</span><span> x % </span><span style="color:#d19a66;">2 </span><span style="color:#c678dd;">= </span><span style="color:#d19a66;">0                                 
+</span><span>               </span><span style="color:#c678dd;">then</span><span> Some x 
+</span><span>               </span><span style="color:#c678dd;">else</span><span> None
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">multiplyBy4 </span><span style="color:#c678dd;">= (*) </span><span style="color:#d19a66;">4
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">harderOptResult </span><span style="color:#c678dd;">= 
+</span><span>    monad </span><span style="color:#c678dd;">{
+</span><span>        </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x1 </span><span style="color:#c678dd;">=</span><span> opt3
+</span><span>        </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">even </span><span style="color:#c678dd;">=</span><span> x1 </span><span style="color:#c678dd;">|&gt;</span><span> add1 </span><span style="color:#c678dd;">|&gt;</span><span> isEven
+</span><span>        </span><span style="color:#c678dd;">return</span><span> multiplyBy4 even </span><span style="color:#c678dd;">}
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">harderOptResult</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">= 
+</span><span>    opt3 
+</span><span>    </span><span style="color:#c678dd;">|&gt;</span><span> Option.bind </span><span style="color:#c678dd;">(</span><span>add1 </span><span style="color:#c678dd;">&gt;&gt;</span><span> isEven</span><span style="color:#c678dd;">) 
+</span><span>    </span><span style="color:#c678dd;">|&gt;</span><span> Option.map multiplyBy4
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">harderOptResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= 
+</span><span>    </span><span style="color:#c678dd;">match</span><span> opt3 </span><span style="color:#c678dd;">with
+</span><span>    </span><span style="color:#c678dd;">|</span><span> None </span><span style="color:#c678dd;">-&gt;</span><span> None
+</span><span>    </span><span style="color:#c678dd;">|</span><span> Some v </span><span style="color:#c678dd;">-&gt;</span><span> v </span><span style="color:#c678dd;">|&gt;</span><span> add1 </span><span style="color:#c678dd;">|&gt;</span><span> isEven
+</span><span>                </span><span style="color:#c678dd;">|&gt; function 
+</span><span>                    </span><span style="color:#c678dd;">|</span><span> None </span><span style="color:#c678dd;">-&gt;</span><span>   None
+</span><span>                    </span><span style="color:#c678dd;">|</span><span> Some e </span><span style="color:#c678dd;">-&gt;</span><span> Some </span><span style="color:#c678dd;">&lt;|</span><span> multiplyBy4 e
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">//// Result
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">res1 </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">string</span><span style="color:#c678dd;">&gt; =</span><span> Ok </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">res2 </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">string</span><span style="color:#c678dd;">&gt; =</span><span> Error </span><span style="color:#98c379;">&quot;Niepowodzenie&quot;
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">rResult </span><span style="color:#c678dd;">=</span><span> monad </span><span style="color:#c678dd;">{
+</span><span>    </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x1 </span><span style="color:#c678dd;">=</span><span> res1
+</span><span>    </span><span style="color:#c678dd;">let! </span><span style="color:#e06c75;">x2 </span><span style="color:#c678dd;">=</span><span> res2
+</span><span>    </span><span style="color:#c678dd;">return</span><span> x1 </span><span style="color:#c678dd;">+</span><span> x2 </span><span style="color:#c678dd;">}
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">rResult</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> Result.map2 </span><span style="color:#c678dd;">(+)</span><span> res1 res2
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">rResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> lift2       </span><span style="color:#c678dd;">(+)</span><span> res1 res2 
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">rResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;&#39; </span><span style="color:#c678dd;">=
+</span><span>    </span><span style="color:#c678dd;">match (</span><span>res1</span><span style="color:#c678dd;">,</span><span> res2</span><span style="color:#c678dd;">) with
+</span><span>    </span><span style="color:#c678dd;">| (</span><span>Ok res1</span><span style="color:#c678dd;">,</span><span> Ok res2</span><span style="color:#c678dd;">) -&gt;</span><span> Ok </span><span style="color:#c678dd;">&lt;|</span><span> res1 </span><span style="color:#c678dd;">+</span><span> res2
+</span><span>    </span><span style="color:#c678dd;">| (</span><span>Error e </span><span style="color:#c678dd;">,_)       -&gt;</span><span> Error e
+</span><span>    </span><span style="color:#c678dd;">| (_,</span><span> Error e</span><span style="color:#c678dd;">)       -&gt;</span><span> Error e
+</span><span>
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">//// Effectful Result
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">eRes1 </span><span style="color:#d19a66;">() </span><span style="color:#c678dd;">= 
+</span><span>    printfn </span><span style="color:#98c379;">&quot;computing res1&quot;
+</span><span>    Ok </span><span style="color:#d19a66;">()
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">eRes2 </span><span style="color:#d19a66;">() </span><span style="color:#c678dd;">=</span><span> Error </span><span style="color:#98c379;">&quot;Could not compute res2&quot;
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">effResult </span><span style="color:#c678dd;">= 
+</span><span>    monad </span><span style="color:#c678dd;">{
+</span><span>        </span><span style="color:#c678dd;">do!</span><span> eRes1 </span><span style="color:#d19a66;">()
+</span><span>        </span><span style="color:#c678dd;">do!</span><span> eRes2 </span><span style="color:#d19a66;">() </span><span style="color:#c678dd;">}
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">effResult</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> eRes1 </span><span style="color:#d19a66;">() 
+</span><span>                 </span><span style="color:#c678dd;">|&gt;</span><span> Result.bind </span><span style="color:#c678dd;">(fun () -&gt;</span><span> eRes2 </span><span style="color:#c678dd;">() 
+</span><span>                                           </span><span style="color:#c678dd;">|&gt;</span><span> Result.bind </span><span style="color:#c678dd;">(fun () -&gt;</span><span> Ok </span><span style="color:#c678dd;">()))
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">effResult</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> eRes1 </span><span style="color:#d19a66;">() 
+</span><span>                  </span><span style="color:#c678dd;">&gt;&gt;= fun () -&gt;</span><span> eRes2 </span><span style="color:#d19a66;">() 
+</span><span>                                </span><span style="color:#c678dd;">&gt;&gt;= (fun () -&gt;</span><span> Ok </span><span style="color:#c678dd;">())
+</span></code></pre>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script src="https://autoforecastteam.github.io/js/main.js" defer></script>
+
+  <script src="https://autoforecastteam.github.io/plugins/elasticlunr.min.js" defer></script>
+  <script src="https://autoforecastteam.github.io/search_index.en.js" defer></script>
+  <script src="https://autoforecastteam.github.io/js/search.js" defer></script>
+
+  
+</body>
+</html>

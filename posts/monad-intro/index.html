@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://autoforecastteam.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://autoforecastteam.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://autoforecastteam.github.io/main.css">
+
+
+
+  
+  
+  
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Intro to monads in F# | autoforecast team's blog</title>
+<meta name="description" content="Use FSharpPlus library to expand F# functional capabilities.">
+<link rel="canonical" href="https://autoforecastteam.github.io/posts/monad-intro/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://autoforecastteam.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Posts",
+            "item": "https://autoforecastteam.github.io/posts/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Monad Intro",
+            "item": "https://autoforecastteam.github.io/posts/monad-intro/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+  <meta name="theme-color" content="#fff">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://autoforecastteam.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://autoforecastteam.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://autoforecastteam.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://autoforecastteam.github.io/site.webmanifest">
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="blog single">
+  
+  
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://autoforecastteam.github.io">autoforecast team&#x27;s blog</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+						<li class="nav-item blog active">
+							<a class="nav-link" href="https://autoforecastteam.github.io/posts/">Posts</a>
+						</li>
+					
+						<li class="nav-item">
+							<a class="nav-link" href="https://autoforecastteam.github.io/authors/">Authors</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+				<form class="navbar-form flex-grow-1 order-7 order-md-3">
+					<input id="userinput" class="form-control is-search" type="search" placeholder="Search"
+						aria-label="Search" autocomplete="on">
+					<div id="suggestions" class="shadow bg-white rounded"></div>
+				</form>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xl-8">
+        <article>
+          <div class="blog-header">
+            <h1>Intro to monads in F#</h1>
+            
+<p><small>Posted March  2, 2021 by <a class="stretched-link position-relative" href="https://autoforecastteam.github.io/authors/rafal-gwozdzinski/">Rafał Gwoździński</a>&nbsp;&hyphen;&nbsp;<strong>8&nbsp;min read</strong></small><p>
+
+          </div>
+          
+          <!--more-->
+<h1 id="intro-to-monads-in-f">Intro to monads in F#</h1>
+<p>A purpose of this post is to give you an intuition of monads and to show their implementation in
+<a href="https://github.com/fsprojects/FSharpPlus">F#+</a> library.</p>
+<h2 id="what-is-monad">What is monad?</h2>
+<p>It's a concept from a branch of mathematics called Category Theory.
+For the purpose of this introduction we can think of it as an abstract, generic type
+that implements a specific interface.
+On the level of intuition, we can think of monads as &quot;boxes&quot; for values. However,
+in some cases this intuition may be a bit of a stretch.</p>
+<h2 id="why-should-i-bother">Why should I bother?</h2>
+<p>Actually, you don't have to. You can easily write F# code without these kinds of mathematical concepts.
+However, using monads can make you see high-level patterns that span across different data types and domains.
+It will also make your code shorter and more declarative.
+I think it's a worthy pursuit for anyone interested in functional programming.</p>
+<h2 id="monad-interface">Monad &quot;interface&quot;</h2>
+<p>All monads should obey monad laws. We can think of them loosely as an interface. 
+I will try to show the vanilla F# way of handling monads, and compare it to the F#+ way.
+I would like to show that monads let us treat different types in a similar way.
+We can use same approach to create and combine values in different monadic contexts.</p>
+<h3 id="unit-return">Unit/Return</h3>
+<p><strong>Type signature:</strong> <code>a -&gt; M a</code> where <code>M</code> is a monad type.</p>
+<p>A function that &quot;wraps&quot; a value into a monad. 
+We can create a monad in F#+ using <code>result</code> function.</p>
+<p>Examples of popular monads creation in F# using both FSharp.Core API and F#+ <code>result</code>.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">l   </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">l</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> List.singleton </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">l</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> result </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">:</span><span> int list 
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">s   </span><span style="color:#c678dd;">=</span><span> seq </span><span style="color:#c678dd;">[</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">s</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> Seq.singleton </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">s</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> result </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">:</span><span> int seq 
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ar   </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ar</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> Array.singleton </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ar</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> result </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">:</span><span> int </span><span style="color:#c678dd;">[]
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">a   </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">}
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">a</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> async.Return </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">a</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> result </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">:</span><span> Async</span><span style="color:#c678dd;">&lt;</span><span>int</span><span style="color:#c678dd;">&gt;
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">o   </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">o</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> None
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">o</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> result </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">:</span><span> int option
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">r   </span><span style="color:#c678dd;">=</span><span> Ok </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">r</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> Error </span><span style="color:#98c379;">&quot;Oops!&quot;
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">r</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> result </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">:</span><span> Result</span><span style="color:#c678dd;">&lt;</span><span>int</span><span style="color:#c678dd;">,</span><span>string</span><span style="color:#c678dd;">&gt;
+</span></code></pre>
+<p>We have to add type annotation when assigning <code>result</code> to a variable.
+The reason is these variables are not used, so the compiler can't infer their types.
+In this case, we have to add types manually.</p>
+<h3 id="join">Join</h3>
+<p><strong>Type signature:</strong> <code>M M a -&gt; M a</code> where <code>M</code> is a monad type.</p>
+<p>Join lets us flatten nested monads.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">nestedList </span><span style="color:#c678dd;">= [[</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">]]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jl  </span><span style="color:#c678dd;">=</span><span> nestedList </span><span style="color:#c678dd;">|&gt;</span><span> List.concat
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jl</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> nestedList </span><span style="color:#c678dd;">|&gt;</span><span> join
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">nestedSeq </span><span style="color:#c678dd;">=</span><span> seq </span><span style="color:#c678dd;">[</span><span>seq </span><span style="color:#c678dd;">[</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">]]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">sl  </span><span style="color:#c678dd;">=</span><span> nestedSeq </span><span style="color:#c678dd;">|&gt;</span><span> Seq.concat
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">sl</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> nestedSeq </span><span style="color:#c678dd;">|&gt;</span><span> join
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">nestedArray </span><span style="color:#c678dd;">= [|[|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|]|]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jar  </span><span style="color:#c678dd;">=</span><span> nestedArray </span><span style="color:#c678dd;">|&gt;</span><span> Array.concat
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jar</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> nestedArray </span><span style="color:#c678dd;">|&gt;</span><span> join
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">nestedAsync </span><span style="color:#c678dd;">= </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> async.Return </span><span style="color:#c678dd;">|&gt;</span><span> async.Return
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ja  </span><span style="color:#c678dd;">=</span><span> nestedAsync </span><span style="color:#c678dd;">|&gt; fun</span><span style="font-style:italic;color:#e06c75;"> x </span><span style="color:#c678dd;">-&gt;</span><span> async.Bind </span><span style="color:#c678dd;">(</span><span>x</span><span style="color:#c678dd;">,</span><span>id</span><span style="color:#c678dd;">)
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ja</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> nestedAsync </span><span style="color:#c678dd;">|&gt;</span><span> join
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">nestedOption </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#c678dd;">(</span><span>Some </span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">)
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jo  </span><span style="color:#c678dd;">=</span><span> nestedOption </span><span style="color:#c678dd;">|&gt;</span><span> Option.flatten
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jo</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> nestedOption </span><span style="color:#c678dd;">|&gt;</span><span> join
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">nestedResult </span><span style="color:#c678dd;">=</span><span> Ok </span><span style="color:#c678dd;">(</span><span>Ok </span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">)
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jr </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; = 
+</span><span>    nestedResult
+</span><span>    </span><span style="color:#c678dd;">|&gt; function 
+</span><span>        </span><span style="color:#c678dd;">|</span><span> Ok </span><span style="color:#c678dd;">(</span><span>Ok v</span><span style="color:#c678dd;">) -&gt;</span><span> Ok v 
+</span><span>        </span><span style="color:#c678dd;">|</span><span> Ok </span><span style="color:#c678dd;">(</span><span>Error e</span><span style="color:#c678dd;">) 
+</span><span>        </span><span style="color:#c678dd;">|</span><span> Error e </span><span style="color:#c678dd;">-&gt;</span><span> Error e  
+</span><span>          
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jr</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; =</span><span> nestedResult </span><span style="color:#c678dd;">|&gt;</span><span> join
+</span></code></pre>
+<p>We can see, that F#+ becomes really handy. Especially, when dealing with <code>Option</code> and<code>Result</code> type.
+These types are often handled using <a href="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/computation-expressions">Computation Expressions</a>.
+Dealing with them using plain F# core functions is pretty awkward.</p>
+<h3 id="map">Map</h3>
+<p><strong>Type signature:</strong> <code>(a -&gt; b) -&gt; M a -&gt; M b</code> where <code>M</code> is a monad type</p>
+<p>Monads are also functors, so we can map over them.</p>
+<p>Let's define a simple function</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">myFunction</span><span style="font-style:italic;color:#e06c75;"> x </span><span style="color:#c678dd;">=</span><span> x </span><span style="color:#c678dd;">+ </span><span style="color:#d19a66;">1 
+</span></code></pre>
+<p>and see how we can apply it to our example types.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ml   </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;</span><span> List.map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ml</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;</span><span> map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ml</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;&gt;</span><span> myFunction
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ms   </span><span style="color:#c678dd;">=</span><span> seq </span><span style="color:#c678dd;">[</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;</span><span> Seq.map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ms</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> seq </span><span style="color:#c678dd;">[</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;</span><span> map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ms</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> seq </span><span style="color:#c678dd;">[</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;&gt;</span><span> myFunction
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mar   </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] |&gt;</span><span> Array.map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mar</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] |&gt;</span><span> map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mar</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] |&gt;&gt;</span><span> myFunction
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ma   </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">} |&gt;</span><span> Async.map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ma</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">} |&gt;</span><span> map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ma</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">} |&gt;&gt;</span><span> myFunction
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mo   </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> Option.map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mo</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mo</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;&gt;</span><span> myFunction
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mr  </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; =</span><span> Ok </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> Result.map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mr</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; =</span><span> Ok </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mr</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; =</span><span> Ok </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;&gt;</span><span> myFunction
+</span></code></pre>
+<p>We map in F#+ using either generic <code>map</code> function, or simply with an operator <code>|&gt;&gt;</code>.</p>
+<h3 id="bind">Bind</h3>
+<p><strong>Type signature:</strong> <code>(a -&gt; M b) -&gt; M a -&gt; M b</code> where <code>M</code> is a monad type</p>
+<p>Bind lets us apply monadic value to a function returning monad.
+We create a monadic version of <code>myFunction</code> for each context by composing it with previously described <code>result</code> function.</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">blf  </span><span style="color:#c678dd;">=</span><span> myFunction </span><span style="color:#c678dd;">&gt;&gt;</span><span> result
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bl   </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;</span><span> List.collect blf 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bl</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;</span><span> bind blf 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bl</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] &gt;&gt;=</span><span> blf 
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">barf  </span><span style="color:#c678dd;">=</span><span> myFunction </span><span style="color:#c678dd;">&gt;&gt;</span><span> result 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bar   </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] |&gt;</span><span> Array.collect barf
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bar</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] |&gt;</span><span> bind barf
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bar</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] &gt;&gt;=</span><span> barf
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bsf  </span><span style="color:#c678dd;">=</span><span> myFunction </span><span style="color:#c678dd;">&gt;&gt;</span><span> result 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bs   </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] |&gt;</span><span> Seq.collect bsf
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bs</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] |&gt;</span><span> bind bsf
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bs</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] &gt;&gt;=</span><span> bsf
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">baf  </span><span style="color:#c678dd;">=</span><span> myFunction </span><span style="color:#c678dd;">&gt;&gt;</span><span> result 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ba   </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">} |&gt; fun</span><span style="font-style:italic;color:#e06c75;"> x </span><span style="color:#c678dd;">-&gt;</span><span> async.Bind </span><span style="color:#c678dd;">(</span><span>x</span><span style="color:#c678dd;">,</span><span> baf</span><span style="color:#c678dd;">)
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ba</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">} |&gt;</span><span> bind baf
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ba</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">} &gt;&gt;=</span><span> baf
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bof  </span><span style="color:#c678dd;">=</span><span> myFunction </span><span style="color:#c678dd;">&gt;&gt;</span><span> result 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bo   </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> Option.bind bof
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bo</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> bind bof
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bo</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">&gt;&gt;=</span><span> bof
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">brf </span><span style="color:#c678dd;">=</span><span> myFunction </span><span style="color:#c678dd;">&gt;&gt;</span><span> result 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">br   </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; =</span><span> Ok </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> Result.bind brf
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">br</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; =</span><span> Ok </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> bind brf
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">br</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; =</span><span> Ok </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">&gt;&gt;=</span><span> brf
+</span></code></pre>
+<p>Similiarly to <code>map</code>, we use bind in F#+ using either generic <code>bind</code> function, or with an operator <code>&gt;&gt;=</code>.</p>
+<h4 id="bind-composition">Bind composition</h4>
+<p>Function <code>bind</code> can be defined in terms of <code>map</code> and <code>join</code>.
+We can define our own function</p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">myBind</span><span style="font-style:italic;color:#e06c75;"> f </span><span style="color:#c678dd;">=</span><span> map f </span><span style="color:#c678dd;">&gt;&gt;</span><span> join 
+</span></code></pre>
+<p>and then use it similarly to previously shown <code>bind</code></p>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span style="color:#c678dd;">let </span><span style="color:#e06c75;">myFun</span><span style="font-style:italic;color:#e06c75;"> x </span><span style="color:#c678dd;">= [</span><span>x </span><span style="color:#c678dd;">+ </span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bc   </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] &gt;&gt;=</span><span> myFun 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bc</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;</span><span> myBind myFun
+</span></code></pre>
+<h2 id="example-code">Example code</h2>
+<pre data-lang="fs" style="background-color:#282c34;color:#abb2bf;" class="language-fs "><code class="language-fs" data-lang="fs"><span>#r </span><span style="color:#98c379;">&quot;nuget: FSharpPlus&quot;
+</span><span style="color:#c678dd;">open </span><span style="font-weight:bold;color:#61afef;">FSharpPlus
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Unit/Return
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">l   </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">l</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> List.singleton </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">l</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> result </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">:</span><span> int list 
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">s   </span><span style="color:#c678dd;">=</span><span> seq </span><span style="color:#c678dd;">[</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">s</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> Seq.singleton </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">s</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> result </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">:</span><span> int seq 
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ar   </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ar</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> Array.singleton </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ar</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> result </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">:</span><span> int </span><span style="color:#c678dd;">[]
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">a   </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">}
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">a</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> async.Return </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">a</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> result </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">:</span><span> Async</span><span style="color:#c678dd;">&lt;</span><span>int</span><span style="color:#c678dd;">&gt;
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">o   </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">o</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> None
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">o</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> result </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">:</span><span> int option
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">r   </span><span style="color:#c678dd;">=</span><span> Ok </span><span style="color:#d19a66;">1
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">r</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> Error </span><span style="color:#98c379;">&quot;Oops!&quot;
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">r</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> result </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">:</span><span> Result</span><span style="color:#c678dd;">&lt;</span><span>int</span><span style="color:#c678dd;">,</span><span>string</span><span style="color:#c678dd;">&gt;
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">//  Join
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">nestedList </span><span style="color:#c678dd;">= [[</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">]]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jl  </span><span style="color:#c678dd;">=</span><span> nestedList </span><span style="color:#c678dd;">|&gt;</span><span> List.concat
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jl</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> nestedList </span><span style="color:#c678dd;">|&gt;</span><span> join
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">nestedSeq </span><span style="color:#c678dd;">=</span><span> seq </span><span style="color:#c678dd;">[</span><span>seq </span><span style="color:#c678dd;">[</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">]]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">sl  </span><span style="color:#c678dd;">=</span><span> nestedSeq </span><span style="color:#c678dd;">|&gt;</span><span> Seq.concat
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">sl</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> nestedSeq </span><span style="color:#c678dd;">|&gt;</span><span> join
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">nestedArray </span><span style="color:#c678dd;">= [|[|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|]|]
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jar  </span><span style="color:#c678dd;">=</span><span> nestedArray </span><span style="color:#c678dd;">|&gt;</span><span> Array.concat
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jar</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> nestedArray </span><span style="color:#c678dd;">|&gt;</span><span> join
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">nestedAsync </span><span style="color:#c678dd;">= </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> async.Return </span><span style="color:#c678dd;">|&gt;</span><span> async.Return
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ja  </span><span style="color:#c678dd;">=</span><span> nestedAsync </span><span style="color:#c678dd;">|&gt; fun</span><span style="font-style:italic;color:#e06c75;"> x </span><span style="color:#c678dd;">-&gt;</span><span> async.Bind </span><span style="color:#c678dd;">(</span><span>x</span><span style="color:#c678dd;">,</span><span>id</span><span style="color:#c678dd;">)
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ja</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> nestedAsync </span><span style="color:#c678dd;">|&gt;</span><span> join
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">nestedOption </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#c678dd;">(</span><span>Some </span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">)
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jo  </span><span style="color:#c678dd;">=</span><span> nestedOption </span><span style="color:#c678dd;">|&gt;</span><span> Option.flatten
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jo</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">=</span><span> nestedOption </span><span style="color:#c678dd;">|&gt;</span><span> join
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">nestedResult </span><span style="color:#c678dd;">=</span><span> Ok </span><span style="color:#c678dd;">(</span><span>Ok </span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">)
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jr </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; = 
+</span><span>    nestedResult
+</span><span>    </span><span style="color:#c678dd;">|&gt; function 
+</span><span>        </span><span style="color:#c678dd;">|</span><span> Ok </span><span style="color:#c678dd;">(</span><span>Ok v</span><span style="color:#c678dd;">) -&gt;</span><span> Ok v 
+</span><span>        </span><span style="color:#c678dd;">|</span><span> Ok </span><span style="color:#c678dd;">(</span><span>Error e</span><span style="color:#c678dd;">) 
+</span><span>        </span><span style="color:#c678dd;">|</span><span> Error e </span><span style="color:#c678dd;">-&gt;</span><span> Error e  
+</span><span>          
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">jr</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; =</span><span> nestedResult </span><span style="color:#c678dd;">|&gt;</span><span> join 
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Map
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">myFunction</span><span style="font-style:italic;color:#e06c75;"> x </span><span style="color:#c678dd;">=</span><span> x </span><span style="color:#c678dd;">+ </span><span style="color:#d19a66;">1 
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ml   </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;</span><span> List.map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ml</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;</span><span> map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ml</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;&gt;</span><span> myFunction
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ms   </span><span style="color:#c678dd;">=</span><span> seq </span><span style="color:#c678dd;">[</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;</span><span> Seq.map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ms</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> seq </span><span style="color:#c678dd;">[</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;</span><span> map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ms</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> seq </span><span style="color:#c678dd;">[</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;&gt;</span><span> myFunction
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mar   </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] |&gt;</span><span> Array.map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mar</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] |&gt;</span><span> map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mar</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] |&gt;&gt;</span><span> myFunction
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ma   </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">} |&gt;</span><span> Async.map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ma</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">} |&gt;</span><span> map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ma</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">} |&gt;&gt;</span><span> myFunction
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mo   </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> Option.map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mo</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mo</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;&gt;</span><span> myFunction
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mr  </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; =</span><span> Ok </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> Result.map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mr</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; =</span><span> Ok </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> map myFunction
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">mr</span><span style="font-style:italic;color:#e06c75;">&#39;&#39;</span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; =</span><span> Ok </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;&gt;</span><span> myFunction
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Bind
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">blf </span><span style="color:#c678dd;">=</span><span> myFunction </span><span style="color:#c678dd;">&gt;&gt;</span><span> result
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bl   </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;</span><span> List.collect blf 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bl</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;</span><span> bind blf 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bl</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] &gt;&gt;=</span><span> blf 
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">barf  </span><span style="color:#c678dd;">=</span><span> myFunction </span><span style="color:#c678dd;">&gt;&gt;</span><span> result 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bar   </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] |&gt;</span><span> Array.collect barf
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bar</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] |&gt;</span><span> bind barf
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bar</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] &gt;&gt;=</span><span> barf
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bsf  </span><span style="color:#c678dd;">=</span><span> myFunction </span><span style="color:#c678dd;">&gt;&gt;</span><span> result 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bs   </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] |&gt;</span><span> Seq.collect bsf
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bs</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] |&gt;</span><span> bind bsf
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bs</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= [|</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">|] &gt;&gt;=</span><span> bsf
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">baf  </span><span style="color:#c678dd;">=</span><span> myFunction </span><span style="color:#c678dd;">&gt;&gt;</span><span> result 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ba   </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">} |&gt; fun</span><span style="font-style:italic;color:#e06c75;"> x </span><span style="color:#c678dd;">-&gt;</span><span> async.Bind </span><span style="color:#c678dd;">(</span><span>x</span><span style="color:#c678dd;">,</span><span> baf</span><span style="color:#c678dd;">)
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ba</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">} |&gt;</span><span> bind baf
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">ba</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">= async { return </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">} &gt;&gt;=</span><span> baf
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bof  </span><span style="color:#c678dd;">=</span><span> myFunction </span><span style="color:#c678dd;">&gt;&gt;</span><span> result 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bo   </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> Option.bind bof
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bo</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> bind bof
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bo</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">=</span><span> Some </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">&gt;&gt;=</span><span> bof
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">brf </span><span style="color:#c678dd;">=</span><span> myFunction </span><span style="color:#c678dd;">&gt;&gt;</span><span> result 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">br   </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; =</span><span> Ok </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> Result.bind brf
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">br</span><span style="font-style:italic;color:#e06c75;">&#39;  </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; =</span><span> Ok </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">|&gt;</span><span> bind brf
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">br</span><span style="font-style:italic;color:#e06c75;">&#39;&#39; </span><span style="color:#c678dd;">: </span><span style="color:#e5c07b;">Result</span><span style="color:#c678dd;">&lt;</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">,</span><span style="color:#e5c07b;">int</span><span style="color:#c678dd;">&gt; =</span><span> Ok </span><span style="color:#d19a66;">1 </span><span style="color:#c678dd;">&gt;&gt;=</span><span> brf
+</span><span>
+</span><span style="font-style:italic;color:#7f848e;">// Bind composition
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">myBind</span><span style="font-style:italic;color:#e06c75;"> f </span><span style="color:#c678dd;">=</span><span> map f </span><span style="color:#c678dd;">&gt;&gt;</span><span> join 
+</span><span>
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">myFun</span><span style="font-style:italic;color:#e06c75;"> x </span><span style="color:#c678dd;">= [</span><span>x </span><span style="color:#c678dd;">+ </span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bc   </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] &gt;&gt;=</span><span> myFun 
+</span><span style="color:#c678dd;">let </span><span style="color:#e06c75;">bc</span><span style="font-style:italic;color:#e06c75;">&#39; </span><span style="color:#c678dd;">= [</span><span style="color:#d19a66;">1</span><span style="color:#c678dd;">] |&gt;</span><span> myBind myFun
+</span></code></pre>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script src="https://autoforecastteam.github.io/js/main.js" defer></script>
+
+  <script src="https://autoforecastteam.github.io/plugins/elasticlunr.min.js" defer></script>
+  <script src="https://autoforecastteam.github.io/search_index.en.js" defer></script>
+  <script src="https://autoforecastteam.github.io/js/search.js" defer></script>
+
+  
+</body>
+</html>
