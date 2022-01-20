@@ -2,6 +2,7 @@ theme = "adidoks"
 base_url = "https://autoforecastteam.github.io"
 title = "autoforecast team's blog"
 description = ""
+default_language = "en"
 compile_sass = true
 build_search_index = true
 timeformat = "%e %B %Y"
